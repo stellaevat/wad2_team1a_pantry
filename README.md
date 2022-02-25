@@ -1,1 +1,1 @@
-# wad2-lab01-team1a
+# wad2_team1a_pantry
