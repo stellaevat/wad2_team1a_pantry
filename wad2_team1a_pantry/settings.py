@@ -121,4 +121,4 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 # Login url
-LOGIN_URL = 'rango:login'
+LOGIN_URL = 'pantry:login'
