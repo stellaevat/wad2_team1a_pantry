@@ -12,3 +12,10 @@ class UserProfileForm(forms.ModelForm):
     class Meta:
         model = UserProfile
         fields = ('website', 'picture',)
+
+class EmailForm(forms.ModelForm):
+    email = forms.EmailField(required=True)
+
+    class Meta:
+        model = UserProfile
+        fields = ('email',)
