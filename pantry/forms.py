@@ -6,16 +6,17 @@ class UserForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ('username', 'email', 'password',)
+        fields = ('username', 'password',)
 
 class UserProfileForm(forms.ModelForm):
     class Meta:
         model = UserProfile
-        fields = ('website', 'picture',)
+        # No fields need to be set at sign up
+        fields = ()
 
 class EmailForm(forms.ModelForm):
     email = forms.EmailField(required=True)
 
     class Meta:
-        model = UserProfile
+        model = User
         fields = ('email',)

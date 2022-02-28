@@ -1,0 +1,17 @@
+{% extends 'pantry/base.html'%}
+
+{% block title_block %}
+	Search results
+{% endblock %}
+
+{% block body_block %}
+	{% if searched %}
+		<h1 class="category-header">Search results...</h1><br />
+		
+		{% for recipe in recipes %}
+			<a href="{% url 'pantry:show_recipe' recipe.slug %}">{{ recipe.name }}</a> <br />
+		{% endfor %}
+	{% else %}
+		<h1 class="category-header">You haven't searched for anything yet!</h1>
+	{% endif %}
+{% endblock %}

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+{% load pantry_template_tags %}
+
+<html>
+	<head>
+		<title>
+			Pantry:
+			{% block title_block %}
+				Bon Appétit!
+			{% endblock %}
+		</title>
+	</head>
+	
+	<body>
+		<header class="navbar-primary">
+			<div class="navbar-left-align">
+				<a href="{% url 'pantry:home' %}">Home</a>
+			</div>
+
+			<div class="navbar-centre-align">
+				<form class="search-bar" method="post", action="{% url 'pantry:keyword_search_results' %}">
+					{% csrf_token %}
+					<input class="search-input" type="search" placeholder="Search recipes..." aria-label="Search" name="searched">
+					<button class="btn-search" type="submit">Search</button>
+				</form>
+			</div>
+			
+			<div class="navbar-right-align">
+				{% if user.is_authenticated %}
+					<div class="navbar-dropdown">
+						<a class="navbar-dropdown-toggle" href="{% url 'pantry:home' %}" id="dropdown01" data-bs-toggle="dropdown" aria-expanded="false">
+							<img class="profile-thumbnail" src="{% user.profile_picture %}" alt="Profile">
+						</a>
+						<ul class="dropdown-menu" aria-labelledby="dropdown01">
+							<li><a class="dropdown-item" href="{% url 'pantry:user_profile' %}">My profile</a></li>
+							<li><a class="dropdown-item" href="{% url 'pantry:add_recipe' %}">Add new recipe</a></li>
+							<li><a class="dropdown-item" href="{% url 'pantry:sign_out' %}">Sign out</a></li>
+						</ul>
+					</div>
+				{% else %}
+					<a href="{% url 'pantry:check_email' %}">Sign Up/In</a>
+				{% endif %}
+			</div>
+		</header>
+		
+		{% if categories %}
+		<div class="tab-bar">
+			<nav class="tabs-adjusted">
+				{% for category in categories %}
+					<a class="tab-secondary" href="{% url 'pantry:show_category' category.slug %}">{{ category.title }}</a>
+				{% endfor %}
+				<a class="tab-primary" href="{% url 'pantry:search_by_ingredient' %}">Search Ingredients</a>
+			</nav>
+		</div>
+		{% endif %}
+		
+		<div>
+			{% block body_block %}
+			{% endblock %}
+		</div>
+		
+	</body>
+</html>
