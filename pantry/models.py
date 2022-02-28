@@ -10,25 +10,25 @@ class UserProfile(models.Model):
         return self.user.username
 
 class Category(models.Model):
-    Name = models.CharField(max_length=128, unique=True)
+    name = models.CharField(max_length=128, unique=True)
 
     def __str__(self):
-        return self.Name
+        return self.name
 
     class Meta:
         verbose_name_plural = "Categories"
 
 class Ingredient(models.Model):
-    Name = models.CharField(max_length=128,unique=True)
-    Type = models.CharField(
+    name = models.CharField(max_length=128,unique=True)
+    ingredient_type = models.CharField(
         max_length = 128,
         choices=(
-            ("meats", "Meat, seafood & substitutes"),
-            ("dairy", "Eggs, dairy & substitutes"),
+            ("meats", "Meat, Seafood & Substitutes"),
+            ("dairy", "Eggs, Dairy & Substitutes"),
             ("veg", "Vegetables & Funghi"),
             ("pulses", "Pulses"),
-            ("grains", "Grains, seeds & nuts"),
-            ("carbs", "Bread, pasta & rice"),
+            ("grains", "Grains, Seeds & Nuts"),
+            ("carbs", "Bread, Pasta & Rice"),
             ("fats", "Fats & Oils"),
             ("herbs", "Herbs & Spices"),
             ("condiments", "Condiments & Sauces"),
@@ -39,38 +39,38 @@ class Ingredient(models.Model):
     )
 
     def __str__(self):
-        return self.Name
+        return self.name
 
 class SiteUser(models.Model):
-    Email = models.CharField(max_length=254, unique = True)
-    Username = models.CharField(max_length=128,unique = True)
-    Password = models.CharField(max_length=128)
-    ProfilePicture = models.ImageField(upload_to='profile_pictures', blank=True)
+    email = models.CharField(max_length=254, unique = True)
+    username = models.CharField(max_length=128,unique = True)
+    password = models.CharField(max_length=128)
+    profile_picture = models.ImageField(upload_to='profile_pictures', blank=True)
 
     def __str__(self):
-        return self.Username
+        return self.username
 
 class Recipe(models.Model):
-    Title = models.CharField(max_length=128,unique = True)
-    Author = models.ForeignKey(SiteUser, on_delete=models.CASCADE, null=True)
-    Steps = models.CharField(max_length=2048)
-    Ingredients = models.ManyToManyField(Ingredient)
-    PrepTime = models.IntegerField()
-    Category = models.ManyToManyField(Category)
-    CookTime = models.IntegerField()
-    Servings = models.IntegerField()
-    Difficulty = models.CharField(
+    title = models.CharField(max_length=128,unique = True)
+    author = models.ForeignKey(SiteUser, on_delete=models.CASCADE, null=True)
+    steps = models.CharField(max_length=2048)
+    ingredients = models.ManyToManyField(Ingredient)
+    prep_time = models.IntegerField()
+    category = models.ManyToManyField(Category)
+    cook_time = models.IntegerField()
+    servings = models.IntegerField()
+    difficulty = models.CharField(
         max_length = 16,
         choices = (
             ("easy", "Easy"),
             ("medium", "Medium"),
-            ("hard", "Hard")
+            ("advanced", "Advanced")
         ) 
     )
-    Picture = models.ImageField(upload_to='recipe_pictures', blank=True)
-    PubDate = models.DateField()
-    Stars = models.IntegerField()
+    picture = models.ImageField(upload_to='recipe_pictures', blank=True)
+    pub_date = models.DateField()
+    stars = models.IntegerField()
 
     def __str__(self):
-        return self.Title
+        return self.title
 

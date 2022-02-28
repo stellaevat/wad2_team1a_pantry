@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 {% load staticfiles %}
-{% load pantry_template_tags %}
 
 <html>
 	<head>
 		<title>
-			Pantry:
 			{% block title_block %}
-				Bon Appétit!
+				Welcome to
 			{% endblock %}
+			 - Pantry
 		</title>
+		<link rel="icon" type="image/x-icon" href="{% static 'img/favicon.ico' %}">
 	</head>
 	
 	<body>
@@ -30,12 +30,12 @@
 				{% if user.is_authenticated %}
 					<div class="navbar-dropdown">
 						<a class="navbar-dropdown-toggle" href="{% url 'pantry:home' %}" id="dropdown01" data-bs-toggle="dropdown" aria-expanded="false">
-							<img class="profile-thumbnail" src="{% user.profile_picture %}" alt="Profile">
+							<img class="profile-thumbnail" src="{{ user.profile_picture }}" alt="Profile">
 						</a>
 						<ul class="dropdown-menu" aria-labelledby="dropdown01">
-							<li><a class="dropdown-item" href="{% url 'pantry:user_profile' %}">My profile</a></li>
+							<li><a class="dropdown-item" href="{% url 'pantry:user_profile' user.username %}">My profile</a></li>
 							<li><a class="dropdown-item" href="{% url 'pantry:add_recipe' %}">Add new recipe</a></li>
-							<li><a class="dropdown-item" href="{% url 'pantry:sign_out' %}">Sign out</a></li>
+							<li><a class="dropdown-item" href="{% url 'pantry:logout' %}">Sign out</a></li>
 						</ul>
 					</div>
 				{% else %}

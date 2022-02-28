@@ -1,15 +1,16 @@
 from django.shortcuts import render
-from pantry.forms import UserForm, UserProfileForm
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponse
 from django.urls import reverse
 from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
 
+from pantry.models import Recipe, Category, Ingredient, UserProfile
+from pantry.forms import UserForm, UserProfileForm, EmailForm
 
 # Dummy views until created
 def home(request):
-    return HttpResponse("Home")
+    return render(request, 'pantry/home.html', {})
     
 def show_recipe(request):
     return HttpResponse("Show recipe")
@@ -22,6 +23,9 @@ def search_by_ingredient(request):
     
 def add_recipe(request):
     return HttpResponse("Add recipe")
+    
+def user_profile(request):
+    return HttpResponse("User profile")
 
 
 # Search by keyword results

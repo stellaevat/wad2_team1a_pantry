@@ -15,50 +15,50 @@ from pantry.models import Category, Recipe, SiteUser, Ingredient
 def populate():
 
     siteusers = [
-        {"Email" : "johndoe@gmail.com", "Username" : "johndoe", "Password" : "password"},
-        {"Email" : "benking@gmail.com", "Username" : "benking", "Password" : "password"},
-        {"Email" : "joebloggs@gmail.com", "Username" : "joebloggs", "Password" : "password"},
-        {"Email" : "sallywalker@gmail.com", "Username" : "sallywalker", "Password" : "password"}
+        {"email" : "johndoe@gmail.com", "username" : "johndoe", "password" : "password"},
+        {"email" : "benking@gmail.com", "username" : "benking", "password" : "password"},
+        {"email" : "joebloggs@gmail.com", "username" : "joebloggs", "password" : "password"},
+        {"email" : "sallywalker@gmail.com", "username" : "sallywalker", "password" : "password"}
     ]
 
     categories = [
-        {"Name" : "30 Minute Meals"},
-        {"Name" : "Vegan"},
-        {"Name" : "Cheap Meals"},
-        {"Name" : "Healthy"},
-        {"Name" : "Gluten Free"},
-        {"Name" : "Vegetarian"},
-        {"Name" : "Desserts"},
-        {"Name" : "Breakfast"},
-        {"Name" : "Lunch"},
-        {"Name" : "Dinner"},
-        {"Name" : "Snacks"},
+        {"name" : "30 Minute Meals"},
+        {"name" : "Vegan"},
+        {"name" : "Cheap Meals"},
+        {"name" : "Healthy"},
+        {"name" : "Gluten Free"},
+        {"name" : "Vegetarian"},
+        {"name" : "Desserts"},
+        {"name" : "Breakfast"},
+        {"name" : "Lunch"},
+        {"name" : "Dinner"},
+        {"name" : "Snacks"},
     ]
 
     ingredients = [
-        {"Name" : "Cheese", "Type" : "dairy"},
-        {"Name" : "Butter", "Type" : "dairy"},
-        {"Name" : "Tomatoes", "Type" : "fruit"},
-        {"Name" : "Beef", "Type" : "meats"},
-        {"Name" : "Ice Cream", "Type" : "sweets"},
-        {"Name" : "Biscuits", "Type" : "sweets"},
-        {"Name" : "Bread", "Type" : "carbs"},
-        {"Name" : "Rice", "Type" : "carbs"},
-        {"Name" : "Lettuce", "Type" : "veg"},
-        {"Name" : "Water", "Type" : "drinks"},
-        {"Name" : "Noodles", "Type" : "carbs"},
-        {"Name" : "Spaghetti", "Type" : "carbs"},
-        {"Name" : "Flour", "Type" : "carbs"},
-        {"Name" : "Eggs", "Type" : "dairy"},
-        {"Name" : "Milk", "Type" : "dairy"},
-        {"Name" : "Sunflower Oil", "Type" : "fats"},
-        {"Name" : "Salt", "Type" : "condiments"},
-        {"Name" : "Baby Potatoes", "Type" : "carbs"},
-        {"Name" : "Olive Oil", "Type" : "fats"},
-        {"Name" : "Red Onions", "Type" : "veg"},
-        {"Name" : "Red Peppers", "Type" : "veg"},
-        {"Name" : "Garlic", "Type" : "veg"},
-        {"Name" : "Sugar", "Type" : "sweets"}
+        {"name" : "Cheese", "ingredient_type" : "dairy"},
+        {"name" : "Butter", "ingredient_type" : "dairy"},
+        {"name" : "Tomatoes", "ingredient_type" : "fruit"},
+        {"name" : "Beef", "ingredient_type" : "meats"},
+        {"name" : "Ice Cream", "ingredient_type" : "sweets"},
+        {"name" : "Biscuits", "ingredient_type" : "sweets"},
+        {"name" : "Bread", "ingredient_type" : "carbs"},
+        {"name" : "Rice", "ingredient_type" : "carbs"},
+        {"name" : "Lettuce", "ingredient_type" : "veg"},
+        {"name" : "Water", "ingredient_type" : "drinks"},
+        {"name" : "Noodles", "ingredient_type" : "carbs"},
+        {"name" : "Spaghetti", "ingredient_type" : "carbs"},
+        {"name" : "Flour", "ingredient_type" : "carbs"},
+        {"name" : "Eggs", "ingredient_type" : "dairy"},
+        {"name" : "Milk", "ingredient_type" : "dairy"},
+        {"name" : "Sunflower Oil", "ingredient_type" : "fats"},
+        {"name" : "Salt", "ingredient_type" : "condiments"},
+        {"name" : "Baby Potatoes", "ingredient_type" : "carbs"},
+        {"name" : "Olive Oil", "ingredient_type" : "fats"},
+        {"name" : "Red Onions", "ingredient_type" : "veg"},
+        {"name" : "Red Peppers", "ingredient_type" : "veg"},
+        {"name" : "Garlic", "ingredient_type" : "veg"},
+        {"name" : "Sugar", "ingredient_type" : "sweets"}
 
     ]
 
@@ -90,7 +90,7 @@ Line the base of a 23cm springform cake tin by putting a square piece of parchme
 
 
     for cat in categories:
-        c = add_cat(cat["Name"])
+        c = add_cat(cat["name"])
 
     for user in siteusers:
         u = add_user(user)
@@ -116,26 +116,26 @@ Line the base of a 23cm springform cake tin by putting a square piece of parchme
 
 
 def add_ingredient(ingredient):
-    i = Ingredient.objects.get_or_create(Name=ingredient["Name"], Type = ingredient["Type"])[0]
+    i = Ingredient.objects.get_or_create(name=ingredient["name"], ingredient_type = ingredient["ingredient_type"])[0]
     i.save()
     return i
 
 def add_user(user):
-    c = SiteUser.objects.get_or_create(Username=user["Username"], Email=user["Email"], Password=user["Password"])[0]
+    c = SiteUser.objects.get_or_create(username=user["username"], email=user["email"], password=user["password"])[0]
     c.save()
     return c
 
 def add_cat(name):
-    c = Category.objects.get_or_create(Name=name)[0]
+    c = Category.objects.get_or_create(name=name)[0]
     c.save()
     return c
 
 def add_recipe(recipe):
-    r = Recipe.objects.get_or_create(Title=recipe["name"], Author=SiteUser.objects.get(Username=recipe["author"]), Steps=recipe["steps"], PrepTime=recipe["prep_time"], CookTime=recipe["cook_time"], Servings = recipe["servings"], Difficulty=recipe["difficulty"], PubDate = recipe["pub_date"], Stars = recipe["stars"])[0]
+    r = Recipe.objects.get_or_create(title=recipe["name"], author=SiteUser.objects.get(username=recipe["author"]), steps=recipe["steps"], prep_time=recipe["prep_time"], cook_time=recipe["cook_time"], servings = recipe["servings"], difficulty=recipe["difficulty"], pub_date = recipe["pub_date"], stars = recipe["stars"])[0]
     for category in recipe["category"]:
-        r.Category.add(Category.objects.get(Name=category))
+        r.category.add(Category.objects.get(name=category))
     for ingredient in recipe["ingredients"]:
-        r.Ingredients.add(Ingredient.objects.get(Name=ingredient))
+        r.ingredients.add(Ingredient.objects.get(name=ingredient))
     r.save()
     return r
 
