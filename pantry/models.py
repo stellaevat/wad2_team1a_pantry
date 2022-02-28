@@ -23,18 +23,18 @@ class Ingredient(models.Model):
     Type = models.CharField(
         max_length = 128,
         choices=(
-            ("meat", "Meat, seafood & substitutes"),
-            ("eggs", "Eggs, dairy & substitutes"),
+            ("meats", "Meat, seafood & substitutes"),
+            ("dairy", "Eggs, dairy & substitutes"),
             ("veg", "Vegetables & Funghi"),
             ("pulses", "Pulses"),
             ("grains", "Grains, seeds & nuts"),
-            ("bread", "Bread, pasta & rice"),
+            ("carbs", "Bread, pasta & rice"),
             ("fats", "Fats & Oils"),
             ("herbs", "Herbs & Spices"),
             ("condiments", "Condiments & Sauces"),
             ("fruit", "Fruit"),
             ("sweets", "Sweet & Baking"),
-            ("beverages", "Beverages")
+            ("drinks", "Beverages")
         )
     )
 
