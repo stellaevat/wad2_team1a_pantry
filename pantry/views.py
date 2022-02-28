@@ -1,22 +1,38 @@
 from django.shortcuts import render
-from rango.forms import UserForm, UserProfileForm
+from pantry.forms import UserForm, UserProfileForm
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponse
 from django.urls import reverse
 from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
 
+
+# Dummy views until created
+def home(request):
+    return HttpResponse("Home")
+    
+def show_recipe(request):
+    return HttpResponse("Show recipe")
+    
+def show_category(request):
+    return HttpResponse("Show category")
+    
+def search_by_ingredient(request):
+    return HttpResponse("Search by ingredient")
+    
+def add_recipe(request):
+    return HttpResponse("Add recipe")
+
+
 # Search by keyword results
 def keyword_search_results(request):
     if request.method == 'POST':
         searched = request.POST['searched']
         recipes = Recipe.objects.filter(title__contains=searched)
-        context_dict = {'searched':searched, 'recipes'=recipes}
+        context_dict = {'searched':searched, 'recipes':recipes}
         return render(request, 'pantry/search_results.html', context=context_dict)
     else:
         return render(request, 'pantry/search_results.html', {})
-
-
 
 # Register view
 def register(request):
