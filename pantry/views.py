@@ -1,5 +1,8 @@
 from django.shortcuts import render
+<<<<<<< HEAD
 from pantry.forms import UserForm, UserProfileForm, recipeForm
+=======
+>>>>>>> cfd375a2b11844700b0545720943db5212a02577
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponse
 from django.urls import reverse
@@ -7,11 +10,14 @@ from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
 from pantry.models import Category
 
+from pantry.models import Recipe, Category, Ingredient, UserProfile
+from pantry.forms import UserForm, UserProfileForm, EmailForm
 
 # Dummy views until created
 def home(request):
-    return HttpResponse("Home")
+    return render(request, 'pantry/home.html', {})
     
+<<<<<<< HEAD
 def show_recipe(request):
 	context_dict = {}
 	recipe = Recipe.objects.get(slug=recipe_name_slug)
@@ -29,12 +35,20 @@ def show_category(request):
 		context_dict['recipes'] = None
 	return render(request, 'pantry/category.html', context=context_dict)
 
+=======
+def show_recipe(request, recipe_name_slug):
+    return HttpResponse("Show recipe")
+    
+def show_category(request, category_title_slug):
+    return HttpResponse("Show category")
+>>>>>>> cfd375a2b11844700b0545720943db5212a02577
     
 def search_by_ingredient(request):
     return HttpResponse("Search by ingredient")
   
 @login_required
 def add_recipe(request):
+<<<<<<< HEAD
 	form = recipeForm()
 	
 	if request.method == 'POST':
@@ -46,6 +60,12 @@ def add_recipe(request):
 		else:
 			print(form.errors)
 	return render(request, 'pantry/add_recipe.html', {'form': form})
+=======
+    return HttpResponse("Add recipe")
+    
+def user_profile(request):
+    return HttpResponse("User profile")
+>>>>>>> cfd375a2b11844700b0545720943db5212a02577
 
 
 # Search by keyword results
@@ -68,7 +88,6 @@ def register(request):
 
         if user_form.is_valid() and profile_form.is_valid():
             user = user_form.save()
-            user.set_email(request.POST.get('email')) #should it be .POST or something else?
             user.set_password(user.password)
             user.save()
 
@@ -81,8 +100,9 @@ def register(request):
     else:
         user_form = UserForm()
         profile_form = UserProfileForm()
-
-    return render(request, 'pantry/register.html', context = {'user_form': user_form,'profile_form': profile_form,'registered': registered})
+        
+    context_dict = {'user_form': user_form, 'profile_form': profile_form, 'registered': registered}
+    return render(request, 'pantry/register.html', context=context_dict)
 
 # Check email view before logging in / signing up
 def check_email(request):
@@ -100,7 +120,8 @@ def check_email(request):
 
         # If email exists, should redirect to login page
         if User.objects.filter(email=user_email).exists():
-            return render(request, 'pantry/login.html', context = {'email': user_email})
+            user = User.objects.get(email=user_email)
+            return render(request, 'pantry/login.html', context = {'username': user.username})
         else:
             # If email does not exist redirect to signup page
             return render(request, 'pantry/signup.html', context = {'email': user_email})
@@ -112,12 +133,11 @@ def check_email(request):
     return render(request, 'pantry/check_email.html', context = {'email': email_form})
 
 # Login view
-def user_login(request):
+def user_login(request, username):
     if request.method == 'POST':
-        email = request.POST.get('email') # should it be .POST or something else?
         password = request.POST.get('password')
 
-        user = authenticate(email=email, password=password)
+        user = authenticate(username=username, password=password)
 
         if user:
             if user.is_active:
@@ -126,11 +146,11 @@ def user_login(request):
             else:
                 return HttpResponse("Your Pantry account is disabled.")
         else:
-            print(f"Invalid login details: {email}, {password}")
+            print(f"Invalid login details: {username}, {password}")
             return HttpResponse("Invalid login details supplied.")
 
     else:
-        return render(request, 'pantry/login.html')
+        return render(request, 'pantry/login.html', username)
 
 
 # Logout view restricted to authenticated users
