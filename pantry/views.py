@@ -17,7 +17,6 @@ from pantry.forms import UserForm, UserProfileForm, EmailForm
 def home(request):
     return render(request, 'pantry/home.html', {})
     
-<<<<<<< HEAD
 def show_recipe(request):
 	context_dict = {}
 	recipe = Recipe.objects.get(slug=recipe_name_slug)
@@ -35,20 +34,18 @@ def show_category(request):
 		context_dict['recipes'] = None
 	return render(request, 'pantry/category.html', context=context_dict)
 
-=======
+
 def show_recipe(request, recipe_name_slug):
     return HttpResponse("Show recipe")
     
 def show_category(request, category_title_slug):
     return HttpResponse("Show category")
->>>>>>> cfd375a2b11844700b0545720943db5212a02577
     
 def search_by_ingredient(request):
     return HttpResponse("Search by ingredient")
   
 @login_required
 def add_recipe(request):
-<<<<<<< HEAD
 	form = recipeForm()
 	
 	if request.method == 'POST':
@@ -60,12 +57,10 @@ def add_recipe(request):
 		else:
 			print(form.errors)
 	return render(request, 'pantry/add_recipe.html', {'form': form})
-=======
-    return HttpResponse("Add recipe")
+
     
 def user_profile(request):
     return HttpResponse("User profile")
->>>>>>> cfd375a2b11844700b0545720943db5212a02577
 
 
 # Search by keyword results
