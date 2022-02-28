@@ -1,6 +1,8 @@
 from django.urls import path
 from pantry import views
 
+app_name = 'pantry'
+
 urlpatterns = [
     path('home/', views.home, name='home'),
     path('auth/', views.check_email, name='check_email'),

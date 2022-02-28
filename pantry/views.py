@@ -1,10 +1,11 @@
 from django.shortcuts import render
-from pantry.forms import UserForm, UserProfileForm
+from pantry.forms import UserForm, UserProfileForm, recipeForm
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponse
 from django.urls import reverse
 from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
+from pantry.models import Category
 
 
 # Dummy views until created
@@ -12,16 +13,39 @@ def home(request):
     return HttpResponse("Home")
     
 def show_recipe(request):
+	context_dict = {}
+	recipe = Recipe.objects.get(slug=recipe_name_slug)
     return HttpResponse("Show recipe")
     
 def show_category(request):
-    return HttpResponse("Show category")
+    context_dict = {}
+	try:
+		category = Category.objects.get(slug=category_title_slug)
+		recipes = Recipe.objects.filter(category=category)
+		context_dict['recipes'] = recipes
+		context_dict['category'] = category
+	except Category.DoesNotExist:
+		context_dict['category'] = None
+		context_dict['recipes'] = None
+	return render(request, 'pantry/category.html', context=context_dict)
+
     
 def search_by_ingredient(request):
     return HttpResponse("Search by ingredient")
-    
+  
+@login_required
 def add_recipe(request):
-    return HttpResponse("Add recipe")
+	form = recipeForm()
+	
+	if request.method == 'POST':
+		form = recipeForm(request.POST)
+	
+		if form.is_valid():
+			form.save(commit=True)
+			return redirect('/pantry/')
+		else:
+			print(form.errors)
+	return render(request, 'pantry/add_recipe.html', {'form': form})
 
 
 # Search by keyword results
