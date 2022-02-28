@@ -48,7 +48,6 @@ def register(request):
 
         if user_form.is_valid() and profile_form.is_valid():
             user = user_form.save()
-            user.set_email(request.POST.get('email')) #should it be .POST or something else?
             user.set_password(user.password)
             user.save()
 
@@ -61,8 +60,9 @@ def register(request):
     else:
         user_form = UserForm()
         profile_form = UserProfileForm()
-
-    return render(request, 'pantry/register.html', context = {'user_form': user_form,'profile_form': profile_form,'registered': registered})
+        
+    context_dict = {'user_form': user_form, 'profile_form': profile_form, 'registered': registered}
+    return render(request, 'pantry/register.html', context=context_dict)
 
 # Check email view before logging in / signing up
 def check_email(request):
@@ -80,7 +80,8 @@ def check_email(request):
 
         # If email exists, should redirect to login page
         if User.objects.filter(email=user_email).exists():
-            return render(request, 'pantry/login.html', context = {'email': user_email})
+            user = User.objects.get(email=user_email)
+            return render(request, 'pantry/login.html', context = {'username': user.username})
         else:
             # If email does not exist redirect to signup page
             return render(request, 'pantry/signup.html', context = {'email': user_email})
@@ -92,12 +93,11 @@ def check_email(request):
     return render(request, 'pantry/check_email.html', context = {'email': email_form})
 
 # Login view
-def user_login(request):
+def user_login(request, username):
     if request.method == 'POST':
-        email = request.POST.get('email') # should it be .POST or something else?
         password = request.POST.get('password')
 
-        user = authenticate(email=email, password=password)
+        user = authenticate(username=username, password=password)
 
         if user:
             if user.is_active:
@@ -106,11 +106,11 @@ def user_login(request):
             else:
                 return HttpResponse("Your Pantry account is disabled.")
         else:
-            print(f"Invalid login details: {email}, {password}")
+            print(f"Invalid login details: {username}, {password}")
             return HttpResponse("Invalid login details supplied.")
 
     else:
-        return render(request, 'pantry/login.html')
+        return render(request, 'pantry/login.html', username)
 
 
 # Logout view restricted to authenticated users
