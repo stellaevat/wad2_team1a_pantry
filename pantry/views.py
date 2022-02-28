@@ -12,10 +12,10 @@ from pantry.forms import UserForm, UserProfileForm, EmailForm
 def home(request):
     return render(request, 'pantry/home.html', {})
     
-def show_recipe(request):
+def show_recipe(request, recipe_name_slug):
     return HttpResponse("Show recipe")
     
-def show_category(request):
+def show_category(request, category_title_slug):
     return HttpResponse("Show category")
     
 def search_by_ingredient(request):

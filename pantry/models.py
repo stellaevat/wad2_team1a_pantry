@@ -1,4 +1,5 @@
 from django.db import models
+from django.template.defaultfilters import slugify
 from django.contrib.auth.models import User
 
 class UserProfile(models.Model):
@@ -11,7 +12,12 @@ class UserProfile(models.Model):
 
 class Category(models.Model):
     name = models.CharField(max_length=128, unique=True)
+    slug = models.SlugField(unique=True)
 
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.name)
+        super(Category, self).save(*args, **kwargs)
+        
     def __str__(self):
         return self.name
 
@@ -70,6 +76,11 @@ class Recipe(models.Model):
     picture = models.ImageField(upload_to='recipe_pictures', blank=True)
     pub_date = models.DateField()
     stars = models.IntegerField()
+    slug = models.SlugField(unique=True)
+    
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.title)
+        super(Recipe, self).save(*args, **kwargs)
 
     def __str__(self):
         return self.title
