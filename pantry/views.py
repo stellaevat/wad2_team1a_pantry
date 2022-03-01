@@ -14,21 +14,21 @@ def home(request):
     return render(request, 'pantry/home.html', {})
     
 def show_recipe(request):
-	context_dict = {}
-	recipe = Recipe.objects.get(slug=recipe_name_slug)
+    context_dict = {}
+    recipe = Recipe.objects.get(slug=recipe_name_slug)
     return HttpResponse("Show recipe")
     
 def show_category(request, category_title_slug):
     context_dict = {}
-	try:
-		category = Category.objects.get(slug=category_title_slug)
-		recipes = Recipe.objects.filter(category=category)
-		context_dict['recipes'] = recipes
-		context_dict['category'] = category
-	except Category.DoesNotExist:
-		context_dict['category'] = None
-		context_dict['recipes'] = None
-	return render(request, 'pantry/category.html', context=context_dict)
+    try:
+        category = Category.objects.get(slug=category_title_slug)
+        recipes = Recipe.objects.filter(category=category)
+        context_dict['recipes'] = recipes
+        context_dict['category'] = category
+    except Category.DoesNotExist:
+        context_dict['category'] = None
+        context_dict['recipes'] = None
+    return render(request, 'pantry/category.html', context=context_dict)
 
 
 def show_recipe(request, recipe_name_slug):
