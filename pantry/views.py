@@ -1,15 +1,11 @@
 from django.shortcuts import render
-<<<<<<< HEAD
 from pantry.forms import UserForm, UserProfileForm, recipeForm
-=======
->>>>>>> cfd375a2b11844700b0545720943db5212a02577
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponse
 from django.urls import reverse
 from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
 from pantry.models import Category
-
 from pantry.models import Recipe, Category, Ingredient, UserProfile
 from pantry.forms import UserForm, UserProfileForm, EmailForm
 
@@ -22,7 +18,7 @@ def show_recipe(request):
 	recipe = Recipe.objects.get(slug=recipe_name_slug)
     return HttpResponse("Show recipe")
     
-def show_category(request):
+def show_category(request, category_title_slug):
     context_dict = {}
 	try:
 		category = Category.objects.get(slug=category_title_slug)
@@ -38,9 +34,7 @@ def show_category(request):
 def show_recipe(request, recipe_name_slug):
     return HttpResponse("Show recipe")
     
-def show_category(request, category_title_slug):
-    return HttpResponse("Show category")
-    
+
 def search_by_ingredient(request):
     return HttpResponse("Search by ingredient")
   
