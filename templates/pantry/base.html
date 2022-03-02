@@ -30,7 +30,7 @@
 			<div class="navbar-right-align">
 				{% if user.is_authenticated %}
 					<div class="navbar-dropdown">
-						<a class="navbar-dropdown-toggle" href="{% url 'pantry:home' %}" id="dropdown01" data-bs-toggle="dropdown" aria-expanded="false">
+						<a class="navbar-dropdown-toggle" href="{% url 'pantry:user_profile' user.username %}" id="dropdown01" data-bs-toggle="dropdown" aria-expanded="false">
 							{% if user.profile_pic %}
 								<img class="profile-thumbnail" src="{{ user.profile_pic }}" alt="Profile" width="25" height="25">
 							{% else %}

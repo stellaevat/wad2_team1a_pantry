@@ -1,20 +1,19 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from pantry.models import Recipe, Category, Ingredient, UserProfile
 from pantry.forms import UserForm, UserProfileForm, EmailForm, RecipeForm
 from django.contrib.auth.models import User
+from django.db.models import Q
 
 # Dummy views until created
 def home(request):
     # Renders the home page, passing a context dictionary with the 6 most popular and 6 most viewed recipes.
     context_dict = {}
-    popular_list = Recipe.objects.order_by("-stars")[:6]
-    recent_list = Recipe.objects.order_by("-pub_date")[:6]
-    context_dict["popular"] = popular_list
-    context_dict["recent"] = recent_list
+    context_dict["popular_list"] = Recipe.objects.order_by("-stars")[:6]
+    context_dict["recent_list"] = Recipe.objects.order_by("-pub_date")[:6]
     return render(request, 'pantry/home.html', context_dict)
     
 def show_recipe(request, recipe_name_slug):
@@ -69,10 +68,16 @@ def show_category(request, category_title_slug):
 
 def keyword_search_results(request):
     if request.method == 'POST':
-        searched = request.POST['searched']
-        recipes = Recipe.objects.filter(title__contains=searched)
-        context_dict = {'searched':searched, 'recipes':recipes}
-        return render(request, 'pantry/search_results.html', context=context_dict)
+        searched = request.POST.get('searched')
+        recipes = set()
+        if searched:
+            keywords = searched.split()
+            for k in keywords:
+                recipes = recipes.union(Recipe.objects.filter(Q(title__contains=k) | Q(steps__contains=k)))
+            context_dict = {'searched':searched, 'recipes':recipes}
+            return render(request, 'pantry/search_results.html', context=context_dict)
+        else: 
+            return render(request, 'pantry/search_results.html', {})
     else:
         return render(request, 'pantry/search_results.html', {})
 
