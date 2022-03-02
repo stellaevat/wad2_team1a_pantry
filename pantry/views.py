@@ -129,21 +129,22 @@ def check_email(request):
 # Sign in view
 def sign_in(request):
     if request.method == 'POST':
+        username = request.session['username']
         password = request.POST.get('password')
         user = authenticate(username=username, password=password)
-
+        context_dict = {'username':username}
+    
         if user:
             if user.is_active:
                 login(request, user)
-                return redirect(reverse('pantry:home'))
+                context_dict['success'] = "You've signed in successfully!"
             else:
-                return HttpResponse("Your Pantry account is disabled.")
+                context_dict['error'] = "Your Pantry account is disabled."
         else:
-            print(f"Invalid login details: {username}, {password}")
-            return HttpResponse("Invalid login details supplied.")
+            print(f"Invalid login details: {request.session['username']}, {password}")
+            context_dict['error'] = "Wrong password, try again."
 
-    else:
-        return render(request, 'pantry/sign_in.html')
+    return render(request, 'pantry/sign_in.html', context=context_dict)
 
 
 # Logout view restricted to authenticated users

@@ -4,3 +4,29 @@
 {% block title_block %}
 	Sign In
 {% endblock %}
+
+{% block body_block %}
+	<div class="logo">
+		<img class="logo-welcome" src="{% static 'img/welcome.png' %}" alt="Welcome to the Pantry">
+		<p class="welcome-message">{{ username }}!</p>
+	</div>
+	
+	<div class="login-area">
+		{% if success %}
+			<p class="login-success">{{ success }}</p>
+			<a class="btn-continue" href="{% url 'pantry:user_profile' username %}">View profile</a>
+		{% else %}
+			<p class="login-prompt">Sign in with your password:</p>
+			<form id="form-sign-in" method="post" action="{% url 'pantry:sign_in' %}">
+				{% csrf_token %}
+				
+				<input type="password" name="password" placeholder="Enter password" value="" size="50"/><br />
+				{% if error %}
+						<p class="login-error">{{ error }}</p>
+				{% endif %}
+				<button class="btn-back" type="button" onclick="history.back()">Back</button>
+				<input class="btn-continue" type="submit" value="Continue" />
+			</form>
+		{% endif %}
+	</div>
+{% endblock %}

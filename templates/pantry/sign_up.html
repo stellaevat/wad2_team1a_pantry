@@ -12,7 +12,7 @@
 	
 	<div class="login-area">
 		{% if registered %}
-			<p class="login-prompt">You have registered successfully - you can now add and star recipes!</p><br />
+			<p class="login-prompt">You've registered successfully - you can now add and star recipes!</p><br />
 			<a class="btn-continue" href="{% url 'pantry:user_profile' user_form.username %}">View profile</a>
 		{% else %}
 			<p class="login-prompt">Create your account here:</p>
