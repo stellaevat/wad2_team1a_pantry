@@ -9,8 +9,10 @@ from django.contrib.auth.models import User
 
 # Dummy views until created
 def home(request):
-    # conext_dict keys "popular" and "recent" corresponding to (2, 4 or 6) most popular/recent recipes
-    return render(request, 'pantry/home.html', {})
+    context_dict = {}
+    popular_list = Recipe.objects.order_by("-stars")[:6]
+    recent_list = Recipe.objects.order_by("-pub_date")[:6]
+    return render(request, 'pantry/home.html', context_dict)
     
 def show_recipe(request, recipe_name_slug):
     context_dict = {}
