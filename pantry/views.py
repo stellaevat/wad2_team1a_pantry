@@ -1,11 +1,12 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from pantry.models import Recipe, Category, Ingredient, UserProfile
 from pantry.forms import UserForm, UserProfileForm, EmailForm, RecipeForm
 from django.contrib.auth.models import User
+from django.db.models import Q
 
 # Dummy views until created
 def home(request):
@@ -67,10 +68,16 @@ def show_category(request, category_title_slug):
 
 def keyword_search_results(request):
     if request.method == 'POST':
-        searched = request.POST['searched']
-        recipes = Recipe.objects.filter(title__contains=searched)
-        context_dict = {'searched':searched, 'recipes':recipes}
-        return render(request, 'pantry/search_results.html', context=context_dict)
+        searched = request.POST.get('searched')
+        recipes = set()
+        if searched:
+            keywords = searched.split()
+            for k in keywords:
+                recipes = recipes.union(Recipe.objects.filter(Q(title__contains=k) | Q(steps__contains=k)))
+            context_dict = {'searched':searched, 'recipes':recipes}
+            return render(request, 'pantry/search_results.html', context=context_dict)
+        else: 
+            return render(request, 'pantry/search_results.html', {})
     else:
         return render(request, 'pantry/search_results.html', {})
 
