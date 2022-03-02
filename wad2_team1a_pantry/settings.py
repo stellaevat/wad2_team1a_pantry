@@ -133,4 +133,4 @@ MEDIA_URL = '/media/'
 
 
 # Login url
-LOGIN_URL = 'pantry:login'
+LOGIN_URL = 'pantry:sign_in'

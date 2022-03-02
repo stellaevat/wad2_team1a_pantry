@@ -50,7 +50,7 @@ def add_recipe(request):
 			print(form.errors)
 	return render(request, 'pantry/add_recipe.html', {'form': form})
 
-    
+@login_required
 def user_profile(request, username):
     return HttpResponse("User profile")
 
@@ -76,12 +76,16 @@ def sign_up(request):
         if user_form.is_valid() and profile_form.is_valid():
             user = user_form.save()
             user.set_password(user.password)
+            user.email = request.session['email']
             user.save()
 
             profile = profile_form.save(commit=False)
             profile.user = user
             profile.save()
             registered = True
+            
+            user = authenticate(username=user_form.data["username"], password=user_form.data["password"])
+            login(request, user)
         else:
             context_dict = {'user_form': user_form, 'profile_form': profile_form, 'registered': registered, 'error': list(user_form.errors.values())[0]}
             return render(request, 'pantry/sign_up.html', context=context_dict)
@@ -102,7 +106,7 @@ def check_email(request):
         if email_form.is_valid():
             user_email = email_form.data["email"]
             
-            # If email exists, should redirect to login page
+            # If email exists, should redirect to sign in page
             if User.objects.filter(email=user_email).exists():
                 user = User.objects.get(email=user_email)
                 request.session['username'] = user.username
@@ -122,7 +126,7 @@ def check_email(request):
         
     return render(request, 'pantry/check_email.html', context = {'email_form': email_form})
 
-# Login view
+# Sign in view
 def sign_in(request):
     if request.method == 'POST':
         password = request.POST.get('password')
