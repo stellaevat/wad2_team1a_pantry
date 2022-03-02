@@ -15,10 +15,10 @@
 	<div class="verticals-two">
 		<div class="vertical-featured">
 			<h2 class="vertical-title">MOST POPULAR</h2></br>
-			{% if popular %}
+			{% if popular_list %}
 				<div class="recipes-small-two">
-					{% for recipe in popular %}
-						<a href="{% url 'rango:show_recipe' recipe.slug %}">{{ recipe.title }}</a>
+					{% for recipe in popular_list %}
+						<a href="{% url 'pantry:show_recipe' recipe.slug %}">{{ recipe.title }}</a>
 					{% endfor %}
 				</div>
 			{% else %}
@@ -28,10 +28,10 @@
 		
 		<div class="vertical-featured">
 			<h2 class="vertical-title">MOST RECENT</h2></br>
-			{% if recent %}
+			{% if recent_list %}
 				<div class="recipes-small-two">
-					{% for recipe in recent %}
-						<a href="{% url 'rango:show_recipe' recipe.slug %}">{{ recipe.title }}</a>
+					{% for recipe in recent_list %}
+						<a href="{% url 'pantry:show_recipe' recipe.slug %}">{{ recipe.title }}</a>
 					{% endfor %}
 				</div>
 			{% else %}
