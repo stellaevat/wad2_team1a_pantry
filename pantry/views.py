@@ -1,5 +1,4 @@
 from django.shortcuts import render
-from pantry.forms import UserForm, UserProfileForm, recipeForm
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponse
 from django.urls import reverse
@@ -7,7 +6,7 @@ from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
 from pantry.models import Category
 from pantry.models import Recipe, Category, Ingredient, UserProfile
-from pantry.forms import UserForm, UserProfileForm, EmailForm
+from pantry.forms import UserForm, UserProfileForm, EmailForm, RecipeForm
 
 # Dummy views until created
 def home(request):
@@ -40,10 +39,10 @@ def search_by_ingredient(request):
   
 @login_required
 def add_recipe(request):
-	form = recipeForm()
+	form = RecipeForm()
 	
 	if request.method == 'POST':
-		form = recipeForm(request.POST)
+		form = RecipeForm(request.POST)
 	
 		if form.is_valid():
 			form.save(commit=True)

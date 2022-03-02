@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 {% load staticfiles %}
+{% load pantry_template_tags %}
 
 <html>
 	<head>
@@ -30,7 +31,11 @@
 				{% if user.is_authenticated %}
 					<div class="navbar-dropdown">
 						<a class="navbar-dropdown-toggle" href="{% url 'pantry:home' %}" id="dropdown01" data-bs-toggle="dropdown" aria-expanded="false">
-							<img class="profile-thumbnail" src="{{ user.profile_picture }}" alt="Profile">
+							{% if user.profile_picture %}
+								<img class="profile-thumbnail" src="{{ user.profile_picture }}" alt="Profile" width="25" height="25">
+							{% else %}
+								<img class="profile-thumbnail" src="{% static 'img/profile-picture-default.png' %}" alt="Profile" width="25" height="25">
+							{% endif %}
 						</a>
 						<ul class="dropdown-menu" aria-labelledby="dropdown01">
 							<li><a class="dropdown-item" href="{% url 'pantry:user_profile' user.username %}">My profile</a></li>
@@ -44,16 +49,12 @@
 			</div>
 		</header>
 		
-		{% if categories %}
 		<div class="tab-bar">
 			<nav class="tabs-adjusted">
-				{% for category in categories %}
-					<a class="tab-secondary" href="{% url 'pantry:show_category' category.slug %}">{{ category.title }}</a>
-				{% endfor %}
-				<a class="tab-primary" href="{% url 'pantry:search_by_ingredient' %}">Search Ingredients</a>
+				{% get_tabs category %}
+				<a class="tab-primary" href="{% url 'pantry:search_by_ingredient' %}">Search by Ingredient</a>
 			</nav>
 		</div>
-		{% endif %}
 		
 		<div>
 			{% block body_block %}

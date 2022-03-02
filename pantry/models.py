@@ -13,6 +13,8 @@ class UserProfile(models.Model):
 class Category(models.Model):
     name = models.CharField(max_length=128, unique=True)
     slug = models.SlugField(unique=True)
+    # Whether the category will be used as a tab
+    tab = models.BooleanField(default=False)
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)

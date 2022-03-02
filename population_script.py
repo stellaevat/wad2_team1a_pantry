@@ -22,17 +22,19 @@ def populate():
     ]
 
     categories = [
-        {"name" : "30 Minute Meals"},
-        {"name" : "Vegan"},
-        {"name" : "Cheap Meals"},
-        {"name" : "Healthy"},
-        {"name" : "Gluten Free"},
-        {"name" : "Vegetarian"},
-        {"name" : "Desserts"},
-        {"name" : "Breakfast"},
-        {"name" : "Lunch"},
-        {"name" : "Dinner"},
-        {"name" : "Snacks"},
+        {"name" : "Mains", "tab" : True},
+        {"name" : "Appetizers", "tab" : True},
+        {"name" : "Desserts", "tab" : True},
+        {"name" : "Easy Meals", "tab" : True},
+        {"name" : "30 Minute Meals", "tab" : True},
+        {"name" : "Vegan", "tab" : False},
+        {"name" : "Healthy", "tab" : False},
+        {"name" : "Gluten Free", "tab" : False},
+        {"name" : "Vegetarian", "tab" : False},
+        {"name" : "Breakfast", "tab" : False},
+        {"name" : "Lunch", "tab" : False},
+        {"name" : "Dinner", "tab" : False},
+        {"name" : "Snacks", "tab" : False},
     ]
 
     ingredients = [
@@ -77,7 +79,7 @@ Put 100g plain flour and a pinch of salt into a large mixing bowl. Make a well i
 Pour in about 50ml from the 300ml of semi-skimmed milk and 1 tbsp sunflower oil then start whisking from the centre, gradually drawing the flour into the eggs, milk and oil. Once all the flour is incorporated, beat until you have a smooth, thick paste. Add a little more milk if it is too stiff to beat.
 Add a good splash of milk and whisk to loosen the thick batter. While still whisking, pour in a steady stream of the remaining milk. Continue pouring and whisking until you have a batter that is the consistency of slightly thick single cream.
 Heat the pan over a moderate heat, then wipe it with oiled kitchen paper.
-        """, "ingredients" : ["Flour", "Eggs", "Milk", "Sunflower Oil", "Salt"], "category" : ["Vegetarian", "30 Minute Meals", "Cheap Meals"], "prep_time" : 10, "cook_time" : 30, "servings" : 4,
+        """, "ingredients" : ["Flour", "Eggs", "Milk", "Sunflower Oil", "Salt"], "category" : ["Vegetarian", "30 Minute Meals", "Easy Meals"], "prep_time" : 10, "cook_time" : 30, "servings" : 4,
          "difficulty" : "easy", "pub_date" : datetime.date(2022,2,28), "stars" : 64},
 
          {"name":"New York cheesecake", "author" : "benking", "steps" : 
@@ -90,7 +92,7 @@ Line the base of a 23cm springform cake tin by putting a square piece of parchme
 
 
     for cat in categories:
-        c = add_cat(cat["name"])
+        c = add_cat(cat)
 
     for user in siteusers:
         u = add_user(user)
@@ -125,8 +127,8 @@ def add_user(user):
     c.save()
     return c
 
-def add_cat(name):
-    c = Category.objects.get_or_create(name=name)[0]
+def add_cat(cat):
+    c = Category.objects.get_or_create(name=cat["name"], tab=cat["tab"])[0]
     c.save()
     return c
 
