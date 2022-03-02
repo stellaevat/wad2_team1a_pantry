@@ -10,9 +10,9 @@ app_name = 'pantry'
 urlpatterns = [
     path('home/', views.home, name='home'),
     path('auth/', views.check_email, name='check_email'),
-    path('auth/sign_up/', views.register, name='register'),
-    path('auth/<str:username>/', views.user_login, name='login'),
-    path('logout/', views.user_logout, name='logout'),
+    path('auth/sign_up/', views.sign_up, name='sign_up'),
+    path('auth/sign_in/', views.sign_in, name='sign_in'),
+    path('sign_out/', views.sign_out, name='sign_out'),
     path('user/<str:username>/', views.user_profile, name="user_profile"),
     
     path('recipe/<slug:recipe_name_slug>/', views.show_recipe, name="show_recipe"),

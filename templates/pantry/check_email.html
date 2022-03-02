@@ -1,6 +1,26 @@
 {% extends 'pantry/base.html' %}
 {% load staticfiles %}
+{% load pantry_template_tags %}
 
 {% block title_block %}
 	Sign Up/In
+{% endblock %}
+
+{% block body_block %}
+	<div class="logo">
+		<img class="logo-welcome" src="{% static 'img/welcome.png' %}" alt="Welcome to the Pantry">
+	</div>
+	
+	<div class="login-area">
+		<p class="login-prompt">What's your email?</p>
+		<form id="form-check-email" method="post" action="{% url 'pantry:check_email' %}">
+			{% csrf_token %}
+			
+			{{ email_form.email }}<br />
+			{% if error %}
+				<p class="login-error">{{ error }}</p>
+			{% endif %}
+			<input class="btn-continue" type="submit" value="Continue" />
+		</form>
+	</div>
 {% endblock %}

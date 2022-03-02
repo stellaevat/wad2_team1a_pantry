@@ -1,0 +1,34 @@
+{% extends 'pantry/base.html' %}
+{% load staticfiles %}
+
+{% block title_block %}
+	Sign Up
+{% endblock %}
+
+{% block body_block %}
+	<div class="logo">
+		<img class="logo-welcome" src="{% static 'img/welcome.png' %}" alt="Welcome to the Pantry">
+	</div>
+	
+	<div class="login-area">
+		{% if registered %}
+			<p class="login-prompt">You have registered successfully - you can now add and star recipes!</p><br />
+			<a class="btn-continue" href="{% url 'pantry:user_profile' user_form.username %}">View profile</a>
+		{% else %}
+			<p class="login-prompt">Create your account here:</p>
+			<form id="form-sign-up" method="post" action="{% url 'pantry:sign_up' %}" enctype="multipart/form-data">
+				{% csrf_token %}
+				
+				{{ user_form.username }}<br />
+				{{ user_form.password }}<br />
+				{{ user_form.confirm_password }}<br />
+				{% if error %}
+					<p class="login-error">{{ error }}</p>
+				{% endif %}
+				
+				<button class="btn-back" type="button" onclick="history.back()">Back</button>
+				<input class="btn-continue" type="submit" value="Continue" />
+			</form>
+		{% endif %}
+	</div>
+{% endblock %}

@@ -1,7 +1,7 @@
 {% if tabs %}
 	{% for tab in tabs %}
 		{% if tab == current_tab %}
-			<a class="tab-open" href="{% url 'pantry:show_category' tab.slug %}">{{ tab.name }}</a>
+			<a class="tab-secondary-open" href="{% url 'pantry:show_category' tab.slug %}">{{ tab.name }}</a>
 		{% else %}
 			<a class="tab-secondary" href="{% url 'pantry:show_category' tab.slug %}">{{ tab.name }}</a>
 		{% endif %}

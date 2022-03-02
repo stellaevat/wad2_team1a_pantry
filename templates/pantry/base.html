@@ -40,7 +40,7 @@
 						<ul class="dropdown-menu" aria-labelledby="dropdown01">
 							<li><a class="dropdown-item" href="{% url 'pantry:user_profile' user.username %}">My profile</a></li>
 							<li><a class="dropdown-item" href="{% url 'pantry:add_recipe' %}">Add new recipe</a></li>
-							<li><a class="dropdown-item" href="{% url 'pantry:logout' %}">Sign out</a></li>
+							<li><a class="dropdown-item" href="{% url 'pantry:sign_out' %}">Sign out</a></li>
 						</ul>
 					</div>
 				{% else %}

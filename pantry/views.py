@@ -1,12 +1,11 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponse
 from django.urls import reverse
-from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
-from pantry.models import Category
 from pantry.models import Recipe, Category, Ingredient, UserProfile
 from pantry.forms import UserForm, UserProfileForm, EmailForm, RecipeForm
+from django.contrib.auth.models import User
 
 # Dummy views until created
 def home(request):
@@ -52,7 +51,7 @@ def add_recipe(request):
 	return render(request, 'pantry/add_recipe.html', {'form': form})
 
     
-def user_profile(request):
+def user_profile(request, username):
     return HttpResponse("User profile")
 
 
@@ -67,7 +66,7 @@ def keyword_search_results(request):
         return render(request, 'pantry/search_results.html', {})
 
 # Register view
-def register(request):
+def sign_up(request):
     registered = False
 
     if request.method == 'POST':
@@ -84,47 +83,49 @@ def register(request):
             profile.save()
             registered = True
         else:
-            print(user_form.errors, profile_form.errors)
+            context_dict = {'user_form': user_form, 'profile_form': profile_form, 'registered': registered, 'error': list(user_form.errors.values())[0]}
+            return render(request, 'pantry/sign_up.html', context=context_dict)
     else:
         user_form = UserForm()
         profile_form = UserProfileForm()
         
     context_dict = {'user_form': user_form, 'profile_form': profile_form, 'registered': registered}
-    return render(request, 'pantry/register.html', context=context_dict)
+    return render(request, 'pantry/sign_up.html', context=context_dict)
 
 # Check email view before logging in / signing up
 def check_email(request):
     # If HTTP POST we want to process data
     if request.method == 'POST':
         # Gather email provided by the user
-        user_email = request.POST.get('email')
         email_form = EmailForm(request.POST)
-
-        # Check if email is valid address
-        try:
-            validate_email(user_email)
-        except ValidationError as e:
-            print("The email is invalid.")
-
-        # If email exists, should redirect to login page
-        if User.objects.filter(email=user_email).exists():
-            user = User.objects.get(email=user_email)
-            return render(request, 'pantry/login.html', context = {'username': user.username})
+        
+        if email_form.is_valid():
+            user_email = email_form.data["email"]
+            
+            # If email exists, should redirect to login page
+            if User.objects.filter(email=user_email).exists():
+                user = User.objects.get(email=user_email)
+                request.session['username'] = user.username
+                return render(request, 'pantry/sign_in.html', context = {'username': user.username})
+            else:
+                # If email does not exist redirect to signup page
+                request.session['email'] = user_email
+                user_form = UserForm()
+                profile_form = UserProfileForm()
+                return render(request, 'pantry/sign_up.html', {'user_form': user_form, 'profile_form': profile_form})
         else:
-            # If email does not exist redirect to signup page
-            return render(request, 'pantry/signup.html', context = {'email': user_email})
-
+            context_dict = {'email_form': email_form, 'error': list(email_form.errors.values())[0]}
+            return render(request, 'pantry/check_email.html', context=context_dict)
     # No context variables to pass to template system, redirect to signup page
     else:
         email_form = EmailForm()
-    
-    return render(request, 'pantry/check_email.html', context = {'email': email_form})
+        
+    return render(request, 'pantry/check_email.html', context = {'email_form': email_form})
 
 # Login view
-def user_login(request, username):
+def sign_in(request):
     if request.method == 'POST':
         password = request.POST.get('password')
-
         user = authenticate(username=username, password=password)
 
         if user:
@@ -138,11 +139,11 @@ def user_login(request, username):
             return HttpResponse("Invalid login details supplied.")
 
     else:
-        return render(request, 'pantry/login.html', username)
+        return render(request, 'pantry/sign_in.html')
 
 
 # Logout view restricted to authenticated users
 @login_required
-def user_logout(request):
+def sign_out(request):
     logout(request)
     return redirect(reverse('pantry:home'))
