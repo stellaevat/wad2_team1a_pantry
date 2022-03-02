@@ -31,15 +31,15 @@
 				{% if user.is_authenticated %}
 					<div class="navbar-dropdown">
 						<a class="navbar-dropdown-toggle" href="{% url 'pantry:home' %}" id="dropdown01" data-bs-toggle="dropdown" aria-expanded="false">
-							{% if user.profile_picture %}
-								<img class="profile-thumbnail" src="{{ user.profile_picture }}" alt="Profile" width="25" height="25">
+							{% if user.profile_pic %}
+								<img class="profile-thumbnail" src="{{ user.profile_pic }}" alt="Profile" width="25" height="25">
 							{% else %}
 								<img class="profile-thumbnail" src="{% static 'img/profile-picture-default.png' %}" alt="Profile" width="25" height="25">
 							{% endif %}
 						</a>
 						<ul class="dropdown-menu" aria-labelledby="dropdown01">
 							<li><a class="dropdown-item" href="{% url 'pantry:user_profile' user.username %}">My profile</a></li>
-							<li><a class="dropdown-item" href="{% url 'pantry:add_recipe' %}">Add new recipe</a></li>
+							<li><a class="dropdown-item" href="{% url 'pantry:add_recipe' %}">Add recipe</a></li>
 							<li><a class="dropdown-item" href="{% url 'pantry:sign_out' %}">Sign out</a></li>
 						</ul>
 					</div>

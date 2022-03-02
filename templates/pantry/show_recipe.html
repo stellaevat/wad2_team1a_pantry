@@ -1,0 +1,65 @@
+{% extends 'pantry/base.html' %}
+{% load staticfiles %}
+{% load pantry_template_tags %}
+
+{% block title_block %}
+	{{ recipe.title }}
+{% endblock %}
+
+{% block body_block %}
+	{% if recipe %}
+		<div class="header-featured">
+			<img class="banner" src="{{ recipe.picture }}" alt="{{ recipe.title }}">
+			<h1 class="title-featured">{{ recipe.title }}</h1>
+			<div class="stars">
+				<img class="icon-small" src="{% static 'img/star-white.png' %}" alt="Stars" width="10" height="10">
+				{{ recipe.stars }}
+			</div>
+			<div class="info-tags">
+				<div class="tag">
+					<p class="recipe-tag-head">Preparation</p>
+					<p class="recipe-tag-info">{{ recipe.prep_time }} min</p>
+				</div>
+				<div class="tag">
+					<p class="recipe-tag-head">Cooking</p>
+					<p class="recipe-tag-info">{{ recipe.cook_time }} min</p>
+				</div>
+				<div class="tag">
+					<p class="recipe-tag-head">Difficulty</p>
+					<p class="recipe-tag-info">{{ recipe.difficulty }}</p>
+				</div>
+				<div class="tag">
+					<p class="recipe-tag-head">Servings</p>
+					<p class="recipe-tag-info">{{ recipe.servings }}</p>
+				</div>
+			</div>
+			{% if user.is_authenticated %}
+				<button class="btn-white-big" type="button">
+					<img class="icon-big" src="{% static 'img/star-dark.png' %}" alt="Star" width="25" height="25">
+					Star
+				</button>
+			{% endif %}
+		</div>
+		
+		<div class="verticals-left-narrow">
+			<div class="vertical-featured">
+				<h2 class="vertical-title">INGREDIENTS</h2></br>
+				{% if recipe.ingredients %}
+					<ul class="ingredient-list">
+						{% for ing in recipe.ingredients %}
+							<li class="ingredient">{{ ing.name }}</li>
+						{% endfor %}
+					</ul>
+				{% else %}
+					<p class="info-message">No ingredients required for this recipe!</p>
+				{% endif %}
+			</div>
+			
+			<div class="long-text">
+				<h2 class="vertical-title">METHOD</h2></br>
+				{{ recipe.method }}
+			</div>
+		</div>
+	{% else %}
+	{% endif %}
+{% endblock %}

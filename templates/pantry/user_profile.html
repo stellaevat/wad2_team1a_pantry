@@ -1,0 +1,59 @@
+{% extends 'pantry/base.html' %}
+{% load staticfiles %}
+{% load pantry_template_tags %}
+
+{% block title_block %}
+	My Profile
+{% endblock %}
+
+{% block body_block %}
+	<div class="header-featured">
+		<img class="banner" src="{% static 'img/profile-banner.png' %}" alt="User profile">
+		{% if user.profile_pic %}
+			<img class="profile-picture-big" src="{{ user.profile_pic }}" alt="User {{ user.username }}" width="150" height="150">
+		{% else %}
+			<img class="profile-picture-big" src="{% static 'img/profile-picture-default.png' %}" alt="User profile" width="150" height="150">
+		{% endif %}
+		<h1 class="title-featured">{{ user.username }}</h1>
+		<img class="icon-big" src="{% static 'img/pencil-white.png' %}" alt="Edit user profile">
+		
+		{% if written %}
+			<p class="info-message">Contributed {{ written.count() }} delicious recipes.</p>
+		{% endif %}
+		
+		<button class="btn-white-big" type="button">
+			<img class="icon-big" src="{% static 'img/plus-dark.png' %}" alt="Add recipe" width="25" height="25">
+			ADD RECIPE
+		</button>
+	</div>
+		
+	<div class="verticals-two">
+		<div class="vertical-featured">
+			<h2 class="vertical-title">MY RECIPES</h2></br>
+			{% if written %}
+				<div class="recipes-list-view">
+					{% for recipe in written %}
+						<a href="{% url 'rango:show_recipe' recipe.slug %}">{{ recipe.title }}</a>
+					{% endfor %}
+				</div>
+			{% else %}
+				<p class="info-message">You haven't posted any recipes yet.</p>
+				<p class="info-message">If you do, you'll be able to find them here!</p>
+			{% endif %}
+		</div>
+		
+		<div class="vertical-featured">
+			<h2 class="vertical-title">STARRED RECIPES</h2></br>
+			{% if starred %}
+				<div class="recipes-small-two">
+					{% for recipe in starred %}
+						<a href="{% url 'rango:show_recipe' recipe.slug %}">{{ recipe.title }}</a>
+					{% endfor %}
+				</div>
+			{% else %}
+				<p class="info-message">You haven’t starred any recipes yet.</p>
+				<p class="info-message">Start starring to save your favourite recipes here!</p>
+			{% endif %}
+		</div>
+	</div>
+{% endblock %}

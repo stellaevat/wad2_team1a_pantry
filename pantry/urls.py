@@ -14,6 +14,8 @@ urlpatterns = [
     path('auth/sign_in/', views.sign_in, name='sign_in'),
     path('sign_out/', views.sign_out, name='sign_out'),
     path('user/<str:username>/', views.user_profile, name="user_profile"),
+    path('user/<str:username>/my_recipes/', views.show_my_recipes, name="my_recipes"),
+    path('user/<str:username>/starred_recipes/', views.show_starred_recipes, name="starred_recipes"),
     
     path('recipe/<slug:recipe_name_slug>/', views.show_recipe, name="show_recipe"),
     path('category/<slug:category_title_slug>/', views.show_category, name="show_category"),

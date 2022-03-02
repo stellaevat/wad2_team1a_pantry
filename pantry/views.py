@@ -9,33 +9,32 @@ from django.contrib.auth.models import User
 
 # Dummy views until created
 def home(request):
+    # conext_dict keys "popular" and "recent" corresponding to (2, 4 or 6) most popular/recent recipes
     return render(request, 'pantry/home.html', {})
     
-def show_recipe(request):
+def show_recipe(request, recipe_name_slug):
     context_dict = {}
     recipe = Recipe.objects.get(slug=recipe_name_slug)
     return HttpResponse("Show recipe")
     
-def show_category(request, category_title_slug):
-    context_dict = {}
-    try:
-        category = Category.objects.get(slug=category_title_slug)
-        recipes = Recipe.objects.filter(category=category)
-        context_dict['recipes'] = recipes
-        context_dict['category'] = category
-    except Category.DoesNotExist:
-        context_dict['category'] = None
-        context_dict['recipes'] = None
-    return render(request, 'pantry/category.html', context=context_dict)
-
-
 def show_recipe(request, recipe_name_slug):
     return HttpResponse("Show recipe")
     
-
+def show_my_recipes(request, username):
+    return HttpResponse("My recipes")
+    
+def show_starred_recipes(request, username):
+    return HttpResponse("Starred recipes")
+    
 def search_by_ingredient(request):
     return HttpResponse("Search by ingredient")
-  
+
+@login_required
+def user_profile(request, username):
+    # conext_dict keys "written" and "starred" corresponding to recipes written/starred by user
+    return HttpResponse("User profile")
+    
+    
 @login_required
 def add_recipe(request):
 	form = RecipeForm()
@@ -50,12 +49,20 @@ def add_recipe(request):
 			print(form.errors)
 	return render(request, 'pantry/add_recipe.html', {'form': form})
 
-@login_required
-def user_profile(request, username):
-    return HttpResponse("User profile")
+
+def show_category(request, category_title_slug):
+    context_dict = {}
+    try:
+        category = Category.objects.get(slug=category_title_slug)
+        recipes = Recipe.objects.filter(category=category)
+        context_dict['recipes'] = recipes
+        context_dict['category'] = category
+    except Category.DoesNotExist:
+        context_dict['category'] = None
+        context_dict['recipes'] = None
+    return render(request, 'pantry/show_category.html', context=context_dict)
 
 
-# Search by keyword results
 def keyword_search_results(request):
     if request.method == 'POST':
         searched = request.POST['searched']

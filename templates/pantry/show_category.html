@@ -1,0 +1,34 @@
+{% extends 'pantry/base.html' %}
+{% load staticfiles %}
+{% load pantry_template_tags %}
+
+{% block title_block %}
+	{{ category.name }}
+{% endblock %}
+
+{% block body_block %}
+	{% if category %}
+		<div class="cat-header">
+			<h1 class="cat-heading">Explore Our {{ category.name }}...</h1>
+			{% if recipes %}
+			<ul class="dropdown-menu" aria-labelledby="dropdown01">
+				<li><a class="dropdown-item" href="{% url 'pantry:show_recipe' category.slug %}">Filter: Most Popular</a></li>
+				<li><a class="dropdown-item" href="{% url 'pantry:show_recipe' category.slug %}">Filter: Newest</a></li>
+				<li><a class="dropdown-item" href="{% url 'pantry:show_recipe' category.slug %}">Filter: Oldest</a></li>
+			</ul>
+			{% endif %}
+		</div>
+		
+		{% if recipes %}
+			<div class="recipes-big-three">
+				{% for recipe in recipes %}
+					<a href="{% url 'pantry:show_recipe' recipe.slug %}">{{ recipe }}</a>
+				{% endfor %}
+			</div>
+		{% else %}
+			<p class="info-message">No recipes in this category yet. Try browsing other categories, or search by ingredient!</p>
+		{% endif %}
+	{% else %}
+		<h1 class="cat-heading">No {{ category.name }} category found.</h1>
+	{% endif %}
+{% endblock %}

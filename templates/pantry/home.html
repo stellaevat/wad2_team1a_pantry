@@ -1,6 +1,42 @@
 {% extends 'pantry/base.html' %}
 {% load staticfiles %}
+{% load pantry_template_tags %}
 
 {% block title_block %}
 	Home
+{% endblock %}
+
+{% block body_block %}
+	<div class="logo">
+		<img class="logo-welcome" src="{% static 'img/welcome.png' %}" alt="Welcome to the Pantry">
+		<p class="welcome-message">where you can find recipes based on the ingredients you already have in your pantry!</p>
+	</div>
+	
+	<div class="verticals-two">
+		<div class="vertical-featured">
+			<h2 class="vertical-title">MOST POPULAR</h2></br>
+			{% if popular %}
+				<div class="recipes-small-two">
+					{% for recipe in popular %}
+						<a href="{% url 'rango:show_recipe' recipe.slug %}">{{ recipe.title }}</a>
+					{% endfor %}
+				</div>
+			{% else %}
+				<p class="info-message">No popular recipes to display. Try browsing categories, or search by ingredient!</p>
+			{% endif %}
+		</div>
+		
+		<div class="vertical-featured">
+			<h2 class="vertical-title">MOST RECENT</h2></br>
+			{% if recent %}
+				<div class="recipes-small-two">
+					{% for recipe in recent %}
+						<a href="{% url 'rango:show_recipe' recipe.slug %}">{{ recipe.title }}</a>
+					{% endfor %}
+				</div>
+			{% else %}
+				<p class="info-message">No recent recipes to display. Try browsing categories, or search by ingredient!</p>
+			{% endif %}
+		</div>
+	</div>
 {% endblock %}
