@@ -9,17 +9,6 @@ from django.contrib.auth.models import User
 from django.db.models import Q
 
 # Dummy views until created
-def home(request):
-    # Renders the home page, passing a context dictionary with the 6 most popular and 6 most viewed recipes.
-    context_dict = {}
-    context_dict["popular_list"] = Recipe.objects.order_by("-stars")[:6]
-    context_dict["recent_list"] = Recipe.objects.order_by("-pub_date")[:6]
-    return render(request, 'pantry/home.html', context_dict)
-    
-def show_recipe(request, recipe_name_slug):
-    context_dict["recipe"] = Recipe.objects.get(slug=recipe_name_slug)
-    return render(request, 'pantry/show_recipe.html', context=context_dict)
-    
 def show_my_recipes(request, username):
     return HttpResponse("My recipes")
     
@@ -33,10 +22,24 @@ def search_by_ingredient(request):
 def user_profile(request, username):
     # Renders the user profile page and passes a context dictionary with the recipes starred and written by the user
     context_dict = {}
-    written_list = Recipe.objects.filter(author= username) #Not sure if username is the user object or just the name
-    context_dict["written"] = written_list
+    context_dict["written_list"] = Recipe.objects.filter(author= username) #Not sure if username is the user object or just the name
     return render(request, 'pantry/user_profile.html', context=context_dict)
     
+    
+    
+def home(request):
+    # Renders the home page, passing a context dictionary with the 6 most popular and 6 most viewed recipes.
+    context_dict = {}
+    context_dict["popular_list"] = Recipe.objects.order_by("-stars")[:6]
+    context_dict["recent_list"] = Recipe.objects.order_by("-pub_date")[:6]
+    return render(request, 'pantry/home.html', context_dict)
+    
+def show_recipe(request, recipe_name_slug):
+    try:
+        context_dict["recipe"] = Recipe.objects.get(slug=recipe_name_slug)
+        return render(request, 'pantry/show_recipe.html', context=context_dict)
+    except Recipe.DoesNotExist:
+        return render(request, 'pantry/show_recipe.html', {})
     
 @login_required
 def add_recipe(request):
