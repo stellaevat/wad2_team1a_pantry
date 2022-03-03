@@ -47,7 +47,7 @@ class RecipeForm(forms.ModelForm):
 		fields = ('name',)
         
 class RecipeIngredientsForm(forms.ModelForm):
-    
+    pass
 
 class RecipeQuantitesForm(forms.ModelForm):
-    
+    pass

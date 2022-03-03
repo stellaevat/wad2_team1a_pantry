@@ -3,7 +3,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
-from pantry.models import Recipe, Category, Ingredient, UserProfile
+from pantry.models import Recipe, Category, Ingredient, IngredientList, UserProfile
 from pantry.forms import UserForm, UserProfileForm, EmailForm, RecipeIngredientsForm
 from django.contrib.auth.models import User
 from django.db.models import Q
@@ -36,7 +36,10 @@ def home(request):
     
 def show_recipe(request, recipe_name_slug):
     try:
-        context_dict["recipe"] = Recipe.objects.get(slug=recipe_name_slug)
+        context_dict = {}
+        recipe = Recipe.objects.get(slug=recipe_name_slug)
+        context_dict["recipe"] = recipe
+        context_dict["ingredients"] = IngredientList.objects.filter(recipe=recipe)
         return render(request, 'pantry/show_recipe.html', context=context_dict)
     except Recipe.DoesNotExist:
         return render(request, 'pantry/show_recipe.html', {})
