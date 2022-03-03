@@ -14,9 +14,6 @@ def show_my_recipes(request, username):
     
 def show_starred_recipes(request, username):
     return HttpResponse("Starred recipes")
-    
-def search_by_ingredient(request):
-    return HttpResponse("Search by ingredient")
 
 @login_required
 def user_profile(request, username):
@@ -25,7 +22,23 @@ def user_profile(request, username):
     context_dict["written_list"] = Recipe.objects.filter(author= username) #Not sure if username is the user object or just the name
     return render(request, 'pantry/user_profile.html', context=context_dict)
     
+  
+# DONE
+def search_by_ingredient(request):
+    context_dict = {}
+    types = Ingredient.get_types()
+    type_names = []
+    ingredients = {}
     
+    for t in types:
+        i = Ingredient.objects.filter(ingredient_type=t[0])
+        if i.count() > 0:
+            type_names.append(t[1])
+            ingredients[t[1]] = i
+    
+    context_dict["types"] = type_names    
+    context_dict["ingredients"] = ingredients
+    return render(request, 'pantry/search_by_ingredient.html', context=context_dict)  
     
 def home(request):
     # Renders the home page, passing a context dictionary with the 6 most popular and 6 most viewed recipes.

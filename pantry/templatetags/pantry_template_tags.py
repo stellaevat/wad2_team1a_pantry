@@ -15,4 +15,8 @@ def get_profile_picture(user):
 def get_recipes_by_author(user):
     return Recipe.objects.filter(author=user)
     
+@register.filter
+def get_item(dictionary, key):
+    return dictionary.get(key)
+    
 # Recipe thumbnail, include new paras, dropdown display(?)

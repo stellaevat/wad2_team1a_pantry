@@ -40,8 +40,13 @@ class Ingredient(models.Model):
     def __str__(self):
         return self.name
     
-    def get_types(self):
-        return types
+    @classmethod
+    def get_types(cls):
+        return cls.types
+        
+    @classmethod
+    def get_type_names(cls):
+        return [t[1] for t in cls.types]
 
 class Recipe(models.Model):
     title = models.CharField(max_length=128,unique = True)
