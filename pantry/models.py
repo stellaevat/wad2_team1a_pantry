@@ -1,7 +1,6 @@
 from django.db import models
 from django.template.defaultfilters import slugify
 from django.contrib.auth.models import User
-from sqlalchemy import false
 import inflect
 
 p = inflect.engine()
@@ -84,7 +83,7 @@ class IngredientList(models.Model):
     recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
     ingredient = models.ForeignKey(Ingredient, on_delete=models.CASCADE)
     quantity = models.CharField(max_length=16)
-    plural = models.BooleanField(default=false)
+    plural = models.BooleanField(default=False)
     
     class Meta:
         unique_together = [['recipe', 'ingredient']]
