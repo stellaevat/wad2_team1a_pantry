@@ -11,55 +11,54 @@
 			 - Pantry
 		</title>
 		<link rel="icon" type="image/x-icon" href="{% static 'img/favicon.ico' %}">
+		<link rel="stylesheet" href="{% static 'styles/pantry.css' %}" type="text/css">	
 	</head>
 	
 	<body>
-		<header class="navbar-primary">
+		<header class="navbar">
 			<div class="navbar-left-align">
 				<a href="{% url 'pantry:home' %}">Home</a>
+				<a href="{% url 'pantry:add_recipe' %}">Add recipe</a>
 			</div>
 
-			<div class="navbar-centre-align">
-				<form class="search-bar" method="post", action="{% url 'pantry:keyword_search_results' %}">
-					{% csrf_token %}
-					<input class="search-input" type="search" placeholder="Search recipes..." aria-label="Search" name="searched">
-					<button class="btn-search" type="submit">Search</button>
-				</form>
-			</div>
+			<form id="search-bar" method="post", action="{% url 'pantry:keyword_search_results' %}">
+				{% csrf_token %}
+				<input class="search-input" type="search" placeholder="Search recipes" aria-label="Search" name="searched">
+				<button class="btn-light" id="btn-search" type="submit">Go</button>
+			</form>
 			
 			<div class="navbar-right-align">
 				{% if user.is_authenticated %}
-					<div class="navbar-dropdown">
-						<a class="navbar-dropdown-toggle" href="{% url 'pantry:user_profile' user.username %}" id="dropdown01" data-bs-toggle="dropdown" aria-expanded="false">
-							{% if user.profile_pic %}
-								<img class="profile-thumbnail" src="{{ user.profile_pic }}" alt="Profile" width="25" height="25">
-							{% else %}
-								<img class="profile-thumbnail" src="{% static 'img/profile-picture-default.png' %}" alt="Profile" width="25" height="25">
-							{% endif %}
-						</a>
-						<ul class="dropdown-menu" aria-labelledby="dropdown01">
-							<li><a class="dropdown-item" href="{% url 'pantry:user_profile' user.username %}">My profile</a></li>
-							<li><a class="dropdown-item" href="{% url 'pantry:add_recipe' %}">Add recipe</a></li>
-							<li><a class="dropdown-item" href="{% url 'pantry:sign_out' %}">Sign out</a></li>
-						</ul>
-					</div>
+					<a href="{% url 'pantry:sign_out' %}">Sign out</a>
+					<a class="profile-thumbnail" href="{% url 'pantry:user_profile' user.username %}">
+						{% if user.profile_pic %}
+							<img src="{{ user.profile_pic }}" alt="Profile">
+						{% else %}
+							<img src="{% static 'img/profile-picture-default.png' %}" alt="Profile">
+						{% endif %}
+					</a>
 				{% else %}
 					<a href="{% url 'pantry:check_email' %}">Sign Up/In</a>
 				{% endif %}
 			</div>
 		</header>
 		
-		<div class="tab-bar">
-			<nav class="tabs-adjusted">
-				{% get_tabs category %}
-				<a class="tab-primary" href="{% url 'pantry:search_by_ingredient' %}">Search by Ingredient</a>
-			</nav>
+		<div class="navbar">
+			<div id="tabs">
+				<nav class="tabs-adjusted">
+					{% get_tabs category %}
+				</nav>
+				<div id="tab-primary">
+					<a href="{% url 'pantry:search_by_ingredient' %}">Search by Ingredient</a>
+				</div>
+			</div>
 		</div>
 		
 		<div>
 			{% block body_block %}
 			{% endblock %}
 		</div>
+		
 		
 	</body>
 </html>
