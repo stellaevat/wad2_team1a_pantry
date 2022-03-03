@@ -1,0 +1,18 @@
+{% extends 'pantry/base.html' %}
+{% load staticfiles %}
+{% load pantry_template_tags %}
+
+{% block title_block %}
+	Search by Ingredient
+{% endblock %}
+
+{% block body_block %}
+	{% if types %}
+		{% for t in types %}
+			<strong>{{ t }}</strong><br />
+			{% for ingredient in ingredients|get_item:t %}
+				{{ ingredient }}<br />
+			{% endfor %}
+		{% endfor %}
+	{% endif %}
+{% endblock %}

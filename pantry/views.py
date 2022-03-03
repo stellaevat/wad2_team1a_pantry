@@ -3,7 +3,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
-from pantry.models import Recipe, Category, Ingredient, UserProfile
+from pantry.models import Recipe, Category, Ingredient, IngredientList, UserProfile
 from pantry.forms import UserForm, UserProfileForm, EmailForm, RecipeIngredientsForm
 from django.contrib.auth.models import User
 from django.db.models import Q
@@ -14,9 +14,6 @@ def show_my_recipes(request, username):
     
 def show_starred_recipes(request, username):
     return HttpResponse("Starred recipes")
-    
-def search_by_ingredient(request):
-    return HttpResponse("Search by ingredient")
 
 @login_required
 def user_profile(request, username):
@@ -25,7 +22,23 @@ def user_profile(request, username):
     context_dict["written_list"] = Recipe.objects.filter(author= username) #Not sure if username is the user object or just the name
     return render(request, 'pantry/user_profile.html', context=context_dict)
     
+  
+# DONE
+def search_by_ingredient(request):
+    context_dict = {}
+    types = Ingredient.get_types()
+    type_names = []
+    ingredients = {}
     
+    for t in types:
+        i = Ingredient.objects.filter(ingredient_type=t[0])
+        if i.count() > 0:
+            type_names.append(t[1])
+            ingredients[t[1]] = i
+    
+    context_dict["types"] = type_names    
+    context_dict["ingredients"] = ingredients
+    return render(request, 'pantry/search_by_ingredient.html', context=context_dict)  
     
 def home(request):
     # Renders the home page, passing a context dictionary with the 6 most popular and 6 most viewed recipes.
@@ -36,7 +49,10 @@ def home(request):
     
 def show_recipe(request, recipe_name_slug):
     try:
-        context_dict["recipe"] = Recipe.objects.get(slug=recipe_name_slug)
+        context_dict = {}
+        recipe = Recipe.objects.get(slug=recipe_name_slug)
+        context_dict["recipe"] = recipe
+        context_dict["ingredients"] = IngredientList.objects.filter(recipe=recipe)
         return render(request, 'pantry/show_recipe.html', context=context_dict)
     except Recipe.DoesNotExist:
         return render(request, 'pantry/show_recipe.html', {})

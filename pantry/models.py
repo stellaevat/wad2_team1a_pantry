@@ -40,16 +40,19 @@ class Ingredient(models.Model):
     def __str__(self):
         return self.name
     
-    def get_types(self):
-        return types
-
-
+    @classmethod
+    def get_types(cls):
+        return cls.types
+        
+    @classmethod
+    def get_type_names(cls):
+        return [t[1] for t in cls.types]
 
 class Recipe(models.Model):
     title = models.CharField(max_length=128,unique = True)
     author = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     steps = models.CharField(max_length=2048)
-    ingredients = models.ManyToManyField(Ingredient)
+    ingredients = models.ManyToManyField(Ingredient, through='IngredientList')
     prep_time = models.IntegerField()
     category = models.ManyToManyField(Category)
     cook_time = models.IntegerField()
@@ -73,6 +76,14 @@ class Recipe(models.Model):
 
     def __str__(self):
         return self.title
+        
+class IngredientList(models.Model):
+    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
+    ingredient = models.ForeignKey(Ingredient, on_delete=models.CASCADE)
+    quantity = models.CharField(max_length=16)
+    
+    class Meta:
+        unique_together = [['recipe', 'ingredient']]
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
