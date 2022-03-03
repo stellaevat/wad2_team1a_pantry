@@ -18,7 +18,7 @@
 		<header class="navbar">
 			<div class="navbar-left-align">
 				<a href="{% url 'pantry:home' %}">Home</a>
-				<a href="{% url 'pantry:add_recipe' %}">Add recipe</a>
+				<a href="{% url 'pantry:add_recipe_ingredients' %}">Add recipe</a>
 			</div>
 
 			<form id="search-bar" method="post", action="{% url 'pantry:keyword_search_results' %}">

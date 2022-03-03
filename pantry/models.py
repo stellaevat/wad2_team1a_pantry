@@ -2,13 +2,7 @@ from django.db import models
 from django.template.defaultfilters import slugify
 from django.contrib.auth.models import User
 
-class UserProfile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    
-    profile_picture = models.ImageField(upload_to='profile_pictures', blank=True)
 
-    def __str__(self):
-        return self.user.username
 
 class Category(models.Model):
     name = models.CharField(max_length=128, unique=True)
@@ -27,11 +21,7 @@ class Category(models.Model):
         verbose_name_plural = "Categories"
 
 class Ingredient(models.Model):
-    name = models.CharField(max_length=128,unique=True)
-    ingredient_type = models.CharField(
-        max_length = 128,
-        choices=(
-            ("meats", "Meat, Seafood & Substitutes"),
+    types = (("meats", "Meat, Seafood & Substitutes"),
             ("dairy", "Eggs, Dairy & Substitutes"),
             ("veg", "Vegetables & Funghi"),
             ("pulses", "Pulses"),
@@ -42,25 +32,22 @@ class Ingredient(models.Model):
             ("condiments", "Condiments & Sauces"),
             ("fruit", "Fruit"),
             ("sweets", "Sweet & Baking"),
-            ("drinks", "Beverages")
-        )
-    )
+            ("drinks", "Beverages"))
+            
+    name = models.CharField(max_length=128,unique=True)
+    ingredient_type = models.CharField(max_length = 128, choices=types)
 
     def __str__(self):
         return self.name
+    
+    def get_types(self):
+        return types
 
-class SiteUser(models.Model):
-    email = models.CharField(max_length=254, unique = True)
-    username = models.CharField(max_length=128,unique = True)
-    password = models.CharField(max_length=128)
-    profile_picture = models.ImageField(upload_to='profile_pictures', blank=True)
 
-    def __str__(self):
-        return self.username
 
 class Recipe(models.Model):
     title = models.CharField(max_length=128,unique = True)
-    author = models.ForeignKey(SiteUser, on_delete=models.CASCADE, null=True)
+    author = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     steps = models.CharField(max_length=2048)
     ingredients = models.ManyToManyField(Ingredient)
     prep_time = models.IntegerField()
@@ -87,3 +74,11 @@ class Recipe(models.Model):
     def __str__(self):
         return self.title
 
+class UserProfile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    
+    profile_picture = models.ImageField(upload_to='profile_pictures', blank=True)
+    starred = models.ManyToManyField(Recipe)
+
+    def __str__(self):
+        return self.user.username
