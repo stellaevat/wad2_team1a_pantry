@@ -194,7 +194,8 @@ def sign_in(request):
             print(f"Invalid login details: {request.session['username']}, {password}")
             context_dict['error'] = "Wrong password, try again."
 
-    return render(request, 'pantry/sign_in.html', context=context_dict)
+    else:
+        return redirect(reverse('pantry:check_email'))
 
 
 # Logout view restricted to authenticated users
