@@ -25,13 +25,11 @@
 
 			<form id="search-bar" method="post", action="{% url 'pantry:keyword_search_results' %}">
 				{% csrf_token %}
-				<input class="search-input" type="search" placeholder="Search recipes" aria-label="Search" name="searched">
-				<button class="btn-light" id="btn-search" type="submit">Go</button>
+				<input class="search-input" type="search" placeholder="Search recipes" aria-label="Search" http://127.0.0.1:8000/static/img/welcome.pngname="searched">
 			</form>
 			
 			<div class="navbar-right-align">
 				{% if user.is_authenticated %}
-					<a href="{% url 'pantry:sign_out' %}">Sign out</a>
 					<a class="profile-thumbnail" href="{% url 'pantry:user_profile' user.username %}">
 						{% if user.profile_pic %}
 							<img src="{{ user.profile_pic }}" alt="Profile">
@@ -39,6 +37,7 @@
 							<img src="{% static 'img/profile-picture-default.png' %}" alt="Profile">
 						{% endif %}
 					</a>
+					<a href="{% url 'pantry:sign_out' %}">Sign out</a>
 				{% else %}
 					<a href="{% url 'pantry:check_email' %}">Sign Up/In</a>
 				{% endif %}
@@ -46,10 +45,8 @@
 		</header>
 		
 		<div class="navbar">
-			<div id="tabs">
-				<nav class="tabs-adjusted">
-					{% get_tabs category %}
-				</nav>
+			<div class="tabs">
+				{% get_tabs category %}
 				<div id="tab-primary">
 					<a href="{% url 'pantry:search_by_ingredient' %}">Search by Ingredient</a>
 				</div>
