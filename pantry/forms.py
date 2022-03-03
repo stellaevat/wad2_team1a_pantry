@@ -37,12 +37,17 @@ class EmailForm(forms.ModelForm):
         model = User
         fields = ('email',)
 
-class RecipeIngredientsForm(forms.ModelForm):
+class RecipeForm(forms.ModelForm):
 	name = forms.CharField(max_length=128, help_text="Please enter the recipe name.")
-	views = forms.IntegerField(widget=forms.HiddenInput(), initial=0)
 	stars = forms.IntegerField(widget=forms.HiddenInput(), initial=0)
 	slug = forms.CharField(widget=forms.HiddenInput(), required=False)
 	
 	class Meta:
 		model = Recipe
 		fields = ('name',)
+        
+class RecipeIngredientsForm(forms.ModelForm):
+    
+
+class RecipeQuantitesForm(forms.ModelForm):
+    

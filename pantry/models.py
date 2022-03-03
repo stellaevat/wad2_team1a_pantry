@@ -43,8 +43,6 @@ class Ingredient(models.Model):
     def get_types(self):
         return types
 
-
-
 class Recipe(models.Model):
     title = models.CharField(max_length=128,unique = True)
     author = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
@@ -73,6 +71,14 @@ class Recipe(models.Model):
 
     def __str__(self):
         return self.title
+        
+class IngredientList(models.Model):
+    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
+    ingredient = models.ForeignKey(Ingredient, on_delete=models.CASCADE)
+    quantity = models.CharField(max_length=16)
+    
+    class Meta:
+        unique_together = [['recipe', 'ingredient']]
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
