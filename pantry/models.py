@@ -2,13 +2,7 @@ from django.db import models
 from django.template.defaultfilters import slugify
 from django.contrib.auth.models import User
 
-class UserProfile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    
-    profile_picture = models.ImageField(upload_to='profile_pictures', blank=True)
 
-    def __str__(self):
-        return self.user.username
 
 class Category(models.Model):
     name = models.CharField(max_length=128, unique=True)
@@ -49,18 +43,11 @@ class Ingredient(models.Model):
     def get_types(self):
         return types
 
-class SiteUser(models.Model):
-    email = models.CharField(max_length=254, unique = True)
-    username = models.CharField(max_length=128,unique = True)
-    password = models.CharField(max_length=128)
-    profile_picture = models.ImageField(upload_to='profile_pictures', blank=True)
 
-    def __str__(self):
-        return self.username
 
 class Recipe(models.Model):
     title = models.CharField(max_length=128,unique = True)
-    author = models.ForeignKey(SiteUser, on_delete=models.CASCADE, null=True)
+    author = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     steps = models.CharField(max_length=2048)
     ingredients = models.ManyToManyField(Ingredient)
     prep_time = models.IntegerField()
@@ -87,3 +74,11 @@ class Recipe(models.Model):
     def __str__(self):
         return self.title
 
+class UserProfile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    
+    profile_picture = models.ImageField(upload_to='profile_pictures', blank=True)
+    starred = models.ManyToManyField(Recipe)
+
+    def __str__(self):
+        return self.user.username

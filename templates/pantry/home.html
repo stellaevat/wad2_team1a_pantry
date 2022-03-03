@@ -7,6 +7,7 @@
 {% endblock %}
 
 {% block body_block %}
+
 	<div class="logo">
 		<img class="logo-welcome" src="{% static 'img/welcome.png' %}" alt="Welcome to the Pantry">
 		<p class="welcome-message">where you can find recipes based on the ingredients you already have in your pantry!</p>
@@ -19,6 +20,8 @@
 				<div class="recipes-small-two">
 					{% for recipe in popular_list %}
 						<a href="{% url 'pantry:show_recipe' recipe.slug %}">{{ recipe.title }}</a>
+						<br>
+						<img src="{% static 'img/timer.png' %}" width="25px" height="25px">
 					{% endfor %}
 				</div>
 			{% else %}
