@@ -21,7 +21,7 @@ urlpatterns = [
     path('category/<slug:category_title_slug>/', views.show_category, name="show_category"),
     path('search_by_ingredient/', views.search_by_ingredient, name="search_by_ingredient"),
     path('search_by_keyword/results/', views.keyword_search_results, name="keyword_search_results"),
-    path('add_recipe/', views.add_recipe, name="add_recipe"),
+    path('add_recipe_ingredients/', views.add_recipe_ingredients, name="add_recipe_ingredients"),
     
     path('favicon.ico/', RedirectView.as_view(url=staticfiles_storage.url("img/favicon.ico"))),
 ]

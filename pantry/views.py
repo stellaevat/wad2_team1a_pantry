@@ -42,18 +42,18 @@ def show_recipe(request, recipe_name_slug):
         return render(request, 'pantry/show_recipe.html', {})
     
 @login_required
-def add_recipe(request):
-	form = RecipeForm()
+def add_recipe_ingredients(request):
+	form = RecipeIngredientsForm()
 	
 	if request.method == 'POST':
-		form = RecipeForm(request.POST)
+		form = RecipeIngredientsForm(request.POST)
 	
 		if form.is_valid():
 			form.save(commit=True)
 			return redirect('/pantry/')
 		else:
 			print(form.errors)
-	return render(request, 'pantry/add_recipe.html', {'form': form})
+	return render(request, 'pantry/add_recipe_ingredients.html', {'form': form})
 
 
 def show_category(request, category_title_slug):
