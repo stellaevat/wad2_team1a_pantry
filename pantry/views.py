@@ -22,7 +22,7 @@ def search_by_ingredient(request):
 def user_profile(request, username):
     # Renders the user profile page and passes a context dictionary with the recipes starred and written by the user
     context_dict = {}
-    context_dict["written_list"] = Recipe.objects.filter(author= username) #Not sure if username is the user object or just the name
+    context_dict["written"] = Recipe.objects.filter(author= username) 
     return render(request, 'pantry/user_profile.html', context=context_dict)
     
     
