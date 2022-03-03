@@ -4,7 +4,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from pantry.models import Recipe, Category, Ingredient, UserProfile
-from pantry.forms import UserForm, UserProfileForm, EmailForm, RecipeForm
+from pantry.forms import UserForm, UserProfileForm, EmailForm, RecipeIngredientsForm
 from django.contrib.auth.models import User
 from django.db.models import Q
 
@@ -50,10 +50,25 @@ def add_recipe_ingredients(request):
 	
 		if form.is_valid():
 			form.save(commit=True)
-			return redirect('/pantry/')
+			return redirect('/pantry/add_recipe/method')
 		else:
 			print(form.errors)
 	return render(request, 'pantry/add_recipe_ingredients.html', {'form': form})
+
+@login_required
+def add_recipe_method(request):
+	form = RecipeMethodForm()
+	
+	if request.method == 'POST':
+		form = RecipeMethodForm(request.POST)
+		
+		if form.is_valid():
+			form.save(commit=True)
+			return redirect('/pantry/')
+		else:
+			print(form.errors)
+	return render(request, 'pantry/add_recipe_method.html', {'form': form})
+
 
 
 def show_category(request, category_title_slug):
