@@ -47,10 +47,6 @@ class Ingredient(models.Model):
     @classmethod
     def get_types(cls):
         return cls.types
-        
-    @classmethod
-    def get_type_names(cls):
-        return [t[1] for t in cls.types]
 
     def get_plural(self):
         return p.plural(self.name)
