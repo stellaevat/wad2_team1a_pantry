@@ -27,11 +27,7 @@ class Category(models.Model):
         verbose_name_plural = "Categories"
 
 class Ingredient(models.Model):
-    name = models.CharField(max_length=128,unique=True)
-    ingredient_type = models.CharField(
-        max_length = 128,
-        choices=(
-            ("meats", "Meat, Seafood & Substitutes"),
+    types = (("meats", "Meat, Seafood & Substitutes"),
             ("dairy", "Eggs, Dairy & Substitutes"),
             ("veg", "Vegetables & Funghi"),
             ("pulses", "Pulses"),
@@ -42,12 +38,16 @@ class Ingredient(models.Model):
             ("condiments", "Condiments & Sauces"),
             ("fruit", "Fruit"),
             ("sweets", "Sweet & Baking"),
-            ("drinks", "Beverages")
-        )
-    )
+            ("drinks", "Beverages"))
+            
+    name = models.CharField(max_length=128,unique=True)
+    ingredient_type = models.CharField(max_length = 128, choices=types)
 
     def __str__(self):
         return self.name
+    
+    def get_types(self):
+        return types
 
 class SiteUser(models.Model):
     email = models.CharField(max_length=254, unique = True)
