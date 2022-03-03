@@ -10,11 +10,12 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "wad2_team1a_pantry.settings")
 
 import django
 django.setup()
-from pantry.models import Category, Recipe, SiteUser, Ingredient
+from pantry.models import Category, Recipe, UserProfile, Ingredient, IngredientList
+from django.contrib.auth.models import User
 
 def populate():
 
-    siteusers = [
+    users = [
         {"email" : "johndoe@gmail.com", "username" : "johndoe", "password" : "password"},
         {"email" : "benking@gmail.com", "username" : "benking", "password" : "password"},
         {"email" : "joebloggs@gmail.com", "username" : "joebloggs", "password" : "password"},
@@ -70,7 +71,7 @@ def populate():
         """
 Heat oven to 160C/140C fan/gas 3. Put the potatoes in a large roasting tin with the onion. Pour over 2 tbsp olive oil and roast in the oven for about 30 mins.
 Add the chickpeas, pepper, romanesco, tomatoes and garlic. Drizzle with 2 tbsp oil, then roast for a further 20-25 mins until everything is cooked and browning nicely. Toss together briefly and put the halloumi slices on top. Put it under the grill for 5-10 mins, or until the cheese is melting and browning (keep an eye on it). Scatter over the basil leaves to serve.
-        """, "ingredients" : ["Baby Potatoes", "Olive Oil", "Red Onions", "Red Peppers", "Garlic"], "category" : ["Vegan", "Healthy", "Vegetarian"], "prep_time" : 15, "cook_time" : 60, "servings" : 4,
+        """, "ingredients" : {"Baby Potatoes":"2kg", "Olive Oil":"2 tbsp", "Red Onions":"1", "Red Peppers":"2", "Garlic":"3 cloves"}, "category" : ["Vegan", "Healthy", "Vegetarian"], "prep_time" : 15, "cook_time" : 60, "servings" : 4,
          "difficulty" : "medium", "pub_date" : datetime.date(2022,2,27), "stars" : 32},
 
         {"name":"Pancakes", "author" : "sallywalker", "steps" : 
@@ -79,14 +80,14 @@ Put 100g plain flour and a pinch of salt into a large mixing bowl. Make a well i
 Pour in about 50ml from the 300ml of semi-skimmed milk and 1 tbsp sunflower oil then start whisking from the centre, gradually drawing the flour into the eggs, milk and oil. Once all the flour is incorporated, beat until you have a smooth, thick paste. Add a little more milk if it is too stiff to beat.
 Add a good splash of milk and whisk to loosen the thick batter. While still whisking, pour in a steady stream of the remaining milk. Continue pouring and whisking until you have a batter that is the consistency of slightly thick single cream.
 Heat the pan over a moderate heat, then wipe it with oiled kitchen paper.
-        """, "ingredients" : ["Flour", "Eggs", "Milk", "Sunflower Oil", "Salt"], "category" : ["Vegetarian", "30 Minute Meals", "Easy Meals"], "prep_time" : 10, "cook_time" : 30, "servings" : 4,
+        """, "ingredients" : {"Flour":"100g", "Eggs":"2", "Milk":"300ml", "Sunflower Oil":"1 tbsp", "Salt":"a pinch"}, "category" : ["Vegetarian", "30 Minute Meals", "Easy Meals"], "prep_time" : 10, "cook_time" : 30, "servings" : 4,
          "difficulty" : "easy", "pub_date" : datetime.date(2022,2,28), "stars" : 64},
 
          {"name":"New York cheesecake", "author" : "benking", "steps" : 
         """
 Position an oven shelf in the middle of the oven. Heat the oven to 180C/ 160C fan/ gas 4.
 Line the base of a 23cm springform cake tin by putting a square piece of parchment paper or foil on top of the tin base and then clipping the side on so the paper or foil is trapped and any excess sticks out of the bottom.
-        """, "ingredients" : ["Butter", "Biscuits", "Sugar", "Cheese", "Flour"], "category" : ["Vegetarian", "Desserts"], "prep_time" : 20, "cook_time" : 70, "servings" : 12,
+        """, "ingredients" : {"Butter":"2 tbsp", "Biscuits":"50g", "Sugar":"1/2 cup", "Cheese":"500g", "Flour":"50g"}, "category" : ["Vegetarian", "Desserts"], "prep_time" : 20, "cook_time" : 70, "servings" : 12,
          "difficulty" : "hard", "pub_date" : datetime.date(2022,1,13), "stars" : 112}
     ]
 
@@ -94,7 +95,7 @@ Line the base of a 23cm springform cake tin by putting a square piece of parchme
     for cat in categories:
         c = add_cat(cat)
 
-    for user in siteusers:
+    for user in users:
         u = add_user(user)
 
     for ingredient in ingredients:
@@ -107,7 +108,7 @@ Line the base of a 23cm springform cake tin by putting a square piece of parchme
     for c in Category.objects.all():
         print(c)
 
-    for u in SiteUser.objects.all():
+    for u in User.objects.all():
         print(u)
 
     for i in Ingredient.objects.all():
@@ -123,9 +124,11 @@ def add_ingredient(ingredient):
     return i
 
 def add_user(user):
-    c = SiteUser.objects.get_or_create(username=user["username"], email=user["email"], password=user["password"])[0]
-    c.save()
-    return c
+    u = User.objects.get_or_create(username=user["username"], email=user["email"], password=user["password"])[0]
+    u.save()
+    p = UserProfile.objects.get_or_create(user=u)[0]
+    p.save()
+    return u
 
 def add_cat(cat):
     c = Category.objects.get_or_create(name=cat["name"], tab=cat["tab"])[0]
@@ -133,12 +136,16 @@ def add_cat(cat):
     return c
 
 def add_recipe(recipe):
-    r = Recipe.objects.get_or_create(title=recipe["name"], author=SiteUser.objects.get(username=recipe["author"]), steps=recipe["steps"], prep_time=recipe["prep_time"], cook_time=recipe["cook_time"], servings = recipe["servings"], difficulty=recipe["difficulty"], pub_date = recipe["pub_date"], stars = recipe["stars"])[0]
+    r = Recipe.objects.get_or_create(title=recipe["name"], author=User.objects.get(username=recipe["author"]), steps=recipe["steps"], prep_time=recipe["prep_time"], cook_time=recipe["cook_time"], servings = recipe["servings"], difficulty=recipe["difficulty"], pub_date = recipe["pub_date"], stars = recipe["stars"])[0]
     for category in recipe["category"]:
         r.category.add(Category.objects.get(name=category))
-    for ingredient in recipe["ingredients"]:
-        r.ingredients.add(Ingredient.objects.get(name=ingredient))
-    r.save()
+    for ingredient, quantity in recipe["ingredients"].items():
+        i = Ingredient.objects.get(name=ingredient)
+        r.ingredients.add(i)
+        r.save()
+        l = IngredientList.objects.get_or_create(recipe=r, ingredient=i)[0]
+        l.quantity = quantity
+        l.save()
     return r
 
 if __name__ == "__main__":

@@ -44,10 +44,10 @@
 		<div class="verticals-left-narrow">
 			<div class="vertical-featured">
 				<h2 class="vertical-title">INGREDIENTS</h2></br>
-				{% if recipe.ingredients %}
+				{% if ingredients %}
 					<ul class="ingredient-list">
-						{% for ing in recipe.ingredients %}
-							<li class="ingredient">{{ ing.name }}</li>
+						{% for ing in ingredients %}
+							<li class="ingredient">{{ ing.quantity }} {{ ing.ingredient.name }}</li>
 						{% endfor %}
 					</ul>
 				{% else %}
@@ -57,9 +57,10 @@
 			
 			<div class="long-text">
 				<h2 class="vertical-title">METHOD</h2></br>
-				{{ recipe.method }}
+				{{ recipe.steps }}
 			</div>
 		</div>
+		
 	{% else %}
 		<h1 class="cat-heading">We couldn't find this recipe...</h1>
 		<p class="info-message">Maybe the author deleted it, or something went wrong - make sure you have the right link!</p>

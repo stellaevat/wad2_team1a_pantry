@@ -47,7 +47,7 @@ class Recipe(models.Model):
     title = models.CharField(max_length=128,unique = True)
     author = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     steps = models.CharField(max_length=2048)
-    ingredients = models.ManyToManyField(Ingredient)
+    ingredients = models.ManyToManyField(Ingredient, through='IngredientList')
     prep_time = models.IntegerField()
     category = models.ManyToManyField(Category)
     cook_time = models.IntegerField()
