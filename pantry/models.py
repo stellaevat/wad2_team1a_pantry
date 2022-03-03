@@ -8,7 +8,7 @@ p = inflect.engine()
 
 
 class Category(models.Model):
-    name = models.CharField(max_length=128, unique=True)
+    name = models.CharField(max_length=10, unique=True)
     slug = models.SlugField(unique=True)
     # Whether the category will be used as a tab
     tab = models.BooleanField(default=False)

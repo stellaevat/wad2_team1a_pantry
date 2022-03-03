@@ -27,10 +27,10 @@ def populate():
         {"name" : "Appetizers", "tab" : True},
         {"name" : "Desserts", "tab" : True},
         {"name" : "Easy Meals", "tab" : True},
-        {"name" : "30 Minute Meals", "tab" : True},
+        {"name" : "Under 30'", "tab" : True},
         {"name" : "Vegan", "tab" : False},
         {"name" : "Healthy", "tab" : False},
-        {"name" : "Gluten Free", "tab" : False},
+        {"name" : "GlutenFree", "tab" : False},
         {"name" : "Vegetarian", "tab" : False},
         {"name" : "Breakfast", "tab" : False},
         {"name" : "Lunch", "tab" : False},
@@ -80,7 +80,7 @@ Put 100g plain flour and a pinch of salt into a large mixing bowl. Make a well i
 Pour in about 50ml from the 300ml of semi-skimmed milk and 1 tbsp sunflower oil then start whisking from the centre, gradually drawing the flour into the eggs, milk and oil. Once all the flour is incorporated, beat until you have a smooth, thick paste. Add a little more milk if it is too stiff to beat.
 Add a good splash of milk and whisk to loosen the thick batter. While still whisking, pour in a steady stream of the remaining milk. Continue pouring and whisking until you have a batter that is the consistency of slightly thick single cream.
 Heat the pan over a moderate heat, then wipe it with oiled kitchen paper.
-        """, "ingredients" : {"Flour":"100g", "Eggs":"2", "Milk":"300ml", "Sunflower Oil":"1 tbsp", "Salt":"a pinch"}, "category" : ["Vegetarian", "30 Minute Meals", "Easy Meals"], "prep_time" : 10, "cook_time" : 30, "servings" : 4,
+        """, "ingredients" : {"Flour":"100g", "Eggs":"2", "Milk":"300ml", "Sunflower Oil":"1 tbsp", "Salt":"a pinch"}, "category" : ["Vegetarian", "Under 30'", "Easy Meals"], "prep_time" : 10, "cook_time" : 30, "servings" : 4,
          "difficulty" : "easy", "pub_date" : datetime.date(2022,2,28), "stars" : 64},
 
          {"name":"New York cheesecake", "author" : "benking", "steps" : 
