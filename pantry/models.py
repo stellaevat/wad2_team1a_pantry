@@ -1,6 +1,9 @@
 from django.db import models
 from django.template.defaultfilters import slugify
 from django.contrib.auth.models import User
+import inflect
+
+p = inflect.engine()
 
 
 
@@ -36,6 +39,7 @@ class Ingredient(models.Model):
             
     name = models.CharField(max_length=128,unique=True)
     ingredient_type = models.CharField(max_length = 128, choices=types)
+    
 
     def __str__(self):
         return self.name
@@ -43,7 +47,9 @@ class Ingredient(models.Model):
     @classmethod
     def get_types(cls):
         return cls.types
-        
+
+    def get_plural(self):
+        return p.plural(self.name)
 
 class Recipe(models.Model):
     title = models.CharField(max_length=128,unique = True)
@@ -78,6 +84,7 @@ class IngredientList(models.Model):
     recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
     ingredient = models.ForeignKey(Ingredient, on_delete=models.CASCADE)
     quantity = models.CharField(max_length=16)
+    plural = models.BooleanField(default=False)
     
     class Meta:
         unique_together = [['recipe', 'ingredient']]
