@@ -5,18 +5,30 @@
 	--orange: #F48D14;
 }
 
+/* GENERAL */
 html * {
     font-family: Helvetica, Arial, Tahoma, sans-serif;
 	font-size: 14px;
 	margin: 0px;
 	padding: 0px;
 	color: var(--maindark);
+	text-align: center;
 }
 
 a {
 	text-decoration: none;
 }
 
+button {
+	border: none;
+	border-radius: 30px;
+}
+
+.logo img {
+	width: calc(10vw + 250px);
+}
+
+/* NAVBAR & TABS */
 .navbar {
 	background-color: var(--maindark);
 	display: flex;
@@ -44,6 +56,34 @@ a {
 	padding-right: 0px;
 }
 
+.navbar-left-align {
+	padding-left: 30px;
+	float: left;
+	width: 200px;
+	text-align: left;
+}
+
+#btn-search {
+	font-size: 12px;
+	width: 40px;
+	height: 25px;
+	line-height: 0px;
+}
+
+.navbar-right-align {
+	padding-right: 20px;
+	float: right;
+	width: 200px;
+	text-align: right;
+}
+
+.profile-thumbnail * {
+	width: 25px;
+	height: 25px;
+	border-radius: 90px;
+	padding: 0px;
+}
+
 .tabs * {
 	background-color: var(--burgundy);
 	float: left;
@@ -62,38 +102,11 @@ a {
 	padding-right: 50px;
 }
 
-.navbar-left-align {
-	padding-left: 30px;
-	float: left;
-	width: 200px;
-	text-align: left;
-}
 
-.navbar-right-align {
-	padding-right: 20px;
-	float: right;
-	width: 200px;
-	text-align: right;
-}
-
-
-button {
-	border: none;
-	border-radius: 30px;
-}
-
+/* USER INPUT */
 .btn-light {
 	background-color: var(--mainlight);
 	color: var(--maindark);
-}
-
-
-
-#btn-search {
-	font-size: 12px;
-	width: 40px;
-	height: 25px;
-	line-height: 0px;
 }
 
 .search-input {
@@ -107,18 +120,5 @@ button {
 	opacity: 0.9;
 }
 
-#search-bar {
-	text-align: center;
-}
 
-.profile-thumbnail * {
-	width: 25px;
-	height: 25px;
-	border-radius: 90px;
-	padding: 0px;
-}
-
-.logo, .login-area {
-	text-align: center;
-}
 
