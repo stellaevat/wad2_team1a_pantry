@@ -25,7 +25,7 @@
 
 			<form id="search-bar" method="post", action="{% url 'pantry:keyword_search_results' %}">
 				{% csrf_token %}
-				<input class="search-input" type="search" placeholder="Search recipes" aria-label="Search" http://127.0.0.1:8000/static/img/welcome.pngname="searched">
+				<input class="search-input" type="search" placeholder="Search recipes" aria-label="Search" name="searched">
 			</form>
 			
 			<div class="navbar-right-align">

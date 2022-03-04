@@ -18,8 +18,12 @@ def show_starred_recipes(request, username):
 @login_required
 def user_profile(request, username):
     # Renders the user profile page and passes a context dictionary with the recipes starred and written by the user
+    # context_dict["written_list"] = Recipe.objects.filter(author= username) #Not sure if username is the user object or just the name
+    
+    # For compilation purposes, does nothing
     context_dict = {}
-    context_dict["written_list"] = Recipe.objects.filter(author= username) #Not sure if username is the user object or just the name
+    context_dict["written"] = None;
+    context_dict["starred"] = None;
     return render(request, 'pantry/user_profile.html', context=context_dict)
     
   
