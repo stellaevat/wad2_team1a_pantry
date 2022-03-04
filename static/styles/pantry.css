@@ -9,9 +9,11 @@
 	--red: #CD0000;
 }
 
+
 /* GENERAL */
 html {
 	background-color: var(--bg);
+	padding-bottom: 15px;
 }
 
 html * {
@@ -21,7 +23,6 @@ html * {
 	padding: 0px;
 	color: var(--dark);
 	text-align: center;
-	font-weight: light;
 }
 
 a {
@@ -33,8 +34,13 @@ button {
 	border-radius: 30px;
 }
 
+.logo {
+	position: relative;
+	bottom: 20px;
+}
+
 .logo img {
-	width: 400px;
+	width: calc(8vw + 400px);
 }
 
 .welcome-message {
@@ -119,9 +125,13 @@ button {
 	padding-right: 0px;
 }
 
+.tab-primary a * {
+	background-color: var(--orange);
+	color: var(--bg);
+}
+
 .tab-primary a {
 	background-color: var(--orange);
-	float: left;
 	color: var(--bg);
 	padding-left: 15px;
 	padding-right: calc(35vw - 250px);
@@ -212,18 +222,33 @@ button {
 	justify-content: space-between;
 	padding-right: calc(35vw - 235px);
 	padding-left: calc(35vw - 235px);
-	position: relative;
-	top: 30px;
 }
 
 .vertical-featured {
 	background-color: var(--medium);
 	width: calc(12vw + 250px);
 	float: left;
+	padding-bottom: 10px;
 }
 
 .vertical-title {
 	font-size: calc(0.3vw + 18px);
 	position: relative;
 	top: 15px;
+}
+
+@media only screen and (max-width: 610px) {
+	.tab-primary a span{
+		display: none;
+	}
+	
+	.recipe-grid-small * {
+		max-width: calc(5vw + 80px);
+		left: -7px;
+	}
+	
+	.logo img {
+		max-width: 75vw;
+	}
+	
 }
