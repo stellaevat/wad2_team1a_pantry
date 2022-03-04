@@ -10,18 +10,17 @@
 
 	<div class="logo">
 		<img class="logo-welcome" src="{% static 'img/welcome.png' %}" alt="Welcome to the Pantry">
-		<p class="welcome-message">where you can find recipes based on the ingredients you already have in your pantry!</p>
+		<p class="welcome-message">where you can find recipes with ingredients already in your pantry!</p>
 	</div>
 	
 	<div class="verticals-two">
 		<div class="vertical-featured">
-			<h2 class="vertical-title">MOST POPULAR</h2></br>
+			<h2 class="vertical-title">MOST POPULAR</h2><br />
 			{% if popular_list %}
 				<div class="recipes-small-two">
 					{% for recipe in popular_list %}
-						<a href="{% url 'pantry:show_recipe' recipe.slug %}">{{ recipe.title }}</a>
-						<br>
-						<img src="{% static 'img/timer.png' %}" width="25px" height="25px">
+						{% recipe_display_grid recipe True %}
+						<div class="gap"></div>
 					{% endfor %}
 				</div>
 			{% else %}
@@ -30,11 +29,12 @@
 		</div>
 		
 		<div class="vertical-featured">
-			<h2 class="vertical-title">MOST RECENT</h2></br>
+			<h2 class="vertical-title">MOST RECENT</h2><br />
 			{% if recent_list %}
 				<div class="recipes-small-two">
 					{% for recipe in recent_list %}
-						<a href="{% url 'pantry:show_recipe' recipe.slug %}">{{ recipe.title }}</a>
+						{% recipe_display_grid recipe True %}
+						<div class="gap"></div>
 					{% endfor %}
 				</div>
 			{% else %}

@@ -41,10 +41,10 @@ def search_by_ingredient(request):
     return render(request, 'pantry/search_by_ingredient.html', context=context_dict)  
     
 def home(request):
-    # Renders the home page, passing a context dictionary with the 6 most popular and 6 most viewed recipes.
+    # Renders the home page, passing a context dictionary with the 2 most popular and 2 most viewed recipes.
     context_dict = {}
-    context_dict["popular_list"] = Recipe.objects.order_by("-stars")[:6]
-    context_dict["recent_list"] = Recipe.objects.order_by("-pub_date")[:6]
+    context_dict["popular_list"] = Recipe.objects.order_by("-stars")[:2]
+    context_dict["recent_list"] = Recipe.objects.order_by("-pub_date")[:2]
     return render(request, 'pantry/home.html', context_dict)
     
 def show_recipe(request, recipe_name_slug):
