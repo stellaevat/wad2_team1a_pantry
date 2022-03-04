@@ -1,0 +1,27 @@
+{% load staticfiles %}
+
+<a class="{{ div_class }}" href="{% url 'pantry:show_recipe' recipe.slug %}">
+	<img class="recipe-thumbnail-medium" src="/media/recipe_pictures/{{ recipe.slug }}.jpg" alt="{{ recipe.name }}"><br />
+	<div class="thumbnail-info">
+		<div class="main-info">
+			{{ recipe.title }}<br />
+		</div>
+		<div class="secondary-info">
+			<div>
+				<img class="icon-small" src="{% static 'img/star-light.png' %}" width="15px" height="15px" alt="Stars">
+				{{ recipe.stars }}
+			</div>
+			<div>
+				<img class="icon-small" src="{% static 'img/timer-light.png' %}" width="15px" height="15px" alt="Cooking time">
+				{{ time }}'
+			</div>
+			<div>
+			{% if by_ingredient %}
+				<img class="icon-small" src="{% static 'img/tick-light.png' %}" width="15px" height="15px" alt="Ingredients">
+				{{ selected }}/{{ ingredients }}
+			{% endif %}
+			</div>
+				
+		</div>
+	</div>
+</a>

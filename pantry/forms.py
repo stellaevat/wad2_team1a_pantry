@@ -47,7 +47,11 @@ class RecipeForm(forms.ModelForm):
 		fields = ('name',)
         
 class RecipeIngredientsForm(forms.ModelForm):
-    pass
+    # Ignore this field, required for compilation until actual implementation is done
+    name = forms.CharField(max_length=128, help_text="Please enter the recipe name.")
+    class Meta:
+        model = Recipe
+        fields = ('name',)
 
 class RecipeQuantitesForm(forms.ModelForm):
     pass

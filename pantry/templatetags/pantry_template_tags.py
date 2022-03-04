@@ -1,10 +1,25 @@
 from django import template
-from pantry.models import Category, Recipe, UserProfile
+from pantry.models import Category, Recipe, IngredientList, UserProfile
 register = template.Library()
 
 @register.inclusion_tag('pantry/tabs.html')
 def get_tabs(current_tab=None):
-    return {'tabs': Category.objects.filter(tab=True)}
+    return {'tabs': Category.objects.filter(tab=True), 'current_tab': current_tab}
+    
+@register.inclusion_tag('pantry/recipe_display_grid.html')
+def recipe_display_grid(recipe, small=False, by_ingredient=False, selected=None):
+    div_class = "recipe-grid"
+    if small:
+        div_class += "-small"
+    ingredients = None
+    if by_ingredient:
+        ingredients = IngredientList.objects.filter(recipe=recipe).count()
+    return {'recipe': recipe,
+            'div_class': div_class,
+            'time': recipe.prep_time + recipe.cook_time,
+            'by_ingredient': by_ingredient,
+            'selected': selected,
+            'ingredients': ingredients,}
     
 @register.filter
 def get_profile_picture(user):
