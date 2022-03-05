@@ -8,16 +8,18 @@
 
 {% block body_block %}
 	{% if types %}
-	<form action = "/action_page.php">
+	<form action = "">
 		{% for t in types %}
 			<button type="button" class="collapsible" style="width:90%;height:75px;border-radius:0px;"><strong>{{ t }}</strong><br /></button>
-			<div class="collapsing">
+			<div class="collapsing" style="padding:10px">
 			{% for ingredient in ingredients|get_item:t %}
 				<input type="checkbox" id="{{ ingredient }}" name="{{ ingredient }}" value="{{ ingredient }}">
 				<label for ="{{ ingredient }}" >{{ ingredient }}</label>
 			{% endfor %}
 			</div>
 		{% endfor %}
+		<br />
+		<input type="submit" value="Done" style="color:white; background-color:var(--burgundy); height:50px; width:100px;border-radius: 25px;border-color: var(--burgundy);">
 	</form>
 	{% endif %}
 
