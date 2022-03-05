@@ -40,7 +40,7 @@ button {
 }
 
 .logo img {
-	width: calc(8vw + 400px);
+	width: calc(6vw + 400px);
 }
 
 .welcome-message {
@@ -51,12 +51,24 @@ button {
 }
 
 .info-message {
+	position: relative;
+	top: 10px;
 	font-style: italic;
 }
 
 .icon-small {
 	width: 13px;
 	height: 13px;
+}
+
+.gap {
+	height: calc(5vw + 100px);
+	width: 0px;
+}
+
+.gap-small {
+	height: calc(0.1vw + 130px);
+	width: 0px;
 }
 
 
@@ -212,10 +224,6 @@ button {
 }
 
 /* VERTICALS */
-.gap {
-	height: calc(5vw + 100px);
-	width: 0px;
-}
 
 .verticals-two {
 	display: flex;
