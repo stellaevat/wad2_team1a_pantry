@@ -1,8 +1,5 @@
 import datetime
 import os
-from pickle import NONE
-from random import choices
-from tokenize import Name
 
 from django import urls
 
@@ -72,7 +69,7 @@ def populate():
 Heat oven to 160C/140C fan/gas 3. Put the potatoes in a large roasting tin with the onion. Pour over 2 tbsp olive oil and roast in the oven for about 30 mins.
 Add the chickpeas, pepper, romanesco, tomatoes and garlic. Drizzle with 2 tbsp oil, then roast for a further 20-25 mins until everything is cooked and browning nicely. Toss together briefly and put the halloumi slices on top. Put it under the grill for 5-10 mins, or until the cheese is melting and browning (keep an eye on it). Scatter over the basil leaves to serve.
         """, "ingredients" : {"Baby Potatoes":"2kg", "Olive Oil":"2 tbsp", "Red Onions":"1", "Red Peppers":"2", "Garlic":"3 cloves"}, "category" : ["Vegan", "Healthy", "Vegetarian"], "prep_time" : 15, "cook_time" : 60, "servings" : 4,
-         "difficulty" : "medium", "pub_date" : datetime.date(2022,2,27), "stars" : 32},
+         "difficulty" : "medium", "pub_date" : datetime.date(2022,2,27), "stars" : 32, "filename" : "halloumi-traybake.jpg"},
 
         {"name":"Pancakes", "author" : "sallywalker", "steps" : 
         """
@@ -81,14 +78,14 @@ Pour in about 50ml from the 300ml of semi-skimmed milk and 1 tbsp sunflower oil 
 Add a good splash of milk and whisk to loosen the thick batter. While still whisking, pour in a steady stream of the remaining milk. Continue pouring and whisking until you have a batter that is the consistency of slightly thick single cream.
 Heat the pan over a moderate heat, then wipe it with oiled kitchen paper.
         """, "ingredients" : {"Flour":"100g", "Eggs":"2", "Milk":"300ml", "Sunflower Oil":"1 tbsp", "Salt":"a pinch"}, "category" : ["Vegetarian", "Under 30'", "Easy Meals"], "prep_time" : 10, "cook_time" : 30, "servings" : 4,
-         "difficulty" : "easy", "pub_date" : datetime.date(2022,2,28), "stars" : 64},
+         "difficulty" : "easy", "pub_date" : datetime.date(2022,2,28), "stars" : 64, "filename" : "pancakes.jpg"},
 
          {"name":"New York cheesecake", "author" : "benking", "steps" : 
         """
 Position an oven shelf in the middle of the oven. Heat the oven to 180C/ 160C fan/ gas 4.
 Line the base of a 23cm springform cake tin by putting a square piece of parchment paper or foil on top of the tin base and then clipping the side on so the paper or foil is trapped and any excess sticks out of the bottom.
         """, "ingredients" : {"Butter":"2 tbsp", "Biscuits":"50g", "Sugar":"1/2 cup", "Cheese":"500g", "Flour":"50g"}, "category" : ["Vegetarian", "Desserts"], "prep_time" : 20, "cook_time" : 70, "servings" : 12,
-         "difficulty" : "hard", "pub_date" : datetime.date(2022,1,13), "stars" : 112}
+         "difficulty" : "hard", "pub_date" : datetime.date(2022,1,13), "stars" : 112, "filename" : "new-york-cheesecake.jpg"}
     ]
 
 
@@ -136,7 +133,8 @@ def add_cat(cat):
     return c
 
 def add_recipe(recipe):
-    r = Recipe.objects.get_or_create(title=recipe["name"], author=User.objects.get(username=recipe["author"]), steps=recipe["steps"], prep_time=recipe["prep_time"], cook_time=recipe["cook_time"], servings = recipe["servings"], difficulty=recipe["difficulty"], pub_date = recipe["pub_date"], stars = recipe["stars"])[0]
+    path = os.getcwd() + "\\media\\recipe_pictures\\"
+    r = Recipe.objects.get_or_create(title=recipe["name"], author=User.objects.get(username=recipe["author"]), steps=recipe["steps"], prep_time=recipe["prep_time"], cook_time=recipe["cook_time"], servings = recipe["servings"], difficulty=recipe["difficulty"], pub_date = recipe["pub_date"], stars = recipe["stars"], picture=path+recipe["filename"])[0]
     for category in recipe["category"]:
         r.category.add(Category.objects.get(name=category))
     for ingredient, quantity in recipe["ingredients"].items():
