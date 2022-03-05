@@ -198,6 +198,36 @@ button {
 	left: 0px;
 }
 
+.recipe-thumbnail-medium {
+	object-fit: cover;
+	width:calc(5vw + 100px);
+	height:calc(5vw + 100px);
+	position: absolute;
+	bottom: 0px;
+	left: 0px;
+}
+
+.recipe-grid-small:hover .thumbnail-info{
+	object-fit: cover;
+	width:calc(5vw + 100px);
+	height:calc(5vw + 100px);
+	position: absolute;
+	bottom: 0px;
+	left: 0px;
+	opacity:0.0
+}
+
+.recipe-grid-small:hover img{
+	object-fit: cover;
+	width:calc(5vw + 100px);
+	height:calc(5vw + 100px);
+	position: absolute;
+	bottom: 0px;
+	left: 0px;
+	opacity:0.5
+}
+
+
 .thumbnail-info {
 	text-align: center;
 	position: absolute;
@@ -245,6 +275,45 @@ button {
 	top: 15px;
 }
 
+
+/* COLLAPSIBLE ACCORDION */
+
+.collapsible {
+	cursor: pointer;
+	padding: 18px;
+	width: 100%;
+	margin-bottom:10px;
+	text-align: left;
+	outline: none;
+	font-size: 15px;
+	background-color: rgba(211, 211, 211, 0.671);
+	text-align:center;
+}
+
+.active{
+	background-color: var(--orange);
+}
+
+.collapsing {
+	padding: 0 18px;
+	display: none;
+	overflow: hidden;
+}
+
+.collapsible:after {
+	content: "\02795";
+	font-size: 13px;
+	float: left;
+	margin-left: 5px;
+}
+  
+.active:after {
+	content: "\2796";
+}
+
+
+/* WINDOW RESIZE */
+
 @media only screen and (max-width: 610px) {
 	.tab-primary a span{
 		display: none;
@@ -258,5 +327,4 @@ button {
 	.logo img {
 		max-width: 75vw;
 	}
-	
 }
