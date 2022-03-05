@@ -8,11 +8,36 @@
 
 {% block body_block %}
 	{% if types %}
+	<form action = "/action_page.php">
 		{% for t in types %}
-			<strong>{{ t }}</strong><br />
+			<button type="button" class="collapsible" style="width:90%;height:75px;border-radius:0px;"><strong>{{ t }}</strong><br /></button>
+			<div class="collapsing">
 			{% for ingredient in ingredients|get_item:t %}
-				{{ ingredient }}<br />
+				<input type="checkbox" id="{{ ingredient }}" name="{{ ingredient }}" value="{{ ingredient }}">
+				<label for ="{{ ingredient }}" >{{ ingredient }}</label>
 			{% endfor %}
+			</div>
 		{% endfor %}
+	</form>
 	{% endif %}
+
+<script>
+	//This script is from w3schools.org and has been slightly changed
+	var collapsible = document.getElementsByClassName("collapsible");
+	var i;
+		
+	for (i = 0; i < collapsible.length; i++) {
+		collapsible[i].addEventListener("click", function() {
+			this.classList.toggle("active");
+			var collapsing = this.nextElementSibling;
+			if (collapsing.style.display === "block") {
+				collapsing.style.display = "none";
+			} else {
+				collapsing.style.display = "block";
+			}
+		});
+	}
+</script>
+
 {% endblock %}
+
