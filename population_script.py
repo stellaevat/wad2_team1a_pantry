@@ -13,10 +13,10 @@ from django.contrib.auth.models import User
 def populate():
 
     users = [
-        {"email" : "johndoe@gmail.com", "username" : "johndoe", "password" : "password"},
-        {"email" : "benking@gmail.com", "username" : "benking", "password" : "password"},
-        {"email" : "joebloggs@gmail.com", "username" : "joebloggs", "password" : "password"},
-        {"email" : "sallywalker@gmail.com", "username" : "sallywalker", "password" : "password"}
+        {"email" : "johndoe@gmail.com", "username" : "johndoe", "password" : "password", "filename" : "johndoe.jpg"},
+        {"email" : "benking@gmail.com", "username" : "benking", "password" : "password", "filename" : "benking.jpg"},
+        {"email" : "joebloggs@gmail.com", "username" : "joebloggs", "password" : "password", "filename" : "joebloggs.jpg"},
+        {"email" : "sallywalker@gmail.com", "username" : "sallywalker", "password" : "password", "filename" : "sallywalker.jpg"}
     ]
 
     categories = [
@@ -121,9 +121,10 @@ def add_ingredient(ingredient):
     return i
 
 def add_user(user):
+    path = os.getcwd() + "\\media\\profile_pictures\\"
     u = User.objects.get_or_create(username=user["username"], email=user["email"], password=user["password"])[0]
     u.save()
-    p = UserProfile.objects.get_or_create(user=u)[0]
+    p = UserProfile.objects.get_or_create(user=u, profile_picture=path+user["filename"])[0]
     p.save()
     return u
 
