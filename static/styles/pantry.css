@@ -413,3 +413,45 @@ button {
 		max-width: 75vw;
 	}
 }
+
+/* Dropdown CSS (This has also been inspired by the w3schools dropdown menu section) */
+
+.dropdown-menu {
+	background-color: #f8f8f8;
+	float:left;
+	position: relative;
+	display:inline-block;
+}
+
+.dropdown-main{
+	background-color:#64101F;
+	border-radius: 0px;
+	color:#f8f8f8;
+	margin-left: 10px;
+	padding: 5px;
+	float:left;
+	position: relative;
+	display:inline-block;
+}
+
+.dropdown-items{
+	display:none;
+	background-color:#64101F;
+	min-width:160px;
+	z-index:1;
+	position: absolute;
+}
+
+.dropdown-items a{
+	color:var(--bg);
+	padding-top: 12px;
+	padding-bottom :12px;
+	padding-left: 16px;
+	padding-right: 16px;
+	text-decoration: none;
+	display: block;
+}
+
+.dropdown-menu:hover .dropdown-items {
+	display:block;
+}
