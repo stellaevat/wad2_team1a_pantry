@@ -1,0 +1,39 @@
+{% load staticfiles %}
+{% load pantry_template_tags %}
+
+<form class="ingredient-selection" action = "">
+	{% for t in types %}
+		<button type="button" class="collapsible"><span>{{ t }}</span></button>
+		<div class="collapsing">
+			{% for ingredient in ingredients|get_item:t %}
+				<div class="option">
+					<input class="checkbox" type="checkbox" id="{{ ingredient }}" name="{{ ingredient }}" value="{{ ingredient }}">
+					<label for="{{ ingredient }}">{{ ingredient }}</label>
+				</div>
+				{% if forloop.counter|divisibleby:3 %}
+					<div class="line-break" style="width:100%"></div>
+				{% endif %}
+			{% endfor %}
+		</div>
+	{% endfor %}
+	<br />
+	<input class="btn-continue" id="ingr-btn" type="submit" value="Done">
+</form>
+
+<script>
+	//This script is from w3schools.org and has been slightly changed
+	var collapsible = document.getElementsByClassName("collapsible");
+	var i;
+		
+	for (i = 0; i < collapsible.length; i++) {
+		collapsible[i].addEventListener("click", function() {
+			this.classList.toggle("collapsible-active");
+			var collapsing = this.nextElementSibling;
+			if (collapsing.style.display === "flex") {
+				collapsing.style.display = "none";
+			} else {
+				collapsing.style.display = "flex";
+			}
+		});
+	}
+</script>

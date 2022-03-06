@@ -14,7 +14,7 @@
 	
 	<div class="login-area">
 		{% if success %}
-			<p class="login-success">{{ success }}</p>
+			<p class="login-prompt">{{ success }}</p>
 			<a class="btn-continue" href="{% url 'pantry:user_profile' username %}">View profile</a>
 		{% else %}
 			<p class="login-prompt">Sign in with your password:</p>
