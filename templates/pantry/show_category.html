@@ -12,9 +12,9 @@
 			<h1 class="cat-heading">Explore Our {{ category.name }}...</h1>
 			{% if recipes %}
 			<ul class="dropdown-menu" aria-labelledby="dropdown01">
-				<li><a class="dropdown-item" href="{% url 'pantry:show_recipe' category.slug %}">Filter: Most Popular</a></li>
-				<li><a class="dropdown-item" href="{% url 'pantry:show_recipe' category.slug %}">Filter: Newest</a></li>
-				<li><a class="dropdown-item" href="{% url 'pantry:show_recipe' category.slug %}">Filter: Oldest</a></li>
+				<li><a class="dropdown-item" href="{% url 'pantry:category_sort' category.slug 'popular' %}">Filter: Most Popular</a></li>
+				<li><a class="dropdown-item" href="{% url 'pantry:category_sort' category.slug 'newest' %}">Filter: Newest</a></li>
+				<li><a class="dropdown-item" href="{% url 'pantry:category_sort' category.slug 'old' %}">Filter: Oldest</a></li>
 			</ul>
 			{% endif %}
 		</div>
@@ -23,6 +23,7 @@
 			<div class="recipes-big-three">
 				{% for recipe in recipes %}
 					<a href="{% url 'pantry:show_recipe' recipe.slug %}">{{ recipe }}</a>
+					<br />
 				{% endfor %}
 			</div>
 		{% else %}

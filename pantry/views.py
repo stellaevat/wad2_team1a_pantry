@@ -89,9 +89,27 @@ def add_recipe_method(request):
 			print(form.errors)
 	return render(request, 'pantry/add_recipe_method.html', {'form': form})
 
+def category_sort(request, category_title_slug, sort = None):
+    context_dict = {}
+    try:
+        category = Category.objects.get(slug=category_title_slug)
+        context_dict['category'] = category
+        
+        if sort == "popular":
+            recipes = Recipe.objects.filter(category=category).order_by("-stars")
+        elif sort == "newest":
+            recipes = Recipe.objects.filter(category=category).order_by("-pub_date")
+        elif sort == "oldest":
+            recipes = Recipe.objects.filter(category=category).order_by("-pub_date")[::-1]
+        else:
+            recipes = Recipe.objects.filter(category=category)
+        context_dict['recipes'] = recipes     
+    except Category.DoesNotExist:
+        context_dict['category'] = None
+        context_dict['recipes'] = None
+    return render(request, 'pantry/show_category.html', context=context_dict)
 
-
-def show_category(request, category_title_slug):
+def show_category(request, category_title_slug, sort = None):
     context_dict = {}
     try:
         category = Category.objects.get(slug=category_title_slug)
