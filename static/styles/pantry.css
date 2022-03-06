@@ -142,8 +142,16 @@ button {
 	white-space: nowrap;
 }
 
+.navbar #navbarh {
+	display: block;
+}
+
 .navbar-left-align *:hover, .navbar-right-align *:hover{
 	background-color: var(--burgundy);
+}
+
+#nohovernavbar:hover{
+	background-color: var(--dark);
 }
 
 .tabs {
@@ -163,6 +171,7 @@ button {
 	width: 200px;
 	text-align: left;
 	pointer-events: none;
+	columns:2;
 }
 
 .navbar-right-align {
@@ -171,6 +180,7 @@ button {
 	width: 200px;
 	text-align: right;
 	pointer-events: none;
+	columns:2;
 }
 
 .navbar-left-align *, .navbar-right-align * {

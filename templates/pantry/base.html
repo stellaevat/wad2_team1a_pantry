@@ -18,9 +18,9 @@
 	<body>
 		<header class="navbar">
 			<div class="navbar-left-align">
-				<a href="{% url 'pantry:home' %}">Home</a>
+				<a href="{% url 'pantry:home' %}" id="navbarh">Home</a>
 				{% if user.is_authenticated %}
-					<a href="{% url 'pantry:add_recipe_ingredients' %}">Add recipe</a>
+					<a href="{% url 'pantry:add_recipe_ingredients' %}" id="navbarh">Add recipe</a>
 				{% endif %}
 			</div>
 
@@ -31,16 +31,17 @@
 			
 			<div class="navbar-right-align">
 				{% if user.is_authenticated %}
-					<a class="profile-thumbnail" href="{% url 'pantry:user_profile' user.username %}">
+					<a class="profile-thumbnail" href="{% url 'pantry:user_profile' user.username %}" id="nohovernavbar">
 						{% if user.profile_pic %}
 							<img src="{{ user.profile_pic }}" alt="Profile">
 						{% else %}
 							<img src="{% static 'img/profile-picture-default.png' %}" alt="Profile">
 						{% endif %}
 					</a>
-					<a href="{% url 'pantry:sign_out' %}">Sign out</a>
+					<a href="{% url 'pantry:sign_out' %}" id="navbarh">Sign out</a>
 				{% else %}
-					<a href="{% url 'pantry:check_email' %}">Sign Up/In</a>
+					<p></p>
+					<a href="{% url 'pantry:check_email' %}" id="navbarh">Sign Up/In</a>
 				{% endif %}
 			</div>
 		
