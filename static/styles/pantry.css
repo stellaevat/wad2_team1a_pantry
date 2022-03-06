@@ -29,9 +29,8 @@ a {
 	text-decoration: none;
 }
 
-button {
-	border: none;
-	border-radius: 30px;
+.main {
+	padding-top: 110px;
 }
 
 .logo {
@@ -41,6 +40,15 @@ button {
 
 .logo img {
 	width: calc(6vw + 400px);
+}
+
+.cat-heading {
+	font-size: 19pt;
+}
+
+.cat-subheading, .login-prompt {
+	font-size: 14pt;
+	padding: 5px 0px 10px 0px;
 }
 
 .welcome-message {
@@ -71,25 +79,71 @@ button {
 	width: 0px;
 }
 
+input {
+	background-color: var(--light);
+	color: var(--dark);
+	width: calc(20vw + 200px);
+	height: 30px;
+	font-size: 11pt;
+	border: none;
+	opacity: 0.9;
+	margin-bottom: 10px;
+}
+
+button {
+	border: none;
+	border-radius: 30px;
+}
+
+.btn-continue {
+	background-color: var(--burgundy);
+	color: var(--bg);
+	height: 60px;
+	width: 120px;
+	border-radius: 30px;
+	font-size: 15pt;
+	margin: 5px;
+}
+
+.btn-back {
+	background-color: var(--dark);
+	color: var(--bg);
+	height: 60px;
+	width: 120px;
+	border-radius: 30px;
+	font-size: 15pt;
+	margin: 5px;
+}
+
+.btn-continue:hover, .btn-back:hover {
+	background-color: var(--light);
+	color: var(--dark);
+}
 
 
 /* NAVBAR & TABS */
 .navbar {
-	background-color: var(--dark);
+	position: fixed;
+	top: 0px;
+	width: 100%;
+	height: 45px;
+	line-height: 45px;
 	display: flex;
 	justify-content: space-between;
+	overflow: hidden;
+	background-color: var(--dark);
 }
 
 .navbar * {
 	background-color: var(--dark);
 	color: var(--bg);
-	vertical-align: middle;
-	text-align: center;
-	height: 45px;
-	line-height: 45px;
 	padding-left: 7px;
 	padding-right: 7px;
 	white-space: nowrap;
+}
+
+.navbar-left-align *:hover, .navbar-right-align *:hover{
+	background-color: var(--burgundy);
 }
 
 .tabs {
@@ -98,7 +152,9 @@ button {
 	justify-content: space-between;
 	width: 100%;
 	padding-left: calc(35vw - 250px);
-	padding-right: 0px;
+	padding-right: calc(35vw - 250px);
+	position: fixed;
+	top: 45px;
 }
 
 .navbar-left-align {
@@ -106,6 +162,7 @@ button {
 	float: left;
 	width: 200px;
 	text-align: left;
+	pointer-events: none;
 }
 
 .navbar-right-align {
@@ -113,9 +170,18 @@ button {
 	float: right;
 	width: 200px;
 	text-align: right;
+	pointer-events: none;
+}
+
+.navbar-left-align *, .navbar-right-align * {
+	height: 45px;
+	line-height: 45px;
+	pointer-events: auto;
 }
 
 .profile-thumbnail * {
+	position: relative;
+	top: 7px;
 	width: 25px;
 	height: 25px;
 	border-radius: 90px;
@@ -126,49 +192,42 @@ button {
 	background-color: var(--burgundy);
 	float: left;
 	text-transform: uppercase;
+	padding-left: 15px;
+	padding-right: 15px;
 }
 
-.tab-secondary-open {
-	background-color: var(--bg);
+.tabs *:hover {
+	background-color: var(--light);
 	color: var(--burgundy);
 }
 
 .tab-primary {
-	padding-right: 0px;
+	pointer-events: none;
 }
 
-.tab-primary a * {
-	background-color: var(--orange);
-	color: var(--bg);
+.tab-primary * {
+	pointer-events: auto;
 }
 
-.tab-primary a {
+.tab-primary, .tab-primary * {
 	background-color: var(--orange);
 	color: var(--bg);
-	padding-left: 15px;
-	padding-right: calc(35vw - 250px);
+	padding-right: calc(35vw - 242.5px);
 }
+
 
 .tab-primary-open a {
 	background-color: var(--bg);
 	color: var(--orange);
 }
 
-/* USER INPUT */
-.btn-light {
-	background-color: var(--light);
-	color: var(--dark);
-}
-
-.search-input {
+.search-bar * {
 	background-color: var(--light);
 	color: var(--dark);
 	width: calc(20vw + 100px);
 	height: 25px;
 	font-size: 10pt;
-	border: none;
 	border-radius: 30px;
-	opacity: 0.9;
 }
 
 
@@ -176,6 +235,7 @@ button {
 .recipes-small-two {
 	display: flex;
 	padding: 15px;
+	flex-wrap: wrap;
 }
 
 .recipe-grid-small {
@@ -198,35 +258,13 @@ button {
 	left: 0px;
 }
 
-.recipe-thumbnail-medium {
-	object-fit: cover;
-	width:calc(5vw + 100px);
-	height:calc(5vw + 100px);
-	position: absolute;
-	bottom: 0px;
-	left: 0px;
-}
-
 .recipe-grid-small:hover .thumbnail-info{
-	object-fit: cover;
-	width:calc(5vw + 100px);
-	height:calc(5vw + 100px);
-	position: absolute;
-	bottom: 0px;
-	left: 0px;
 	opacity:0.0
 }
 
 .recipe-grid-small:hover img{
-	object-fit: cover;
-	width:calc(5vw + 100px);
-	height:calc(5vw + 100px);
-	position: absolute;
-	bottom: 0px;
-	left: 0px;
 	opacity:0.5
 }
-
 
 .thumbnail-info {
 	text-align: center;
@@ -277,27 +315,58 @@ button {
 
 
 /* COLLAPSIBLE ACCORDION */
+.ingredient-selection {
+	padding: 0px calc(40vw - 235px) 0px calc(40vw - 235px);
+}
 
 .collapsible {
 	cursor: pointer;
-	padding: 18px;
+	height:45px;
 	width: 100%;
-	margin-bottom:10px;
-	text-align: left;
-	outline: none;
-	font-size: 15px;
-	background-color: rgba(211, 211, 211, 0.671);
+	border-radius: 0px;
+	padding: 15px 15px 32px 15px;
+	margin: 5px 0px 5px 0px;
 	text-align:center;
+	text-transform: uppercase;
+	background-color: var(--medium);
 }
 
-.active{
+.collapsible span {
+	position: relative;
+	right: 10px;
+	font-size: 13pt;
+}
+
+.collapsible-active, .collapsible-active * {
 	background-color: var(--orange);
+	color: var(--bg);
 }
 
 .collapsing {
 	padding: 0 18px;
 	display: none;
 	overflow: hidden;
+	justify-content: space-between;
+	flex-wrap: wrap;
+	padding: 5px 100px 5px 100px;
+}
+
+.option {
+	white-space: nowrap;
+	width: 100px;
+	text-align: left;
+}
+
+.option label {
+	position: relative;
+	bottom: 2px;
+}
+
+.checkbox {
+	width: 15px;
+	height: 15px;
+	margin: 0px;
+	padding: 0px;
 }
 
 .collapsible:after {
@@ -307,8 +376,14 @@ button {
 	margin-left: 5px;
 }
   
-.active:after {
+.collapsible-active:after {
 	content: "\2796";
+}
+
+#ingr-btn {
+	position: fixed;
+	bottom: 50px;
+	right: calc(25vw - 150px);
 }
 
 

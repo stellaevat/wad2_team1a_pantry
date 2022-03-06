@@ -21,6 +21,10 @@ def recipe_display_grid(recipe, small=False, by_ingredient=False, selected=None)
             'selected': selected,
             'ingredients': ingredients,}
     
+@register.inclusion_tag('pantry/ingredient_selection.html')
+def get_ingredient_selection(types, ingredients):
+    return {'types': types, 'ingredients': ingredients,}
+    
 @register.filter
 def get_profile_picture(user):
     user_profile = UserProfile.filter(user=user)

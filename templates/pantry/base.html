@@ -24,9 +24,9 @@
 				{% endif %}
 			</div>
 
-			<form id="search-bar" method="post", action="{% url 'pantry:keyword_search_results' %}">
+			<form class="search-bar" method="post", action="{% url 'pantry:keyword_search_results' %}">
 				{% csrf_token %}
-				<input class="search-input" type="search" placeholder="Search recipes" aria-label="Search" name="searched">
+				<input type="search" placeholder="Search recipes" aria-label="Search" name="searched">
 			</form>
 			
 			<div class="navbar-right-align">
@@ -43,20 +43,16 @@
 					<a href="{% url 'pantry:check_email' %}">Sign Up/In</a>
 				{% endif %}
 			</div>
-		</header>
 		
-		<div class="navbar">
 			<div class="tabs">
 				{% get_tabs category %}
-				<div class="tab-primary">
-					<a href="{% url 'pantry:search_by_ingredient' %}">
-						<span>Search by Ingredient</span>
-					</a>
-				</div>
+				<a class="tab-primary" href="{% url 'pantry:search_by_ingredient' %}">
+					<span>Search by Ingredient</span>
+				</a>
 			</div>
-		</div>
+		</header>
 		
-		<div>
+		<div class="main">
 			{% block body_block %}
 			{% endblock %}
 		</div>
