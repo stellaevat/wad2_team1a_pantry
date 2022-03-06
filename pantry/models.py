@@ -2,10 +2,16 @@ from django.db import models
 from django.template.defaultfilters import slugify
 from django.contrib.auth.models import User
 import inflect
+import pantry
 
 p = inflect.engine()
 
-
+def rename(instance,self):
+    if str(type(instance)) == "<class 'pantry.models.Recipe'>":
+        path = 'recipe_pictures\\'
+    elif str(type(instance)) == "<class 'pantry.models.UserProfile'>":
+        path = "profile_pictures\\"
+    return path + str(instance.pk) + ".png"
 
 class Category(models.Model):
     name = models.CharField(max_length=10, unique=True)
@@ -68,7 +74,7 @@ class Recipe(models.Model):
             ("advanced", "Advanced")
         ) 
     )
-    picture = models.ImageField(upload_to='recipe_pictures', blank=True)
+    picture = models.ImageField(upload_to=rename, blank=True)
     pub_date = models.DateField()
     stars = models.IntegerField()
     slug = models.SlugField(unique=True)
@@ -92,7 +98,7 @@ class IngredientList(models.Model):
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     
-    profile_picture = models.ImageField(upload_to='profile_pictures', blank=True)
+    profile_picture = models.ImageField(upload_to=rename, blank=True)
     starred = models.ManyToManyField(Recipe)
 
     def __str__(self):
