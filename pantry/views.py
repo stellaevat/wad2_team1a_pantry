@@ -15,19 +15,27 @@ def show_my_recipes(request, username):
 def show_starred_recipes(request, username):
     return HttpResponse("Starred recipes")
 
+
+# DONE
+
 @login_required
 def user_profile(request, username):
     # Renders the user profile page and passes a context dictionary with the recipes starred and written by the user
-    # context_dict["written_list"] = Recipe.objects.filter(author= username) #Not sure if username is the user object or just the name
-    
-    # For compilation purposes, does nothing
-    context_dict = {}
-    context_dict["written"] = None;
-    context_dict["starred"] = None;
+    context_dict = {"user_accessed": None, "user_profile": None}
+    try:
+        user = User.objects.get(username=username)
+        user_profile = UserProfile.objects.get(user=user)
+        context_dict["user_accessed"] = user
+        context_dict["user_profile"] = user_profile
+        context_dict["written_recipes"] = Recipe.objects.filter(author=user)
+        context_dict["written_count"] = context_dict["written_recipes"].count()
+        context_dict["starred_recipes"] = user_profile.starred.all()
+        context_dict["starred_count"] = context_dict["starred_recipes"].count()
+    except Exception as e:
+        print(e)
+        
     return render(request, 'pantry/user_profile.html', context=context_dict)
     
-  
-# DONE
 def search_by_ingredient(request):
     context_dict = {}
     types = Ingredient.get_types()
