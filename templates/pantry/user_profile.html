@@ -7,10 +7,11 @@
 {% endblock %}
 
 {% block body_block %}
+{% if user_accessed.is_authenticated %}
 	<div class="header-featured">
 		<img class="banner" src="{% static 'img/profile-banner.png' %}" alt="User profile">
-		{% if user.profile_pic %}
-			<img class="profile-picture-big" src="{{ user.profile_pic }}" alt="User {{ user.username }}" width="150" height="150">
+		{% if user_profile.profile_pic %}
+			<img class="profile-picture-big" src="{{ user_profile.profile_pic }}" alt="User {{ user.username }}" width="150" height="150">
 		{% else %}
 			<img class="profile-picture-big" src="{% static 'img/profile-picture-default.png' %}" alt="User profile" width="150" height="150">
 		{% endif %}
@@ -18,7 +19,7 @@
 		<img class="icon-big" src="{% static 'img/pencil-white.png' %}" alt="Edit user profile">
 		
 		{% if written %}
-			<p class="info-message">Contributed delicious recipes.</p>
+			<p class="info-message">Contributed {{ written_count }} delicious recipes.</p>
 		{% endif %}
 		
 		<button class="btn-white-big" type="button">
@@ -29,10 +30,10 @@
 		
 	<div class="verticals-two">
 		<div class="vertical-featured">
-			<h2 class="vertical-title">MY RECIPES</h2></br>
+			<h2 class="vertical-title">MY RECIPES ({{ written_count }})</h2></br>
 			{% if written %}
 				<div class="recipes-list-view">
-					{% for recipe in written %}
+					{% for recipe in written_recipes %}
 						<a href="{% url 'rango:show_recipe' recipe.slug %}">{{ recipe.title }}</a>
 					{% endfor %}
 				</div>
@@ -43,10 +44,10 @@
 		</div>
 		
 		<div class="vertical-featured">
-			<h2 class="vertical-title">STARRED RECIPES</h2></br>
+			<h2 class="vertical-title">STARRED RECIPES ({{ starred_count }})</h2></br>
 			{% if starred %}
 				<div class="recipes-small-two">
-					{% for recipe in starred %}
+					{% for recipe in starred_recipes %}
 						<a href="{% url 'rango:show_recipe' recipe.slug %}">{{ recipe.title }}</a>
 					{% endfor %}
 				</div>
@@ -56,4 +57,8 @@
 			{% endif %}
 		</div>
 	</div>
+{% else %}
+	<h1 class="cat-heading">Invalid user profile</h1>
+	<p class="info-message">Make sure you have the right spelling, and that you're signed in to the correct account!</p>
+{% endif %}
 {% endblock %}
