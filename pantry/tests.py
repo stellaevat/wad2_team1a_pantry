@@ -106,11 +106,52 @@ class PantryTemplateStructureTests(TestCase):
 
     def test_templates_exist(self):
         """
-        Do the base.html and home.html templates exist in the correct place?
-        (Maybe add more checks for all html files in templates directory)
+        Checks that all html files are located in the templates directory
         """
         base_path = os.path.join(self.pantry_templates_dir, 'base.html')
         home_path = os.path.join(self.pantry_templates_dir, 'home.html')
+        tabs_path = os.path.join(self.pantry_templates_dir, 'tabs.html')
+
+        check_email_path = os.path.join(self.pantry_templates_dir, 'check_email.html')
+        sign_in_path = os.path.join(self.pantry_templates_dir, 'sign_in.html')
+        sign_up_path = os.path.join(self.pantry_templates_dir, 'sign_up.html')
+
+        user_profile_path = os.path.join(self.pantry_templates_dir, 'user_profile.html')
+        edit_profile_path = os.path.join(self.pantry_templates_dir, 'edit_profile.html')
+
+        add_recipe_path = os.path.join(self.pantry_templates_dir, 'add_recipe.html')
+        add_recipe_ingredients_path = os.path.join(self.pantry_templates_dir, 'add_recipe_ingredients.html')
+        ingredient_selection_path = os.path.join(self.pantry_templates_dir, 'ingredient_selection.html')
+        recipe_display_grid_path = os.path.join(self.pantry_templates_dir, 'recipe_display_grid.html')
+
+        search_by_ingredient_path = os.path.join(self.pantry_templates_dir, 'search_by_ingredient.html')
+        search_results_path = os.path.join(self.pantry_templates_dir, 'search_results.html')
+
+        show_category_path = os.path.join(self.pantry_templates_dir, 'show_category.html')
+        show_my_recipes_path = os.path.join(self.pantry_templates_dir, 'show_my_recipes.html')
+        show_recipe_path = os.path.join(self.pantry_templates_dir, 'show_recipe.html')
+        show_starred_recipes_path = os.path.join(self.pantry_templates_dir, 'show_starred_recipes.html')
 
         self.assertTrue(os.path.isfile(base_path), f"{FAILURE_HEADER}Your base.html template does not exist, or is in the wrong location.{FAILURE_FOOTER}")
         self.assertTrue(os.path.isfile(home_path), f"{FAILURE_HEADER}Your home.html template does not exist, or is in the wrong location.{FAILURE_FOOTER}")
+        self.assertTrue(os.path.isfile(tabs_path), f"{FAILURE_HEADER}Your tabs.html template does not exist, or is in the wrong location.{FAILURE_FOOTER}")
+
+        self.assertTrue(os.path.isfile(check_email_path), f"{FAILURE_HEADER}Your check_email.html template does not exist, or is in the wrong location.{FAILURE_FOOTER}")
+        self.assertTrue(os.path.isfile(sign_in_path), f"{FAILURE_HEADER}Your sign_in.html template does not exist, or is in the wrong location.{FAILURE_FOOTER}")
+        self.assertTrue(os.path.isfile(sign_up_path), f"{FAILURE_HEADER}Your sign_up.html template does not exist, or is in the wrong location.{FAILURE_FOOTER}")
+
+        self.assertTrue(os.path.isfile(user_profile_path), f"{FAILURE_HEADER}Your user_profile.html template does not exist, or is in the wrong location.{FAILURE_FOOTER}")
+        self.assertTrue(os.path.isfile(edit_profile_path), f"{FAILURE_HEADER}Your edit_profile.html template does not exist, or is in the wrong location.{FAILURE_FOOTER}")
+
+        self.assertTrue(os.path.isfile(add_recipe_path), f"{FAILURE_HEADER}Your add_recipe.html template does not exist, or is in the wrong location.{FAILURE_FOOTER}")
+        self.assertTrue(os.path.isfile(add_recipe_ingredients_path), f"{FAILURE_HEADER}Your add_recipe_ingredients.html template does not exist, or is in the wrong location.{FAILURE_FOOTER}")
+        self.assertTrue(os.path.isfile(ingredient_selection_path), f"{FAILURE_HEADER}Your ingredient_selection.html template does not exist, or is in the wrong location.{FAILURE_FOOTER}")
+        self.assertTrue(os.path.isfile(recipe_display_grid_path), f"{FAILURE_HEADER}Your recipe_display_grid.html template does not exist, or is in the wrong location.{FAILURE_FOOTER}")
+
+        self.assertTrue(os.path.isfile(search_by_ingredient_path), f"{FAILURE_HEADER}Your search_by_ingredient.html template does not exist, or is in the wrong location.{FAILURE_FOOTER}")
+        self.assertTrue(os.path.isfile(search_results_path), f"{FAILURE_HEADER}Your search_results.html template does not exist, or is in the wrong location.{FAILURE_FOOTER}")
+
+        self.assertTrue(os.path.isfile(show_category_path), f"{FAILURE_HEADER}Your show_category.html template does not exist, or is in the wrong location.{FAILURE_FOOTER}")
+        self.assertTrue(os.path.isfile(show_my_recipes_path), f"{FAILURE_HEADER}Your show_my_recipes.html template does not exist, or is in the wrong location.{FAILURE_FOOTER}")
+        self.assertTrue(os.path.isfile(show_recipe_path), f"{FAILURE_HEADER}Your show_recipe.html template does not exist, or is in the wrong location.{FAILURE_FOOTER}")
+        self.assertTrue(os.path.isfile(show_starred_recipes_path), f"{FAILURE_HEADER}Your show_starred_recipes.html template does not exist, or is in the wrong location.{FAILURE_FOOTER}")
