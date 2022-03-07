@@ -27,8 +27,11 @@ def get_ingredient_selection(types, ingredients):
     
 @register.filter
 def get_profile_picture(user):
-    user_profile = UserProfile.filter(user=user)
-    return user_profile.profile_picture
+    try:
+        user_profile = UserProfile.objects.get(user=user)
+        return user_profile.profile_picture
+    except:
+        return None
     
 @register.filter
 def get_recipes_by_author(user):

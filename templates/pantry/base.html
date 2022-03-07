@@ -32,8 +32,8 @@
 			<div class="navbar-right-align">
 				{% if user.is_authenticated %}
 					<a class="profile-thumbnail" href="{% url 'pantry:user_profile' user.username %}" id="nohovernavbar">
-						{% if user.profile_pic %}
-							<img src="{{ user.profile_pic }}" alt="Profile">
+						{% if user|get_profile_picture %}
+							<img src="/media/{{ user|get_profile_picture }}" alt="Profile">
 						{% else %}
 							<img src="{% static 'img/profile-picture-default.png' %}" alt="Profile">
 						{% endif %}
