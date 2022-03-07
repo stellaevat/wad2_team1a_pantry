@@ -149,7 +149,6 @@ def keyword_search_results(request):
 # Register view
 def sign_up(request):
     registered = False
-    context_dict = {}
     
     if request.method == 'POST':
         user_form = UserForm(request.POST)
@@ -168,7 +167,6 @@ def sign_up(request):
             
             user = authenticate(username=user_form.data["username"], password=user_form.data["password"])
             login(request, user)
-            context_dict['username'] = user.username
         else:
             context_dict = {'user_form': user_form, 'profile_form': profile_form, 'registered': registered, 'error': list(user_form.errors.values())[0]}
             return render(request, 'pantry/sign_up.html', context=context_dict)
@@ -176,9 +174,7 @@ def sign_up(request):
         user_form = UserForm()
         profile_form = UserProfileForm()
         
-    context_dict['user_form'] = user_form
-    context_dict['profile_form'] = profile_form
-    context_dict['registered'] = registered
+    context_dict = {'user_form': user_form, 'profile_form': profile_form, 'registered': registered}
     return render(request, 'pantry/sign_up.html', context=context_dict)
 
 # Check email view before logging in / signing up
