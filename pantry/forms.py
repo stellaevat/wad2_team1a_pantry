@@ -19,7 +19,7 @@ class UserForm(forms.ModelForm):
         confirm_password = cleaned_data.get("confirm_password")
 
         if password != confirm_password:
-            self.add_error('confirm_password', "Passwords don't match")
+            self.add_error('confirm_password', "Passwords don't match.")
             
         return cleaned_data
 

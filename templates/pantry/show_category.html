@@ -31,7 +31,8 @@
 		{% if recipes %}
 			<div class="recipes-big-three">
 				{% for recipe in recipes %}
-					{% recipe_display_grid recipe True %}
+					{% recipe_display_grid recipe %}
+					<div class="gap"></div>
 				{% endfor %}
 			</div>
 		{% else %}

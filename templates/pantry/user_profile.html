@@ -10,27 +10,34 @@
 {% if user_accessed.is_authenticated %}
 	<div class="header-featured">
 		<img class="banner" src="{% static 'img/profile-banner.png' %}" alt="User profile">
-		{% if profile_picture %}
-		<img class="profile-picture-big" src="/media/{{ user_profile.profile_picture }}" alt="User {{ user.username }}" width="150" height="150">
-		{% else %}
-		<img class="profile-picture-big" src="{% static 'img/profile-picture-default.png' %}" alt="User profile" width="150" height="150">
-		{% endif %}
-		<h1 class="title-featured">{{ user.username }}</h1>
-		<img class="icon-big" src="{% static 'img/pencil-white.png' %}" alt="Edit user profile">
+		<div class="user-profile-area">
+			{% if profile_picture %}
+			<img class="profile-picture-big" src="/media/{{ user_profile.profile_picture }}" alt="User {{ user.username }}" width="150" height="150">
+			{% else %}
+			<img class="profile-picture-big" src="{% static 'img/profile-picture-default.png' %}" alt="User profile" width="150" height="150">
+			{% endif %}
+			<h1 class="cat-heading" id="username">{{ user.username }}</h1><br />
+		</div>
 		
-		{% if written %}
-			<p class="info-message">Contributed {{ written_count }} delicious recipes.</p>
-		{% endif %}
-		
-		<button class="btn-white-big" type="button">
-			<img class="icon-big" src="{% static 'img/plus-dark.png' %}" alt="Add recipe" width="25" height="25">
-			ADD RECIPE
-		</button>
-	</div>
-		
+		<div class="profile-buttons">
+			<form action="{% url 'pantry:add_recipe_ingredients' %}">
+				<button class="btn-inverted" type="submit" value="Add Recipe">
+					<img class="icon-big" src="{% static 'img/plus-dark.png' %}" alt="Add recipe">
+					Add recipe
+				</button>
+			</form>
+			<form action="{% url 'pantry:edit_profile' user.username %}">
+				<button class="btn-inverted" type="submit" value="Edit Profile">
+					<img class="icon-big" src="{% static 'img/pencil-dark.png' %}" alt="Edit profile">
+					Edit profile
+				</button>
+			</form>
+		</div>
+	</div><br />
+	
 	<div class="verticals-two">
 		<div class="vertical-featured">
-			<h2 class="vertical-title">MY RECIPES ({{ written_count }})</h2></br>
+			<a href="{% url 'pantry:my_recipes' user.username %}"><h2 class="vertical-title">MY RECIPES ({{ written_count }})</h2></a></br>
 			{% if written_recipes %}
 			<div class="recipes-list-view">
 				{% for recipe in written_recipes %}
@@ -41,11 +48,12 @@
 			{% else %}
 				<p class="info-message">You haven't posted any recipes yet.</p>
 				<p class="info-message">If you do, you'll be able to find them here!</p>
+				<div class="gap-small"></div>
 			{% endif %}
 		</div>
 		
 		<div class="vertical-featured">
-			<h2 class="vertical-title">STARRED RECIPES ({{ starred_count }})</h2></br>
+			<a href="{% url 'pantry:starred_recipes' user.username %}"><h2 class="vertical-title">STARRED RECIPES ({{ starred_count }})</h2></a></br>
 			{% if starred_recipes %}
 			<div class="recipes-small-two">
 				{% for recipe in starred_recipes %}
@@ -56,6 +64,7 @@
 			{% else %}
 				<p class="info-message">You haven’t starred any recipes yet.</p>
 				<p class="info-message">Start starring to save your favourite recipes here!</p>
+				<div class="gap-small"></div>
 			{% endif %}
 		</div>
 	</div>
