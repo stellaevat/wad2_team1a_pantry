@@ -14,6 +14,9 @@ def show_my_recipes(request, username):
     
 def show_starred_recipes(request, username):
     return HttpResponse("Starred recipes")
+    
+def edit_profile(request, username):
+    return HttpResponse("Edit profile")
 
 
 # DONE

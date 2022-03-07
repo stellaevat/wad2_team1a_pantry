@@ -1,8 +1,7 @@
 :root {
     --dark: #360016; 
 	--medium: #E5E2E1;
-	--light: #DCDCDC;
-	--bg: #f8f8f8;
+	--light: #f8f8f8;
 	--burgundy: #64101F;
 	--orange: #F48D14;
 	--green: #6DD140;
@@ -12,7 +11,7 @@
 
 /* GENERAL */
 html {
-	background-color: var(--bg);
+	background-color: var(--light);
 	padding-bottom: 15px;
 }
 
@@ -46,6 +45,10 @@ a {
 	font-size: 19pt;
 }
 
+#recipe-title {
+	color: var(--light)
+}
+
 .cat-subheading, .login-prompt {
 	font-size: 14pt;
 	padding: 5px 0px 10px 0px;
@@ -75,7 +78,7 @@ a {
 }
 
 input {
-	background-color: var(--light);
+	background-color: var(--medium);
 	color: var(--dark);
 	width: calc(20vw + 200px);
 	height: 30px;
@@ -90,29 +93,42 @@ button {
 	border-radius: 30px;
 }
 
-.btn-continue {
-	background-color: var(--burgundy);
-	color: var(--bg);
+.btn-continue, .btn-back {
 	height: 60px;
 	width: 120px;
-	border-radius: 30px;
 	font-size: 15pt;
 	margin: 5px;
+}
+
+.btn-continue {
+	background-color: var(--burgundy);
+	color: var(--light);
+	
 }
 
 .btn-back {
 	background-color: var(--dark);
-	color: var(--bg);
-	height: 60px;
-	width: 120px;
+	color: var(--light);
+}
+
+.btn-inverted {
+	width: 200px;
+	height: 50px;
+	background-color: var(--medium);
+	color: var(--burgundy);
 	border-radius: 30px;
-	font-size: 15pt;
-	margin: 5px;
+	font-size: 19pt;
+	font-style: bold;
 }
 
 .btn-continue:hover, .btn-back:hover {
-	background-color: var(--light);
+	background-color: var(--medium);
 	color: var(--dark);
+}
+
+.btn-inverted:hover {
+	background-color: var(--burgundy);
+	color: var(--light);
 }
 
 .icon-small {
@@ -121,8 +137,17 @@ button {
 }
 
 .icon-big {
-	width: 25px;
-	height: 25px;
+	width: 20px;
+	height: 20px;
+}
+
+.profile-buttons {
+	columns: 2;
+	padding: 0px calc(50vw - 220px) 0px calc(50vw - 220px)
+}
+
+#username {
+	float: center;
 }
 
 .profile-picture-big {
@@ -131,7 +156,6 @@ button {
 	height: 200px;
 	border-radius: 100px;
 }
-
 
 
 /* NAVBAR & TABS */
@@ -150,7 +174,7 @@ button {
 
 .navbar * {
 	background-color: var(--dark);
-	color: var(--bg);
+	color: var(--light);
 	white-space: nowrap;
 }
 
@@ -218,7 +242,7 @@ button {
 }
 
 .tabs *:hover {
-	background-color: var(--light);
+	background-color: var(--medium);
 	color: var(--burgundy);
 }
 
@@ -232,18 +256,18 @@ button {
 
 .tab-primary, .tab-primary * {
 	background-color: var(--orange);
-	color: var(--bg);
+	color: var(--light);
 	padding-right: calc(35vw - 242.5px);
 }
 
 
 .tab-primary-open a {
-	background-color: var(--bg);
+	background-color: var(--light);
 	color: var(--orange);
 }
 
 .search-bar * {
-	background-color: var(--light);
+	background-color: var(--medium);
 	color: var(--dark);
 	width: calc(20vw + 100px);
 	height: 25px;
@@ -296,7 +320,7 @@ button {
 
 .thumbnail-info * {
 	background-color: var(--dark);
-	color: var(--bg);
+	color: var(--light);
 }
 
 .main-info {
@@ -360,7 +384,7 @@ button {
 
 .collapsible-active, .collapsible-active * {
 	background-color: var(--orange);
-	color: var(--bg);
+	color: var(--light);
 }
 
 .collapsing {
@@ -454,7 +478,7 @@ button {
 }
 
 .dropdown-items a{
-	color:var(--bg);
+	color:var(--light);
 	padding-top: 12px;
 	padding-bottom :12px;
 	padding-left: 16px;
@@ -466,3 +490,4 @@ button {
 .dropdown-menu:hover .dropdown-items {
 	display:block;
 }
+

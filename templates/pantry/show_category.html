@@ -28,8 +28,8 @@
 		{% if recipes %}
 			<div class="recipes-big-three">
 				{% for recipe in recipes %}
-					<a href="{% url 'pantry:show_recipe' recipe.slug %}">{{ recipe }}</a>
-					<br />
+					{% recipe_display_grid recipe True %}
+					<div class="gap"></div>
 				{% endfor %}
 			</div>
 		{% else %}
