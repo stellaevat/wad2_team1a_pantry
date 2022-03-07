@@ -158,7 +158,7 @@ button {
 	display: block;
 }
 
-.navbar-left-align *:hover, .navbar-right-align *:hover{
+.navbar-left-align a:hover, .navbar-right-align a:hover{
 	background-color: var(--burgundy);
 }
 
