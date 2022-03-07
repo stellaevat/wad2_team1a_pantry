@@ -9,10 +9,10 @@
 {% block body_block %}
 	{% if recipe %}
 		<div class="header-featured">
-			<img class="banner" src="/media/recipe_pictures/{{ recipe.slug }}.jpg" alt="{{ recipe.title }}" width="1900px" style="width:100%; height:400px;object-fit:cover">
+			<img class="banner" src="/media/{{ recipe.picture }}" alt="{{ recipe.title }}" width="1900px" style="width:100%; height:400px;object-fit:cover">
 			<h1 class="title-featured">{{ recipe.title }}</h1>
 			<div class="stars">
-				<img class="icon-small" src="{% static 'img/star-dark.png' %}" alt="Stars" width="10" height="10">
+				<img class="icon-small" src="{% static 'img/star-dark.png' %}" alt="Stars">
 				{{ recipe.stars }}
 			</div>
 			<div class="info-tags">
@@ -35,7 +35,7 @@
 			</div>
 			{% if user.is_authenticated %}
 				<button class="btn-white-big" type="button">
-					<img class="icon-big" src="{% static 'img/star-dark.png' %}" alt="Star" width="25" height="25">
+					<img class="icon-big" src="{% static 'img/star-dark.png' %}" alt="Star">
 					Star
 				</button>
 			{% endif %}

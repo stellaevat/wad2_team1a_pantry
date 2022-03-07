@@ -21,7 +21,7 @@ def show_starred_recipes(request, username):
 @login_required
 def user_profile(request, username):
     # Renders the user profile page and passes a context dictionary with the recipes starred and written by the user
-    context_dict = {"user_accessed": None, "user_profile": None}
+    context_dict = {"user_accessed": None, "user_profile": None, "profile_picture": None}
     try:
         user = User.objects.get(username=username)
         user_profile = UserProfile.objects.get(user=user)
@@ -31,6 +31,7 @@ def user_profile(request, username):
         context_dict["written_count"] = context_dict["written_recipes"].count()
         context_dict["starred_recipes"] = user_profile.starred.all()
         context_dict["starred_count"] = context_dict["starred_recipes"].count()
+        context_dict["profile_picture"] = user_profile.profile_picture
     except Exception as e:
         print(e)
         
@@ -50,7 +51,7 @@ def search_by_ingredient(request):
     
     context_dict["types"] = type_names    
     context_dict["ingredients"] = ingredients
-    return render(request, 'pantry/search_by_ingredient.html', context=context_dict)  
+    return render(request, 'pantry/search_by_ingredient.html', context=context_dict)
     
 def home(request):
     # Renders the home page, passing a context dictionary with the 2 most popular and 2 most viewed recipes.
@@ -148,7 +149,8 @@ def keyword_search_results(request):
 # Register view
 def sign_up(request):
     registered = False
-
+    context_dict = {}
+    
     if request.method == 'POST':
         user_form = UserForm(request.POST)
         profile_form = UserProfileForm(request.POST)
@@ -166,6 +168,7 @@ def sign_up(request):
             
             user = authenticate(username=user_form.data["username"], password=user_form.data["password"])
             login(request, user)
+            context_dict['username'] = user.username
         else:
             context_dict = {'user_form': user_form, 'profile_form': profile_form, 'registered': registered, 'error': list(user_form.errors.values())[0]}
             return render(request, 'pantry/sign_up.html', context=context_dict)
@@ -173,7 +176,9 @@ def sign_up(request):
         user_form = UserForm()
         profile_form = UserProfileForm()
         
-    context_dict = {'user_form': user_form, 'profile_form': profile_form, 'registered': registered}
+    context_dict['user_form'] = user_form
+    context_dict['profile_form'] = profile_form
+    context_dict['registered'] = registered
     return render(request, 'pantry/sign_up.html', context=context_dict)
 
 # Check email view before logging in / signing up
