@@ -11,7 +11,7 @@
 		<div class="cat-header">
 			<h1 class="cat-heading">Explore Our {{ category.name }}...</h1>
 			{% if recipes %}
-			<div class="dropdown-menu" aria-labelledby="dropdown01">
+			<div class="dropdown-menu" aria-labelledby="dropdown01" style="float:right;">
 				<button class="dropdown-main">Filter</button>
 				<div class="dropdown-items">
 					<a class="dropdown-item" href="{% url 'pantry:category_sort' category.slug 'popular' %}">Filter: Most Popular</a>
