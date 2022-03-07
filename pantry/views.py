@@ -109,25 +109,31 @@ def category_sort(request, category_title_slug, sort = None):
         
         if sort == "popular":
             recipes = Recipe.objects.filter(category=category).order_by("-stars")
+            sort = "Most Popular"
         elif sort == "newest":
             recipes = Recipe.objects.filter(category=category).order_by("-pub_date")
+            sort = "Most Recent"
         elif sort == "oldest":
             recipes = Recipe.objects.filter(category=category).order_by("-pub_date")[::-1]
+            sort = "Oldest"
         else:
-            recipes = Recipe.objects.filter(category=category)
+            recipes = Recipe.objects.filter(category=category).order_by("-stars")
         context_dict['recipes'] = recipes     
+        context_dict["sort_type"] = sort
     except Category.DoesNotExist:
         context_dict['category'] = None
         context_dict['recipes'] = None
+    
     return render(request, 'pantry/show_category.html', context=context_dict)
 
 def show_category(request, category_title_slug, sort = None):
     context_dict = {}
     try:
         category = Category.objects.get(slug=category_title_slug)
-        recipes = Recipe.objects.filter(category=category)
+        recipes = Recipe.objects.filter(category=category).order_by("-stars")
         context_dict['recipes'] = recipes
         context_dict['category'] = category
+        context_dict["sort_type"] = "Most Popular"
     except Category.DoesNotExist:
         context_dict['category'] = None
         context_dict['recipes'] = None

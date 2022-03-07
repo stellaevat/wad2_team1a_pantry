@@ -9,14 +9,14 @@
 {% block body_block %}
 	{% if category %}
 		<div class="cat-header">
-			<h1 class="cat-heading">Explore Our {{ category.name }}...</h1>
+			<h1 class="cat-heading" style="float:left; margin-left:454px;">Explore Our {{ category.name }}...</h1>
 			{% if recipes %}
-			<div class="dropdown-menu" aria-labelledby="dropdown01">
-				<button class="dropdown-main">Filter</button>
+			<div class="dropdown-menu" aria-labelledby="dropdown01" style="float:right;">
+				<button class="dropdown-main" style="">Sort : {{ sort_type }}  &#9660;</button>
 				<div class="dropdown-items">
 					<a class="dropdown-item" href="{% url 'pantry:category_sort' category.slug 'popular' %}">Filter: Most Popular</a>
-					<a class="dropdown-item" href="{% url 'pantry:category_sort' category.slug 'newest' %}">Filter: Newest</a>
-					<a class="dropdown-item" href="{% url 'pantry:category_sort' category.slug 'old' %}">Filter: Oldest</a>
+					<a class="dropdown-item" href="{% url 'pantry:category_sort' category.slug 'newest' %}">Filter: Most Recent</a>
+					<a class="dropdown-item" href="{% url 'pantry:category_sort' category.slug 'oldest' %}">Filter: Oldest</a>
 				</div>
 			</div>
 			{% endif %}
@@ -24,11 +24,14 @@
 
 		<br />
 		<br />
+		<br />
+		<br />
+		<br />
 		
 		{% if recipes %}
 			<div class="recipes-big-three">
 				{% for recipe in recipes %}
-					{% recipe_display_grid recipe True %}
+					{% recipe_display_grid recipe %}
 					<div class="gap"></div>
 				{% endfor %}
 			</div>
