@@ -11,7 +11,7 @@
 		<div class="cat-header">
 			<h1 class="cat-heading">Explore Our {{ category.name }}...</h1>
 			{% if recipes %}
-				{% get_recipe_sorter category %}
+				{% get_recipe_sorter category sort_type %}
 			{% endif %}
 		</div>
 
