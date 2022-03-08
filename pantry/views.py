@@ -4,7 +4,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from pantry.models import Recipe, Category, Ingredient, IngredientList, UserProfile
-from pantry.forms import UserForm, UserProfileForm, EmailForm, RecipeIngredientsForm
+from pantry.forms import UserForm, UserProfileForm, EmailForm, RecipeForm
 from django.contrib.auth.models import User
 from django.db.models import Q
 
@@ -75,17 +75,19 @@ def show_recipe(request, recipe_name_slug):
     
 @login_required
 def add_recipe_ingredients(request):
-	form = RecipeIngredientsForm()
+	form = RecipeForm()
+	
+	ingredients = Ingredient.objects.filter
 	
 	if request.method == 'POST':
-		form = RecipeIngredientsForm(request.POST)
+		form = RecipeForm(request.POST)
 	
 		if form.is_valid():
 			form.save(commit=True)
 			return redirect('/pantry/add_recipe/method')
 		else:
 			print(form.errors)
-	return render(request, 'pantry/add_recipe_ingredients.html', {'form': form})
+	return render(request, 'pantry/add_recipe.html', {'form': form})
 
 @login_required
 def add_recipe_method(request):
