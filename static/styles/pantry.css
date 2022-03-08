@@ -473,6 +473,7 @@ button {
 	position: fixed;
 	bottom: 50px;
 	right: calc(25vw - 150px);
+	z-index: 2;
 }
 
 
@@ -572,6 +573,19 @@ button {
 
 .profile-buttons form button {
 	background-color: white;
+}
+
+#back-prof-btn {
+	width: 180px;
+	position: fixed;
+	bottom: 50px;
+	right: calc(25vw - 150px);
+	z-index: 2;
+}
+
+#view-prof-btn {
+	width: 180px;
+	z-index: 2;
 }
 
 
