@@ -11,7 +11,7 @@
 		<div class="cat-header">
 			<h1 class="cat-heading">Search results for '{{ searched }}'...</h1><br />
 			{% if recipes %}
-				{% get_recipe_sorter recipes %}
+				{% get_recipe_sorter recipes sort_type %}
 			{% endif %}
 		</div>
 		
