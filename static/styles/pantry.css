@@ -41,12 +41,13 @@ a {
 	width: calc(6vw + 400px);
 }
 
-.cat-heading {
-	font-size: 24pt;
+.header-featured {
+	height: 420px;
+	position: relative;
 }
 
-#recipe-title {
-	color: var(--light)
+.cat-heading {
+	font-size: 24pt;
 }
 
 .cat-subheading, .login-prompt {
@@ -164,7 +165,7 @@ button {
 .navbar {
 	position: fixed;
 	top: 0px;
-	z-index: 1;
+	z-index: 3;
 	width: 100%;
 	height: 45px;
 	line-height: 45px;
@@ -473,7 +474,7 @@ button {
 	position: fixed;
 	bottom: 50px;
 	right: calc(25vw - 150px);
-	z-index: 2;
+	z-index: 1;
 }
 
 
@@ -500,7 +501,7 @@ button {
 .dropdown-menu {
 	position: relative;
 	display:inline-block;
-	z-index: 2;
+	z-index: 1;
 }
 
 .dropdown-main{
@@ -518,7 +519,7 @@ button {
 	display:none;
 	background-color: white;
 	color:var(--dark);
-	opacity: 0.85;
+	opacity: 0.9;
 	border-radius: 0px 0px 30px 30px;
 	position: absolute;
 	right:0;
@@ -542,10 +543,6 @@ button {
 }
 
 /* USER PROFILE */
-.header-featured {
-	height: 420px;
-}
-
 #profile-banner {
 	opacity: 0.2;
 }
@@ -580,14 +577,99 @@ button {
 	position: fixed;
 	bottom: 50px;
 	right: calc(25vw - 150px);
-	z-index: 2;
+	z-index: 1;
 }
 
 #view-prof-btn {
 	width: 180px;
-	z-index: 2;
+	z-index: 1;
 }
 
 
+/* RECIPE PAGE */
 
+.banner-text {
+	position: relative;
+	bottom: 200px;
+	background-color: var(--dark);
+	opacity: 0.8;
+	position: absolute;
+	bottom: 20px;
+	padding: 30px;
+	padding-left: calc(35vw - 300px);
+}
+
+#recipe-title {
+	color: var(--light);
+	font-size:60pt;
+	text-align: left;
+	float: left;
+	padding-left: 15px;
+}
+
+.info-tags * {
+	float: left;
+	padding-right: 30px;
+	padding-left: 15px;
+}
+
+.tag * {
+	float: left;
+	color: white;
+	padding: 5px;
+	font-size: 14pt;
+}
+
+.recipe-tag-head {
+	position: relative;
+	top: 2pt;
+	color: var(--orange);
+}
+
+.recipe-tag-info {
+	font-weight: light;
+	font-size: 16pt;
+}
+
+#star-btn {
+	width: 130px;
+	height: 60px;
+	position: fixed;
+	top: 140px;
+	right: 5vw;
+	z-index: 1;
+}
+
+.verticals-left-narrow {
+	overflow: hidden;
+    position: relative;
+	padding-left: calc(35vw - 300px);
+	padding-right: calc(35vw - 300px);
+}
+
+.verticals-left-narrow * {
+	overflow: hidden;
+    position: relative;
+}
+
+.vertical {
+	padding-left: 15px;
+}
+
+.vertical-featured#ingredients {
+	width: 300px;
+}
+
+.ingredient {
+	padding: 5px 25px 5px 25px;
+	text-align: left;
+	font-size: 12pt;
+}
+
+.long-text {
+	font-size: 12pt;
+	text-align: left;
+	line-height: 24pt;
+	padding-left: 30px;
+}
 
