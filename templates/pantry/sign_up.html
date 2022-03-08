@@ -14,7 +14,7 @@
 	<div class="login-area">
 		{% if registered %}
 			<p class="login-prompt">You've registered successfully - you can now add and star recipes!</p><br />
-			<form action="{% url 'pantry:user_profile' username %}">
+			<form action="{% url 'pantry:user_profile' user.username %}">
 				<input class="btn-continue" id="view-prof-btn" type="submit" value="View profile">
 			</form>
 		{% else %}
