@@ -4,8 +4,14 @@
 <div class="dropdown-menu" aria-labelledby="dropdown01" style="float:right;">
 	<button class="dropdown-main" style="">Sort : {{ sort_type }}  &#9660;</button>
 	<div class="dropdown-items">
-		<a class="dropdown-item" href="{% url 'pantry:category_sort' category.slug 'popular' %}">Most Popular</a>
-		<a class="dropdown-item" href="{% url 'pantry:category_sort' category.slug 'newest' %}">Newest</a>
-		<a class="dropdown-item" href="{% url 'pantry:category_sort' category.slug 'oldest' %}">Oldest</a>
+		{% if category %}
+		<a class="dropdown-item" href="{% url 'pantry:show_category' category.slug 'popular' %}">Most Popular</a>
+		<a class="dropdown-item" href="{% url 'pantry:show_category' category.slug 'newest' %}">Newest</a>
+		<a class="dropdown-item" href="{% url 'pantry:show_category' category.slug 'oldest' %}">Oldest</a>
+		{% else %}
+		<a class="dropdown-item" href="{% url 'pantry:keyword_search_results' 'popular' %}">Most Popular</a>
+		<a class="dropdown-item" href="{% url 'pantry:keyword_search_results' 'newest' %}">Newest</a>
+		<a class="dropdown-item" href="{% url 'pantry:keyword_search_results' 'oldest' %}">Oldest</a>
+		{% endif %}
 	</div>
 </div>

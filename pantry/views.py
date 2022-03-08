@@ -8,6 +8,20 @@ from pantry.forms import UserForm, UserProfileForm, EmailForm, RecipeIngredients
 from django.contrib.auth.models import User
 from django.db.models import Q
 
+# Helper sort method (for recipe display)
+def sort_by(recipes, sort):
+    if sort == "newest":
+        recipes.sort(key=lambda x: x.pub_date, reverse=True)
+        sort_type = "Newest"
+    elif sort == "oldest":
+        recipes.sort(key=lambda x: x.pub_date)
+        sort_type = "Oldest"
+    else:
+        recipes.sort(key=lambda x: x.stars, reverse=True)
+        sort_type = "Most Popular"
+    return recipes, sort_type
+
+
 # Dummy views until created
 def show_my_recipes(request, username):
     return HttpResponse("My recipes")
@@ -101,59 +115,41 @@ def add_recipe_method(request):
 			print(form.errors)
 	return render(request, 'pantry/add_recipe_method.html', {'form': form})
 
-def category_sort(request, category_title_slug, sort = None):
+def show_category(request, category_title_slug, sort=None):
     context_dict = {}
     try:
         category = Category.objects.get(slug=category_title_slug)
-        context_dict['category'] = category
-        recipes = Recipe.objects.filter(category=category).order_by("-stars")
-        
-        if sort == "popular":
-            sort = "Most Popular"
-        elif sort == "newest":
-            recipes = Recipe.objects.filter(category=category).order_by("-pub_date")
-            sort = "Newest"
-        elif sort == "oldest":
-            recipes = Recipe.objects.filter(category=category).order_by("-pub_date")[::-1]
-            sort = "Oldest"
-            
-        context_dict['recipes'] = recipes     
-        context_dict["sort_type"] = sort
-    except Category.DoesNotExist:
-        context_dict['category'] = None
-        context_dict['recipes'] = None
-    
-    return render(request, 'pantry/show_category.html', context=context_dict)
+        recipes = Recipe.objects.filter(category=category)
+        recipes, sort_type = sort_by(list(recipes), sort)
 
-def show_category(request, category_title_slug, sort = None):
-    context_dict = {}
-    try:
-        category = Category.objects.get(slug=category_title_slug)
-        recipes = Recipe.objects.filter(category=category).order_by("-stars")
         context_dict['recipes'] = recipes
         context_dict['category'] = category
-        context_dict["sort_type"] = "Most Popular"
+        context_dict['sort_type'] = sort_type
     except Category.DoesNotExist:
         context_dict['category'] = None
         context_dict['recipes'] = None
     return render(request, 'pantry/show_category.html', context=context_dict)
 
 
-def keyword_search_results(request):
+def keyword_search_results(request, sort=None):
     if request.method == 'POST':
         searched = request.POST.get('searched')
-        recipes = set()
-        if searched:
-            keywords = searched.split()
-            for k in keywords:
-                recipes = recipes.union(Recipe.objects.filter(Q(title__contains=k) | Q(steps__contains=k)))
-            context_dict = {'searched':searched, 'recipes':recipes}
-            return render(request, 'pantry/search_results.html', context=context_dict)
-        else: 
-            return render(request, 'pantry/search_results.html', {})
     else:
-        return render(request, 'pantry/search_results.html', {})
+        searched = request.session['searched']
         
+    recipes = set()
+    if searched:
+        keywords = searched.split()
+        for k in keywords:
+            recipes = recipes.union(Recipe.objects.filter(Q(title__contains=k) | Q(steps__contains=k)))
+            
+        recipes, sort_type = sort_by(list(recipes), sort)
+        request.session['searched'] = searched
+        context_dict = {'searched': searched, 'recipes':recipes, 'sort_type': sort_type}
+        return render(request, 'pantry/search_results.html', context=context_dict)
+    else: 
+        return render(request, 'pantry/search_results.html', {})
+
 
 # Register view
 def sign_up(request):
