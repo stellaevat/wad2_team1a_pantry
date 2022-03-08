@@ -1,0 +1,11 @@
+{% load staticfiles %}
+{% load pantry_template_tags %}
+
+<div class="dropdown-menu" aria-labelledby="dropdown01" style="float:right;">
+	<button class="dropdown-main" style="">Sort : {{ sort_type }}  &#9660;</button>
+	<div class="dropdown-items">
+		<a class="dropdown-item" href="{% url 'pantry:category_sort' category.slug 'popular' %}">Most Popular</a>
+		<a class="dropdown-item" href="{% url 'pantry:category_sort' category.slug 'newest' %}">Newest</a>
+		<a class="dropdown-item" href="{% url 'pantry:category_sort' category.slug 'oldest' %}">Oldest</a>
+	</div>
+</div>

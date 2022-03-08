@@ -11,19 +11,10 @@
 		<div class="cat-header">
 			<h1 class="cat-heading">Explore Our {{ category.name }}...</h1>
 			{% if recipes %}
-			<div class="dropdown-menu" aria-labelledby="dropdown01" style="float:right;">
-				<button class="dropdown-main" style="">Sort : {{ sort_type }}  &#9660;</button>
-				<div class="dropdown-items">
-					<a class="dropdown-item" href="{% url 'pantry:category_sort' category.slug 'popular' %}">Most Popular</a>
-					<a class="dropdown-item" href="{% url 'pantry:category_sort' category.slug 'newest' %}">Most Recent</a>
-					<a class="dropdown-item" href="{% url 'pantry:category_sort' category.slug 'oldest' %}">Oldest</a>
-				</div>
-			</div>
+				{% get_recipe_sorter category %}
 			{% endif %}
 		</div>
-		
 
-		
 		{% if recipes %}
 		<div class="gap-small"></div>
 		<div class="recipes-big-three">

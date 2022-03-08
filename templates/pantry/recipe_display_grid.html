@@ -1,4 +1,5 @@
 {% load staticfiles %}
+{% load pantry_template_tags %}
 
 <a class="recipe-grid-{{ size }}" href="{% url 'pantry:show_recipe' recipe.slug %}">
 	<img class="recipe-thumbnail-{{ size }}" src="/media/recipe_pictures/{{ recipe.slug }}.jpg" alt="{{ recipe.name }}"><br />

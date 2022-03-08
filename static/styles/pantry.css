@@ -287,15 +287,15 @@ button {
 /* RECIPE THUMBNAILS */
 /* Small grid */
 .recipes-small-two {
-	display: flex;
+	display: grid;
+	grid-template-columns: 1fr 1fr;
 	padding: 15px;
-	flex-wrap: wrap;
 }
 
 .recipe-grid-small {
 	position: relative;
-	flex: 1;
 	left: 10px;
+	height: calc(5vw + 110px);
 }
 
 .recipe-grid-small * {
@@ -326,12 +326,11 @@ button {
 	bottom: 70px;
 	display: grid;
 	grid-template-columns: 1fr 1fr 1fr;
-	padding: 0px calc(35vw - 245px) 0px calc(35vw - 245px);
+	padding: 0px calc(35vw - 235px) 0px calc(35vw - 235px);
 }
 
 .recipe-grid-big {
 	position: relative;
-	left: 10px;
 	height: calc(11vw + 130px);
 }
 

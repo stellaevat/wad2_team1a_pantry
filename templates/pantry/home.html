@@ -14,12 +14,11 @@
 	
 	<div class="verticals-two">
 		<div class="vertical-featured">
-			<h2 class="vertical-title">MOST POPULAR</h2><br />
+			<h2 class="vertical-title">MOST POPULAR</h2>
 			{% if popular_list %}
 			<div class="recipes-small-two">
 				{% for recipe in popular_list %}
 					{% recipe_display_grid recipe True %}
-					<div class="gap"></div>
 				{% endfor %}
 			</div>
 			{% else %}
@@ -30,12 +29,11 @@
 		</div>
 		
 		<div class="vertical-featured">
-			<h2 class="vertical-title">MOST RECENT</h2><br />
+			<h2 class="vertical-title">MOST RECENT</h2>
 			{% if recent_list %}
 			<div class="recipes-small-two">
 				{% for recipe in recent_list %}
 					{% recipe_display_grid recipe True %}
-					<div class="gap"></div>
 				{% endfor %}
 			</div>
 			{% else %}

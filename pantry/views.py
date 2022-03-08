@@ -106,18 +106,17 @@ def category_sort(request, category_title_slug, sort = None):
     try:
         category = Category.objects.get(slug=category_title_slug)
         context_dict['category'] = category
+        recipes = Recipe.objects.filter(category=category).order_by("-stars")
         
         if sort == "popular":
-            recipes = Recipe.objects.filter(category=category).order_by("-stars")
             sort = "Most Popular"
         elif sort == "newest":
             recipes = Recipe.objects.filter(category=category).order_by("-pub_date")
-            sort = "Most Recent"
+            sort = "Newest"
         elif sort == "oldest":
             recipes = Recipe.objects.filter(category=category).order_by("-pub_date")[::-1]
             sort = "Oldest"
-        else:
-            recipes = Recipe.objects.filter(category=category).order_by("-stars")
+            
         context_dict['recipes'] = recipes     
         context_dict["sort_type"] = sort
     except Category.DoesNotExist:
@@ -154,6 +153,7 @@ def keyword_search_results(request):
             return render(request, 'pantry/search_results.html', {})
     else:
         return render(request, 'pantry/search_results.html', {})
+        
 
 # Register view
 def sign_up(request):
