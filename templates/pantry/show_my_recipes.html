@@ -9,6 +9,9 @@
 {% block body_block %}
 	<div class="cat-header">
 		<h1 class="cat-heading">My Recipes</h1>
+		{% if recipes %}
+			{% get_recipe_sorter recipes sort_type %}
+		{% endif %}
 	</div>
 	
 	{% if recipes %}

@@ -331,18 +331,18 @@ button {
 
 .recipe-grid-big {
 	position: relative;
-	height: calc(11vw + 130px);
+	height: calc(10vw + 150px);
 }
 
 .recipe-grid-big * {
-	max-width: calc(11vw + 110px);
+	max-width: calc(10vw + 140px);
 	text-align: left;
 }
 
 .recipe-thumbnail-big {
 	object-fit: cover;
-	width:calc(11vw + 110px);
-	height:calc(11vw + 110px);
+	width:calc(10vw + 140px);
+	height:calc(10vw + 140px);
 	position: absolute;
 	bottom: 0px;
 	left: 0px;
@@ -499,7 +499,8 @@ button {
 	}
 }
 
-/* Dropdown CSS (This has also been inspired by the w3schools dropdown menu section) */
+/* DROPDOWN (SORTER)
+(Inspired by the w3schools dropdown menu section) */
 
 .dropdown-menu {
 	position: relative;
@@ -507,37 +508,40 @@ button {
 }
 
 .dropdown-main{
-	background-color:var(--light);
-	border-radius: 50px;
+	background-color:white;
 	color:var(--dark);
-	margin-right: 50px;
-	padding: 5px;
-	float:right;
+	padding: 15px;
 	position: relative;
 	display:inline-block;
+	width: 180px;
+	text-align: left;
+	border-radius: 20px;
 }
 
 .dropdown-items{
 	display:none;
-	background-color:#f8f8f8;
+	background-color: white;
 	color:var(--dark);
-	min-width:160px;
-	z-index:1;
-	float:right;
-	right:0;
+	opacity: 0.85;
+	border-radius: 0px 0px 30px 30px;
 	position: absolute;
+	right:0;
+	top: 35px;
+	padding-top: 10px;
+	min-width:100px;
+	z-index:1;
 }
 
 .dropdown-items a{
-	background-color:var(--light);
+	background-color:white;
 	color:var(--dark);
-	padding: 12px 16px;
+	border-radius: 0px 0px 20px 20px;
+	padding: 12px 38px 12px 10px;
 	text-decoration: none;
+	text-align: left;
 	display: block;
 }
 
 .dropdown-menu:hover .dropdown-items {
-	background-color:var(--light);
 	display:block;
-	color:var(--dark);
 }
