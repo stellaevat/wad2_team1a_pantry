@@ -1,23 +1,23 @@
 {% load staticfiles %}
 
-<a class="{{ div_class }}" href="{% url 'pantry:show_recipe' recipe.slug %}">
-	<img class="recipe-thumbnail-medium" src="/media/recipe_pictures/{{ recipe.slug }}.jpg" alt="{{ recipe.name }}"><br />
+<a class="recipe-grid-{{ size }}" href="{% url 'pantry:show_recipe' recipe.slug %}">
+	<img class="recipe-thumbnail-{{ size }}" src="/media/recipe_pictures/{{ recipe.slug }}.jpg" alt="{{ recipe.name }}"><br />
 	<div class="thumbnail-info">
-		<div class="main-info">
+		<div class="main-info-{{ size }}">
 			{{ recipe.title }}<br />
 		</div>
-		<div class="secondary-info">
+		<div class="secondary-info-{{ size }}">
 			<div>
-				<img class="icon-small" src="{% static 'img/star-light.png' %}" width="15px" height="15px" alt="Stars">
+				<img class="icon-small" src="{% static 'img/star-light.png' %}" alt="Stars">
 				{{ recipe.stars }}
 			</div>
 			<div>
-				<img class="icon-small" src="{% static 'img/timer-light.png' %}" width="15px" height="15px" alt="Cooking time">
+				<img class="icon-small" src="{% static 'img/timer-light.png' %}" alt="Cooking time">
 				{{ time }}'
 			</div>
 			<div>
 			{% if by_ingredient %}
-				<img class="icon-small" src="{% static 'img/tick-light.png' %}" width="15px" height="15px" alt="Ingredients">
+				<img class="icon-small" src="{% static 'img/tick-light.png' %}" alt="Ingredients">
 				{{ selected }}/{{ ingredients }}
 			{% endif %}
 			</div>

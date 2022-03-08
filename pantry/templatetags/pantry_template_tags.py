@@ -8,14 +8,15 @@ def get_tabs(current_tab=None):
     
 @register.inclusion_tag('pantry/recipe_display_grid.html')
 def recipe_display_grid(recipe, small=False, by_ingredient=False, selected=None):
-    div_class = "recipe-grid"
     if small:
-        div_class += "-small"
+        size = "small"
+    else:
+        size = "big"
     ingredients = None
     if by_ingredient:
         ingredients = IngredientList.objects.filter(recipe=recipe).count()
     return {'recipe': recipe,
-            'div_class': div_class,
+            'size': size,
             'time': recipe.prep_time + recipe.cook_time,
             'by_ingredient': by_ingredient,
             'selected': selected,
