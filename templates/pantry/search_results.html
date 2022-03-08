@@ -8,12 +8,17 @@
 
 {% block body_block %}
 	{% if searched %}
-		<h1 class="category-header">Search results for '{{ searched }}'...</h1><br />
+		<div class="cat-header">
+			<h1 class="cat-heading">Search results for '{{ searched }}'...</h1><br />
+		</div>
 		
 		{% if recipes %}
+		<div class="gap-small"></div>
+		<div class="recipes-big-three">
 			{% for recipe in recipes %}
-				<a href="{% url 'pantry:show_recipe' recipe.slug %}">{{ recipe.title }}</a> <br />
+				{% recipe_display_grid recipe %}
 			{% endfor %}
+		</div>
 		{% else %}
 			<p class="info-message">No matches for your search. Try using fewer or more general keywords.</p>
 			<p class="info-message">Alternatively, you can browse our categories or search by ingredient!</p>

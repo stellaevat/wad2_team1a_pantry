@@ -8,26 +8,19 @@
 
 {% block body_block %}
 	<div class="cat-header">
-		<h1 class="cat-heading">Starred Recipes</h1>
-		{% if recipes %}
-		<ul class="dropdown-menu" aria-labelledby="dropdown01">
-			<li><a class="dropdown-item" href="{% url 'pantry:show_recipe' category.slug %}">Filter: Most Popular</a></li>
-			<li><a class="dropdown-item" href="{% url 'pantry:show_recipe' category.slug %}">Filter: Least Popular</a></li>
-			<li><a class="dropdown-item" href="{% url 'pantry:show_recipe' category.slug %}">Filter: Newest</a></li>
-			<li><a class="dropdown-item" href="{% url 'pantry:show_recipe' category.slug %}">Filter: Oldest</a></li>
-		</ul>
-		{% endif %}
+		<h1 class="cat-heading">My Recipes</h1>
 	</div>
 	
 	{% if recipes %}
-		<div class="recipes-big-three">
-			{% for recipe in recipes %}
-				<a href="{% url 'pantry:show_recipe' recipe.slug %}">{{ recipe }}</a>
-			{% endfor %}
-		</div>
+	<div class="gap-small"></div>
+	<div class="recipes-big-three">
+		{% for recipe in recipes %}
+			{% recipe_display_grid recipe %}
+		{% endfor %}
+	</div>
 	{% else %}
-		<p class="info-message">You haven’t starred any recipes yet.</p>
-		<p class="info-message">Start starring to save your favourite recipes here!</p>
+	<p class="info-message">You haven’t starred any recipes yet.</p>
+	<p class="info-message">Start starring to save your favourite recipes here!</p>
 	{% endif %}
 	
 {% endblock %}

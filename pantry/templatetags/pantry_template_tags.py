@@ -21,6 +21,11 @@ def recipe_display_grid(recipe, small=False, by_ingredient=False, selected=None)
             'by_ingredient': by_ingredient,
             'selected': selected,
             'ingredients': ingredients,}
+ 
+@register.inclusion_tag('pantry/recipe_sorter.html') 
+def get_recipe_sorter(category=None):
+    return {'category': category}
+    
     
 @register.inclusion_tag('pantry/ingredient_selection.html')
 def get_ingredient_selection(types, ingredients):
