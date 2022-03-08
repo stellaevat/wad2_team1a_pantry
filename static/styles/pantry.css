@@ -143,26 +143,20 @@ button {
 	height: 20px;
 }
 
-.profile-buttons {
-	columns: 2;
-	padding: 0px calc(50vw - 220px) 0px calc(50vw - 220px)
-}
-
-#username {
-	float: center;
-}
-
-.profile-picture-big {
-	object-fit: cover;
-	width: 200px;
-	height: 200px;
-	border-radius: 100px;
-}
-
 .cat-header {
 	padding: 10px calc(35vw - 235px) 0px calc(35vw - 235px);
 	display: flex;
 	justify-content: space-between;
+}
+
+.banner {
+	width:100%;
+	height:400px;
+	object-fit:cover;
+}
+
+.banner img {
+	width: 1900px;
 }
 
 
@@ -331,18 +325,18 @@ button {
 
 .recipe-grid-big {
 	position: relative;
-	height: calc(11vw + 130px);
+	height: calc(10vw + 150px);
 }
 
 .recipe-grid-big * {
-	max-width: calc(11vw + 110px);
+	max-width: calc(10vw + 140px);
 	text-align: left;
 }
 
 .recipe-thumbnail-big {
 	object-fit: cover;
-	width:calc(11vw + 110px);
-	height:calc(11vw + 110px);
+	width:calc(10vw + 140px);
+	height:calc(10vw + 140px);
 	position: absolute;
 	bottom: 0px;
 	left: 0px;
@@ -479,6 +473,7 @@ button {
 	position: fixed;
 	bottom: 50px;
 	right: calc(25vw - 150px);
+	z-index: 2;
 }
 
 
@@ -499,45 +494,100 @@ button {
 	}
 }
 
-/* Dropdown CSS (This has also been inspired by the w3schools dropdown menu section) */
+/* DROPDOWN (SORTER)
+(Inspired by the w3schools dropdown menu section) */
 
 .dropdown-menu {
 	position: relative;
 	display:inline-block;
+	z-index: 2;
 }
 
 .dropdown-main{
-	background-color:var(--light);
-	border-radius: 50px;
+	background-color:white;
 	color:var(--dark);
-	margin-right: 50px;
-	padding: 5px;
-	float:right;
+	padding: 15px;
 	position: relative;
 	display:inline-block;
+	width: 180px;
+	text-align: left;
+	border-radius: 20px;
 }
 
 .dropdown-items{
 	display:none;
-	background-color:#f8f8f8;
+	background-color: white;
 	color:var(--dark);
-	min-width:160px;
-	z-index:1;
-	float:right;
-	right:0;
+	opacity: 0.85;
+	border-radius: 0px 0px 30px 30px;
 	position: absolute;
+	right:0;
+	top: 35px;
+	padding-top: 10px;
+	min-width:100px;
 }
 
 .dropdown-items a{
-	background-color:var(--light);
+	background-color:white;
 	color:var(--dark);
-	padding: 12px 16px;
+	border-radius: 0px 0px 20px 20px;
+	padding: 12px 38px 12px 10px;
 	text-decoration: none;
+	text-align: left;
 	display: block;
 }
 
 .dropdown-menu:hover .dropdown-items {
-	background-color:var(--light);
 	display:block;
-	color:var(--dark);
 }
+
+/* USER PROFILE */
+.header-featured {
+	height: 420px;
+}
+
+#profile-banner {
+	opacity: 0.2;
+}
+
+.profile-picture-area {
+	position: relative;
+	bottom: 350px;
+}
+
+.profile-picture-big {
+	object-fit: cover;
+	width: 200px;
+	height: 200px;
+	border-radius: 100px;
+}
+
+#username {
+	float: center;
+}
+
+.profile-buttons {
+	columns: 2;
+	padding: 0px calc(50vw - 220px) 0px calc(50vw - 220px)
+}
+
+.profile-buttons form button {
+	background-color: white;
+}
+
+#back-prof-btn {
+	width: 180px;
+	position: fixed;
+	bottom: 50px;
+	right: calc(25vw - 150px);
+	z-index: 2;
+}
+
+#view-prof-btn {
+	width: 180px;
+	z-index: 2;
+}
+
+
+
+

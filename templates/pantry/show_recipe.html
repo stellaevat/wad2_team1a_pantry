@@ -9,7 +9,7 @@
 {% block body_block %}
 	{% if recipe %}
 		<div class="header-featured">
-			<img class="banner" src="/media/{{ recipe.picture }}" alt="{{ recipe.title }}" width="1900px" style="width:100%; height:400px;object-fit:cover">
+			<img class="banner" src="/media/{{ recipe.picture }}" alt="{{ recipe.title }}">
 			<h1 class="cat-heading" id="recipe-title">{{ recipe.title }}</h1>
 			<div class="stars">
 				<img class="icon-small" src="{% static 'img/star-dark.png' %}" alt="Stars">

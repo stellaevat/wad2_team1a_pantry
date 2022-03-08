@@ -8,7 +8,7 @@ from pantry.forms import UserForm, UserProfileForm, EmailForm, RecipeForm
 from django.contrib.auth.models import User
 from django.db.models import Q
 
-# Helper sort method (for recipe display)
+# Helper method for sorted recipe display
 def sort_by(recipes, sort):
     if sort == "newest":
         recipes.sort(key=lambda x: x.pub_date, reverse=True)
@@ -23,18 +23,12 @@ def sort_by(recipes, sort):
 
 
 # Dummy views until created
-def show_my_recipes(request, username):
-    return HttpResponse("My recipes")
-    
-def show_starred_recipes(request, username):
-    return HttpResponse("Starred recipes")
     
 def edit_profile(request, username):
     return HttpResponse("Edit profile")
 
 
 # DONE
-
 @login_required
 def user_profile(request, username):
     # Renders the user profile page and passes a context dictionary with the recipes starred and written by the user
@@ -53,6 +47,34 @@ def user_profile(request, username):
         print(e)
         
     return render(request, 'pantry/user_profile.html', context=context_dict)
+    
+def show_my_recipes(request, username, sort=None):
+    context_dict = {"user_accessed": None}
+    try:
+        user = User.objects.get(username=username)
+        user_profile = UserProfile.objects.get(user=user)
+        recipes = Recipe.objects.filter(author=user)
+        recipes, sort_type = sort_by(list(recipes), sort)
+        
+        context_dict["user_accessed"] = user
+        context_dict["recipes"] = recipes
+    except Exception as e:
+        print(e)
+    return render(request, 'pantry/show_my_recipes.html', context=context_dict)
+    
+def show_starred_recipes(request, username, sort=None):
+    context_dict = {"user_accessed": None}
+    try:
+        user = User.objects.get(username=username)
+        user_profile = UserProfile.objects.get(user=user)
+        recipes = user_profile.starred.all()
+        recipes, sort_type = sort_by(list(recipes), sort)
+        
+        context_dict["user_accessed"] = user
+        context_dict["recipes"] = recipes
+    except Exception as e:
+        print(e)
+    return render(request, 'pantry/show_starred_recipes.html', context=context_dict)
     
 def search_by_ingredient(request):
     context_dict = {}
