@@ -89,13 +89,29 @@ def show_starred_recipes(request, username, sort=None):
         print(e)
     return render(request, 'pantry/show_starred_recipes.html', context=context_dict)
     
-def search_by_ingredient(request):
-    if request.method == 'POST':
-        pass
-        # add search by ingredient logic
+def search_by_ingredient(request, sort = None, recipes=None):
+    if recipes == None:
+        if request.method == 'POST':
+            ingredients = request.POST.getlist("ingredients")
+
+            
+            matching = []
+
+            for recipe in Recipe.objects.all():
+                ingarray = [Ingredient.objects.get(name=ingredient) for ingredient in ingredients]
+                if set(recipe.ingredients.all()) <= set(ingarray):
+                    matching.append(recipe)
+                
+            recipes, sort_type = sort_by(matching, sort)
+            context_dict = {"done" : True, "recipes" : recipes, "sort_type" : sort_type, "search" : "yes"}
+            return render(request, 'pantry/search_by_ingredient.html', context=context_dict)
+        else:
+            type_names, ingredients = all_ingredients()
+            context_dict = {"types": type_names, "ingredients": ingredients}
+            return render(request, 'pantry/search_by_ingredient.html', context=context_dict)
     else:
-        type_names, ingredients = all_ingredients()
-        context_dict = {"types": type_names, "ingredients": ingredients}
+        recipes, sort_type = sort_by(recipes, sort)
+        context_dict = {"done" : True, "recipes" : recipes, "sort_type" : sort_type, "search" : "yes"}
         return render(request, 'pantry/search_by_ingredient.html', context=context_dict)
     
 def home(request):
@@ -145,7 +161,7 @@ def add_recipe_method(request):
             print(form.errors)
     return render(request, 'pantry/add_recipe_method.html', {'form': form})
 
-def show_category(request, category_title_slug, sort=None):
+def show_category(request, category_title_slug, sort=None, ingredients=None):
     context_dict = {}
     try:
         category = Category.objects.get(slug=category_title_slug)
@@ -156,8 +172,13 @@ def show_category(request, category_title_slug, sort=None):
         context_dict['category'] = category
         context_dict['sort_type'] = sort_type
     except Category.DoesNotExist:
-        context_dict['category'] = None
-        context_dict['recipes'] = None
+        if ingredients == None:
+            context_dict['category'] = None
+            context_dict['recipes'] = None
+        else:
+            context_dict["category"] = "Recipes"
+            context_dict['recipes'] = None
+        
     return render(request, 'pantry/show_category.html', context=context_dict)
 
 

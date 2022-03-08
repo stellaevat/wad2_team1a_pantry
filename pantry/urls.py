@@ -24,6 +24,7 @@ urlpatterns = [
     path('category/<slug:category_title_slug>/', views.show_category, name="show_category"),
     path('category/<slug:category_title_slug>/<slug:sort>', views.show_category, name="show_category"),
     path('search_by_ingredient/', views.search_by_ingredient, name="search_by_ingredient"),
+    path('search_by_ingredient/<slug:sort>', views.search_by_ingredient, name="search_by_ingredient"),
     path('search_by_keyword/results/', views.keyword_search_results, name="keyword_search_results"),
     path('search_by_keyword/results/<slug:sort>', views.keyword_search_results, name="keyword_search_results"),
     path('add_recipe/ingredients', views.add_recipe_ingredients, name="add_recipe_ingredients"),
