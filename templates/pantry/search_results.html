@@ -7,9 +7,12 @@
 {% endblock %}
 
 {% block body_block %}
-	{% if searched %}
+	{% if searched or recipes %}
 		<div class="cat-header">
 			<h1 class="cat-heading">Search results for '{{ searched }}'...</h1><br />
+			{% if recipes %}
+				{% get_recipe_sorter recipes %}
+			{% endif %}
 		</div>
 		
 		{% if recipes %}
@@ -24,7 +27,7 @@
 			<p class="info-message">Alternatively, you can browse our categories or search by ingredient!</p>
 		{% endif %}
 	{% else %}
-		<h1 class="category-header">Search results...</h1><br />
+		<h1 class="cat-heading">Search results...</h1><br />
 		<p class="info-message">You haven't searched for anything yet!</p>
 	{% endif %}
 {% endblock %}
