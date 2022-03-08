@@ -20,6 +20,19 @@ def sort_by(recipes, sort):
         recipes.sort(key=lambda x: x.stars, reverse=True)
         sort_type = "Most Popular"
     return recipes, sort_type
+    
+def all_ingredients():
+    types = Ingredient.get_types()
+    type_names = []
+    ingredients = {}
+    
+    for t in types:
+        i = Ingredient.objects.filter(ingredient_type=t[0])
+        if i.count() > 0:
+            type_names.append(t[1])
+            ingredients[t[1]] = i
+            
+    return type_names, ingredients
 
 
 # Dummy views until created
@@ -77,20 +90,13 @@ def show_starred_recipes(request, username, sort=None):
     return render(request, 'pantry/show_starred_recipes.html', context=context_dict)
     
 def search_by_ingredient(request):
-    context_dict = {}
-    types = Ingredient.get_types()
-    type_names = []
-    ingredients = {}
-    
-    for t in types:
-        i = Ingredient.objects.filter(ingredient_type=t[0])
-        if i.count() > 0:
-            type_names.append(t[1])
-            ingredients[t[1]] = i
-    
-    context_dict["types"] = type_names    
-    context_dict["ingredients"] = ingredients
-    return render(request, 'pantry/search_by_ingredient.html', context=context_dict)
+    if request.method == 'POST':
+        pass
+        # add search by ingredient logic
+    else:
+        type_names, ingredients = all_ingredients()
+        context_dict = {"types": type_names, "ingredients": ingredients}
+        return render(request, 'pantry/search_by_ingredient.html', context=context_dict)
     
 def home(request):
     # Renders the home page, passing a context dictionary with the 2 most popular and 2 most viewed recipes.
@@ -111,31 +117,36 @@ def show_recipe(request, recipe_name_slug):
     
 @login_required
 def add_recipe_ingredients(request):
-	form = RecipeIngredientsForm()
-	
-	if request.method == 'POST':
-		form = RecipeIngredientsForm(request.POST)
-	
-		if form.is_valid():
-			form.save(commit=True)
-			return redirect('/pantry/add_recipe/method')
-		else:
-			print(form.errors)
-	return render(request, 'pantry/add_recipe_ingredients.html', {'form': form})
+    form = RecipeIngredientsForm()
+    
+    if request.method == 'POST':
+        form = RecipeIngredientsForm(request.POST)
+    
+        if form.is_valid():
+            form.save(commit=True)
+            return redirect('/pantry/add_recipe/method')
+        else:
+            print(form.errors)
+            return render(request, 'pantry/add_recipe_ingredients.html', {'form': form})
+    else:
+        type_names, ingredients = all_ingredients()
+        context_dict = {"types": type_names, "ingredients": ingredients}
+        return render(request, 'pantry/add_recipe_ingredients.html', context=context_dict)
+    
 
 @login_required
 def add_recipe_method(request):
-	form = RecipeMethodForm()
-	
-	if request.method == 'POST':
-		form = RecipeMethodForm(request.POST)
-		
-		if form.is_valid():
-			form.save(commit=True)
-			return redirect('/pantry/')
-		else:
-			print(form.errors)
-	return render(request, 'pantry/add_recipe_method.html', {'form': form})
+    form = RecipeMethodForm()
+    
+    if request.method == 'POST':
+        form = RecipeMethodForm(request.POST)
+        
+        if form.is_valid():
+            form.save(commit=True)
+            return redirect('/pantry/')
+        else:
+            print(form.errors)
+    return render(request, 'pantry/add_recipe_method.html', {'form': form})
 
 def show_category(request, category_title_slug, sort=None):
     context_dict = {}
