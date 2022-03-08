@@ -148,6 +148,6 @@ def add_recipe(recipe):
     return r
 
 if __name__ == "__main__":
-    print("Starting Rango population script...")
+    print("Starting Pantry population script...")
     populate()
 
