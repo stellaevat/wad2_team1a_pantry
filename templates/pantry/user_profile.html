@@ -9,31 +9,30 @@
 {% block body_block %}
 {% if user_accessed.is_authenticated %}
 	<div class="header-featured">
-		<img class="banner" src="{% static 'img/profile-banner.png' %}" alt="User profile">
-		<div class="user-profile-area">
+		<img class="banner" id="profile-banner" src="{% static 'img/profile-banner-default.png' %}" alt="User profile">
+		<div class="profile-picture-area">
 			{% if profile_picture %}
 			<img class="profile-picture-big" src="/media/{{ user_profile.profile_picture }}" alt="User {{ user.username }}" width="150" height="150">
 			{% else %}
 			<img class="profile-picture-big" src="{% static 'img/profile-picture-default.png' %}" alt="User profile" width="150" height="150">
 			{% endif %}
 			<h1 class="cat-heading" id="username">{{ user.username }}</h1><br />
+			<div class="profile-buttons">
+				<form action="{% url 'pantry:add_recipe_ingredients' %}">
+					<button class="btn-inverted" type="submit" value="Add Recipe">
+						<img class="icon-big" src="{% static 'img/plus-dark.png' %}" alt="Add recipe">
+						Add recipe
+					</button>
+				</form>
+				<form action="{% url 'pantry:edit_profile' user.username %}">
+					<button class="btn-inverted" type="submit" value="Edit Profile">
+						<img class="icon-big" src="{% static 'img/pencil-dark.png' %}" alt="Edit profile">
+						Edit profile
+					</button>
+				</form>
+			</div>
 		</div>
-		
-		<div class="profile-buttons">
-			<form action="{% url 'pantry:add_recipe_ingredients' %}">
-				<button class="btn-inverted" type="submit" value="Add Recipe">
-					<img class="icon-big" src="{% static 'img/plus-dark.png' %}" alt="Add recipe">
-					Add recipe
-				</button>
-			</form>
-			<form action="{% url 'pantry:edit_profile' user.username %}">
-				<button class="btn-inverted" type="submit" value="Edit Profile">
-					<img class="icon-big" src="{% static 'img/pencil-dark.png' %}" alt="Edit profile">
-					Edit profile
-				</button>
-			</form>
-		</div>
-	</div><br />
+	</div>
 	
 	<div class="verticals-two">
 		<div class="vertical-featured">
