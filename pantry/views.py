@@ -10,20 +10,29 @@ from django.db.models import Q
 
 # Dummy views until created
 def show_my_recipes(request, username):
-    return HttpResponse("My recipes")
-    
+    user = request.user
+    context_dict = {}
+    context_dict["recipes"] = Recipe.objects.filter(author = user)
+    return render(request, 'pantry/show_my_recipes.html', context=context_dict)   
+
 def show_starred_recipes(request, username):
-    return HttpResponse("Starred recipes")
+    user = request.user #the django user object
+    userProfile = UserProfile.objects.filter(user = user) #The specific objtect of type UserProfile from models. (this one has the starred recipes)
+    context_dict = {}
+    #context_dict["recipes"] = userProfile.starred.get()
+    context_dict["recipes"] = None
+    return render(request, 'pantry/show_starred_recipes.html', context=context_dict)
 
 @login_required
 def user_profile(request, username):
     # Renders the user profile page and passes a context dictionary with the recipes starred and written by the user
-    # context_dict["written_list"] = Recipe.objects.filter(author= username) #Not sure if username is the user object or just the name
     
-    # For compilation purposes, does nothing
+    user = request.user #the django user object
+    userProfile = UserProfile.objects.filter(user = user) #The specific objtect of type UserProfile from models. (this one has the starred recipes)
     context_dict = {}
-    context_dict["written"] = None;
-    context_dict["starred"] = None;
+    context_dict["written"] = Recipe.objects.filter(author = user);
+    #context_dict["starred"] = UserProfile.starred
+    context_dict["recipes"] = None
     return render(request, 'pantry/user_profile.html', context=context_dict)
     
   
