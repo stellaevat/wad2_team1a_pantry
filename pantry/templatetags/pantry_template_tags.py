@@ -12,9 +12,11 @@ def recipe_display_grid(recipe, small=False, by_ingredient=False, selected=None)
         size = "small"
     else:
         size = "big"
-    ingredients = None
     if by_ingredient:
         ingredients = IngredientList.objects.filter(recipe=recipe).count()
+    else: 
+        ingredients = None
+        
     return {'recipe': recipe,
             'size': size,
             'time': recipe.prep_time + recipe.cook_time,

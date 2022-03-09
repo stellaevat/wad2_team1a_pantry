@@ -40,7 +40,7 @@
 			{% if written_recipes %}
 			<div class="recipes-list-view">
 				{% for recipe in written_recipes %}
-					{% recipe_display_grid recipe True %}
+					{% recipe_display_grid recipe small=True %}
 				{% endfor %}
 			</div>
 			{% else %}
@@ -55,7 +55,7 @@
 			{% if starred_recipes %}
 			<div class="recipes-small-two">
 				{% for recipe in starred_recipes %}
-					{% recipe_display_grid recipe True %}
+					{% recipe_display_grid recipe small=True %}
 					<div class="gap"></div>
 				{% endfor %}
 			</div>
