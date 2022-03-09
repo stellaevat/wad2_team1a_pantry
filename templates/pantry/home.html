@@ -18,7 +18,7 @@
 			{% if popular_list %}
 			<div class="recipes-small-two">
 				{% for recipe in popular_list %}
-					{% recipe_display_grid recipe True %}
+					{% recipe_display_grid recipe small=True %}
 				{% endfor %}
 			</div>
 			{% else %}

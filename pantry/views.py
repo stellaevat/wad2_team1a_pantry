@@ -89,31 +89,6 @@ def show_starred_recipes(request, username, sort=None):
         print(e)
     return render(request, 'pantry/show_starred_recipes.html', context=context_dict)
     
-def search_by_ingredient(request, sort = None, recipes=None):
-    if recipes == None:
-        if request.method == 'POST':
-            ingredients = request.POST.getlist("ingredients")
-
-            
-            matching = []
-
-            for recipe in Recipe.objects.all():
-                ingarray = [Ingredient.objects.get(name=ingredient) for ingredient in ingredients]
-                if set(recipe.ingredients.all()) <= set(ingarray):
-                    matching.append(recipe)
-                
-            recipes, sort_type = sort_by(matching, sort)
-            context_dict = {"done" : True, "recipes" : recipes, "sort_type" : sort_type, "search" : "yes"}
-            return render(request, 'pantry/search_by_ingredient.html', context=context_dict)
-        else:
-            type_names, ingredients = all_ingredients()
-            context_dict = {"types": type_names, "ingredients": ingredients}
-            return render(request, 'pantry/search_by_ingredient.html', context=context_dict)
-    else:
-        recipes, sort_type = sort_by(recipes, sort)
-        context_dict = {"done" : True, "recipes" : recipes, "sort_type" : sort_type, "search" : "yes"}
-        return render(request, 'pantry/search_by_ingredient.html', context=context_dict)
-    
 def home(request):
     # Renders the home page, passing a context dictionary with the 2 most popular and 2 most viewed recipes.
     context_dict = {}
@@ -133,19 +108,19 @@ def show_recipe(request, recipe_name_slug):
     
 @login_required
 def add_recipe_ingredients(request):
-	form = RecipeForm()
-	
-	ingredients = Ingredient.objects.filter
-	
-	if request.method == 'POST':
-		form = RecipeForm(request.POST)
-	
-		if form.is_valid():
-			form.save(commit=True)
-			return redirect('/pantry/add_recipe/method')
-		else:
-			print(form.errors)
-	return render(request, 'pantry/add_recipe.html', {'form': form})
+    if request.method == 'POST':
+        form = RecipeForm(request.POST)
+    
+        if form.is_valid():
+            form.save(commit=True)
+            return redirect('/pantry/add_recipe/method')
+        else:
+            print(form.errors)
+            return render(request, 'pantry/add_recipe.html', {'form': form})
+    else:
+        type_names, ingredients = all_ingredients()
+        context_dict = {"types": type_names, "ingredients": ingredients}
+        return render(request, 'pantry/add_recipe_ingredients.html', context=context_dict)
 
 @login_required
 def add_recipe_method(request):
@@ -182,11 +157,40 @@ def show_category(request, category_title_slug, sort=None, ingredients=None):
     return render(request, 'pantry/show_category.html', context=context_dict)
 
 
-def keyword_search_results(request, sort=None):
+def search_by_ingredient(request):
+    type_names, ingredients = all_ingredients()
+    context_dict = {"types": type_names, "ingredients": ingredients}
+    return render(request, 'pantry/search_by_ingredient.html', context=context_dict)
+
+
+def search_by_ingredient_results(request, sort=None):
+    if request.method == 'POST':
+        ingredients = request.POST.getlist('ingredients')
+    else:
+        ingredients = request.session.get('ingredients')
+
+    recipes = set()
+    if ingredients:
+        print(ingredients)
+        for ingredient_id in ingredients:
+            ingredient = Ingredient.objects.get(pk=ingredient_id)
+            ing_recipes = IngredientList.objects.filter(ingredient=ingredient).values('recipe')
+            ing_recipes = {Recipe.objects.get(pk=r['recipe']) for r in ing_recipes}
+            recipes = recipes.union(ing_recipes)    
+            
+        recipes, sort_type = sort_by(list(recipes), sort)
+        request.session['ingredients'] = ingredients
+        context_dict = {"recipes" : recipes, "sort_type" : sort_type, "category" : "by_ingredient"}
+        return render(request, 'pantry/search_by_ingredient_results.html', context=context_dict)
+    else:
+        return render(request, 'pantry/search_by_ingredient_results.html', context={})
+
+
+def search_results(request, sort=None):
     if request.method == 'POST':
         searched = request.POST.get('searched')
     else:
-        searched = request.session['searched']
+        searched = request.session.get('searched')
         
     recipes = set()
     if searched:

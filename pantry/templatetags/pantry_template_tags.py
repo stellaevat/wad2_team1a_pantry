@@ -12,9 +12,11 @@ def recipe_display_grid(recipe, small=False, by_ingredient=False, selected=None)
         size = "small"
     else:
         size = "big"
-    ingredients = None
     if by_ingredient:
         ingredients = IngredientList.objects.filter(recipe=recipe).count()
+    else: 
+        ingredients = None
+        
     return {'recipe': recipe,
             'size': size,
             'time': recipe.prep_time + recipe.cook_time,
@@ -23,11 +25,10 @@ def recipe_display_grid(recipe, small=False, by_ingredient=False, selected=None)
             'ingredients': ingredients,}
  
 @register.inclusion_tag('pantry/recipe_sorter.html') 
-def get_recipe_sorter(recipes, sort_type=None, category=None, search=None):
+def get_recipe_sorter(recipes, sort_type=None, category=None):
     return {'recipes': recipes,
             'sort_type': sort_type,
-            'category': category,
-            'search' : search}
+            'category': category}
     
     
 @register.inclusion_tag('pantry/ingredient_selection.html')

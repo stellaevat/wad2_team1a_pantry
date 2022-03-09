@@ -1,14 +1,14 @@
 {% load staticfiles %}
 {% load pantry_template_tags %}
 
-<form class="ingredient-selection" action = "{% url 'pantry:search_by_ingredient' %}" method="post">
+<form class="ingredient-selection" action = "{% url 'pantry:search_by_ingredient_results' %}" method="post">
 	{% csrf_token %}
 	{% for t in types %}
 		<button type="button" class="collapsible"><span>{{ t }}</span></button>
 		<div class="collapsing">
 			{% for ingredient in ingredients|get_item:t %}
 				<div class="option">
-					<input class="checkbox" type="checkbox" id="{{ ingredient }}" name="ingredients" value="{{ ingredient }}">
+					<input class="checkbox" type="checkbox" id="{{ ingredient }}" name="ingredients" value="{{ ingredient.id }}">
 					<label for="{{ ingredient }}">{{ ingredient }}</label>
 				</div>
 				{% if forloop.counter|divisibleby:3 %}

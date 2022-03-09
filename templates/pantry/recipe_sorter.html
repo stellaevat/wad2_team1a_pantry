@@ -4,37 +4,35 @@
 <div class="dropdown-menu" aria-labelledby="dropdown01">
 	<button class="dropdown-main" style="">Sort : &nbsp; {{ sort_type }}  &#9660;</button>
 	<div class="dropdown-items">
-		{% if search %}
+		{% if category == "by_ingredient" %}
 			{% if sort_type != "Most Popular" %}
-			<a class="dropdown-item" href="{% url 'pantry:search_by_ingredient' 'popular' recipes %}">Most Popular</a>
+			<a class="dropdown-item" href="{% url 'pantry:search_by_ingredient_results' 'popular' %}">Most Popular</a>
 			{% endif %}
 			{% if sort_type != "Newest" %}
-			<a class="dropdown-item" href="{% url 'pantry:search_by_ingredient' 'newest' recipes %}">Newest</a>
+			<a class="dropdown-item" href="{% url 'pantry:search_by_ingredient_results' 'newest' %}">Newest</a>
 			{% endif %}
 			{% if sort_type != "Oldest" %}
-			<a class="dropdown-item" href="{% url 'pantry:search_by_ingredient' 'oldest' recipes %}">Oldest</a>
+			<a class="dropdown-item" href="{% url 'pantry:search_by_ingredient_results' 'oldest' %}">Oldest</a>
+			{% endif %}
+		{% elif category %}
+			{% if sort_type != "Most Popular" %}
+			<a class="dropdown-item" href="{% url 'pantry:show_category' category.slug 'popular' %}">Most Popular</a>
+			{% endif %}
+			{% if sort_type != "Newest" %}
+			<a class="dropdown-item" href="{% url 'pantry:show_category' category.slug 'newest' %}">Newest</a>
+			{% endif %}
+			{% if sort_type != "Oldest" %}
+			<a class="dropdown-item" href="{% url 'pantry:show_category' category.slug 'oldest' %}">Oldest</a>
 			{% endif %}
 		{% else %}
-			{% if category %}
-				{% if sort_type != "Most Popular" %}
-				<a class="dropdown-item" href="{% url 'pantry:show_category' category.slug 'popular' %}">Most Popular</a>
-				{% endif %}
-				{% if sort_type != "Newest" %}
-				<a class="dropdown-item" href="{% url 'pantry:show_category' category.slug 'newest' %}">Newest</a>
-				{% endif %}
-				{% if sort_type != "Oldest" %}
-				<a class="dropdown-item" href="{% url 'pantry:show_category' category.slug 'oldest' %}">Oldest</a>
-				{% endif %}
-			{% else %}
-				{% if sort_type != "Most Popular" %}
-				<a class="dropdown-item" href="{% url 'pantry:keyword_search_results' 'popular' %}">Most Popular</a>
-				{% endif %}
-				{% if sort_type != "Newest" %}
-				<a class="dropdown-item" href="{% url 'pantry:keyword_search_results' 'newest' %}">Newest</a>
-				{% endif %}
-				{% if sort_type != "Oldest" %}
-				<a class="dropdown-item" href="{% url 'pantry:keyword_search_results' 'oldest' %}">Oldest</a>
-				{% endif %}
+			{% if sort_type != "Most Popular" %}
+			<a class="dropdown-item" href="{% url 'pantry:search_results' 'popular' %}">Most Popular</a>
+			{% endif %}
+			{% if sort_type != "Newest" %}
+			<a class="dropdown-item" href="{% url 'pantry:search_results' 'newest' %}">Newest</a>
+			{% endif %}
+			{% if sort_type != "Oldest" %}
+			<a class="dropdown-item" href="{% url 'pantry:search_results' 'oldest' %}">Oldest</a>
 			{% endif %}
 		{% endif %}
 	</div>
