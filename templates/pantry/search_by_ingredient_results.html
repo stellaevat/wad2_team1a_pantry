@@ -7,22 +7,21 @@
 {% endblock %}
 
 {% block body_block %}
-	{% if recipes %}
-		<div class="cat-header">
-			<h1 class="cat-heading">Recipes with selected ingredients...</h1><br />
-			{% if recipes %}
-				{% get_recipe_sorter recipes sort_type category %}
-			{% endif %}
-		</div>
-		
+	{% if category %}
 		{% if recipes %}
-		<div class="gap-small"></div>
-		<div class="recipes-big-three">
-			{% for recipe in recipes %}
-				{% recipe_display_grid recipe %}
-			{% endfor %}
-		</div>
+			<div class="cat-header">
+				<h1 class="cat-heading">Recipes with selected ingredients...</h1><br />
+				{% get_recipe_sorter recipes sort_type category %}
+			</div>
+			
+			<div class="gap-small"></div>
+			<div class="recipes-big-three">
+				{% for recipe in recipes %}
+					{% recipe_display_grid recipe %}
+				{% endfor %}
+			</div>
 		{% else %}
+			<h1 class="cat-heading">Recipes with selected ingredients...</h1><br />
 			<p class="info-message">Unfortunately we currently have no recipes with these ingredients.</p>
 			<p class="info-message">Try browsing our categories, or search using the search bar!</p>
 		{% endif %}
