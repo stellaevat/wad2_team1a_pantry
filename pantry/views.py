@@ -8,6 +8,34 @@ from pantry.forms import UserForm, UserProfileForm, EmailForm, RecipeForm
 from django.contrib.auth.models import User
 from django.db.models import Q
 
+
+# Dummy views until created
+def show_my_recipes(request, username):
+    user = request.user
+    context_dict = {}
+    context_dict["recipes"] = Recipe.objects.filter(author = user)
+    return render(request, 'pantry/show_my_recipes.html', context=context_dict)   
+
+def show_starred_recipes(request, username):
+    user = request.user #the django user object
+    userProfile = UserProfile.objects.filter(user = user) #The specific objtect of type UserProfile from models. (this one has the starred recipes)
+    context_dict = {}
+    #context_dict["recipes"] = userProfile.starred.get()
+    context_dict["recipes"] = None
+    return render(request, 'pantry/show_starred_recipes.html', context=context_dict)
+
+@login_required
+def user_profile(request, username):
+    # Renders the user profile page and passes a context dictionary with the recipes starred and written by the user
+    
+    user = request.user #the django user object
+    userProfile = UserProfile.objects.filter(user = user) #The specific objtect of type UserProfile from models. (this one has the starred recipes)
+    context_dict = {}
+    context_dict["written"] = Recipe.objects.filter(author = user);
+    #context_dict["starred"] = UserProfile.starred
+    context_dict["recipes"] = None
+    return render(request, 'pantry/user_profile.html', context=context_dict)
+
 # Helper method for sorted recipe display
 def sort_by(recipes, sort):
     if sort == "newest":
@@ -20,6 +48,7 @@ def sort_by(recipes, sort):
         recipes.sort(key=lambda x: x.stars, reverse=True)
         sort_type = "Most Popular"
     return recipes, sort_type
+
     
 def all_ingredients():
     types = Ingredient.get_types()
