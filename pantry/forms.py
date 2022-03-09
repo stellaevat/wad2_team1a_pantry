@@ -4,7 +4,6 @@ from django.contrib.auth.models import User
 from pantry.models import UserProfile, Recipe
 
 class UserForm(forms.ModelForm):
-    email = forms.EmailField(required=False, widget=forms.HiddenInput())
     username = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'Enter username', 'class': 'login-input'}))
     password = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder': 'Enter password', 'class': 'login-input'}))
     confirm_password = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder': 'Confirm password', 'class': 'login-input'}))

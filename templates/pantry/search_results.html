@@ -7,25 +7,22 @@
 {% endblock %}
 
 {% block body_block %}
-	{% if searched or recipes %}
+	{% if recipes %}
 		<div class="cat-header">
 			<h1 class="cat-heading">Search results for '{{ searched }}'...</h1><br />
-			{% if recipes %}
-				{% get_recipe_sorter recipes sort_type %}
-			{% endif %}
+			{% get_recipe_sorter recipes sort_type %}
 		</div>
 		
-		{% if recipes %}
 		<div class="gap-small"></div>
 		<div class="recipes-big-three">
 			{% for recipe in recipes %}
 				{% recipe_display_grid recipe %}
 			{% endfor %}
 		</div>
-		{% else %}
-			<p class="info-message">No matches for your search. Try using fewer or more general keywords.</p>
-			<p class="info-message">Alternatively, you can browse our categories or search by ingredient!</p>
-		{% endif %}
+	{% elif searched %}
+		<h1 class="cat-heading">Search results for '{{ searched }}'...</h1><br />
+		<p class="info-message">No matches for your search. Try using fewer or more general keywords.</p>
+		<p class="info-message">Alternatively, you can browse our categories or search by ingredient!</p>
 	{% else %}
 		<h1 class="cat-heading">Search results...</h1><br />
 		<p class="info-message">You haven't searched for anything yet!</p>
