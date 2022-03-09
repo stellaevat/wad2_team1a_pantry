@@ -71,6 +71,8 @@ def show_my_recipes(request, username, sort=None):
         
         context_dict["user_accessed"] = user
         context_dict["recipes"] = recipes
+        context_dict["sort_type"] = sort_type
+        context_dict["category"] = "my_recipes"
     except Exception as e:
         print(e)
     return render(request, 'pantry/show_my_recipes.html', context=context_dict)
@@ -82,9 +84,12 @@ def show_starred_recipes(request, username, sort=None):
         user_profile = UserProfile.objects.get(user=user)
         recipes = user_profile.starred.all()
         recipes, sort_type = sort_by(list(recipes), sort)
+        print(sort_type)
         
         context_dict["user_accessed"] = user
         context_dict["recipes"] = recipes
+        context_dict["sort_type"] = sort_type
+        context_dict["category"] = "starred"
     except Exception as e:
         print(e)
     return render(request, 'pantry/show_starred_recipes.html', context=context_dict)
@@ -136,7 +141,7 @@ def add_recipe_method(request):
             print(form.errors)
     return render(request, 'pantry/add_recipe_method.html', {'form': form})
 
-def show_category(request, category_title_slug, sort=None, ingredients=None):
+def show_category(request, category_title_slug, sort=None):
     context_dict = {}
     try:
         category = Category.objects.get(slug=category_title_slug)
@@ -164,6 +169,7 @@ def search_by_ingredient(request):
 
 
 def search_by_ingredient_results(request, sort=None):
+    print(request.method)
     if request.method == 'POST':
         ingredients = request.POST.getlist('ingredients')
     else:

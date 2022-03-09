@@ -36,7 +36,7 @@
 	
 	<div class="verticals-two">
 		<div class="vertical-featured">
-			<a href="{% url 'pantry:my_recipes' user.username %}"><h2 class="vertical-title">MY RECIPES ({{ written_count }})</h2></a></br>
+			<a href="{% url 'pantry:my_recipes' user.username %}"><h2 class="vertical-title">MY RECIPES ({{ written_count }})</h2></a>
 			{% if written_recipes %}
 			<div class="recipes-list-view">
 				{% for recipe in written_recipes %}
@@ -44,25 +44,26 @@
 				{% endfor %}
 			</div>
 			{% else %}
-				<p class="info-message">You haven't posted any recipes yet.</p>
-				<p class="info-message">If you do, you'll be able to find them here!</p>
-				<div class="gap-small"></div>
+			<br />
+			<p class="info-message">You haven't posted any recipes yet.</p>
+			<p class="info-message">If you do, you'll be able to find them here!</p>
+			<div class="gap-small"></div>
 			{% endif %}
 		</div>
 		
 		<div class="vertical-featured">
-			<a href="{% url 'pantry:starred_recipes' user.username %}"><h2 class="vertical-title">STARRED RECIPES ({{ starred_count }})</h2></a></br>
+			<a href="{% url 'pantry:starred_recipes' user.username %}"><h2 class="vertical-title">STARRED RECIPES ({{ starred_count }})</h2></a>
 			{% if starred_recipes %}
 			<div class="recipes-small-two">
 				{% for recipe in starred_recipes %}
 					{% recipe_display_grid recipe small=True %}
-					<div class="gap"></div>
 				{% endfor %}
 			</div>
 			{% else %}
-				<p class="info-message">You haven’t starred any recipes yet.</p>
-				<p class="info-message">Start starring to save your favourite recipes here!</p>
-				<div class="gap-small"></div>
+			<br />
+			<p class="info-message">You haven’t starred any recipes yet.</p>
+			<p class="info-message">Start starring to save your favourite recipes here!</p>
+			<div class="gap-small"></div>
 			{% endif %}
 		</div>
 	</div>
