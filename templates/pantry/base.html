@@ -18,45 +18,42 @@
 	<body>
 		<header class="navbar">
 			<div class="navbar-left-align">
-				<a href="{% url 'pantry:home' %}">Home</a>
+				<a href="{% url 'pantry:home' %}" id="navbarh">Home</a>
 				{% if user.is_authenticated %}
-					<a href="{% url 'pantry:add_recipe_ingredients' %}">Add recipe</a>
+					<a href="{% url 'pantry:add_recipe_ingredients' %}" id="navbarh">Add recipe</a>
 				{% endif %}
 			</div>
 
-			<form id="search-bar" method="post", action="{% url 'pantry:keyword_search_results' %}">
+			<form class="search-bar" method="post", action="{% url 'pantry:search_results' %}">
 				{% csrf_token %}
-				<input class="search-input" type="search" placeholder="Search recipes" aria-label="Search" name="searched">
+				<input type="search" placeholder="Search recipes" aria-label="Search" name="searched">
 			</form>
 			
 			<div class="navbar-right-align">
 				{% if user.is_authenticated %}
-					<a class="profile-thumbnail" href="{% url 'pantry:user_profile' user.username %}">
-						{% if user.profile_pic %}
-							<img src="{{ user.profile_pic }}" alt="Profile">
+					<a class="profile-thumbnail" href="{% url 'pantry:user_profile' user.username %}" id="nohovernavbar">
+						{% if user|get_profile_picture %}
+							<img src="/media/{{ user|get_profile_picture }}" alt="Profile">
 						{% else %}
 							<img src="{% static 'img/profile-picture-default.png' %}" alt="Profile">
 						{% endif %}
 					</a>
-					<a href="{% url 'pantry:sign_out' %}">Sign out</a>
+					<a href="{% url 'pantry:sign_out' %}" id="navbarh">Sign out</a>
 				{% else %}
-					<a href="{% url 'pantry:check_email' %}">Sign Up/In</a>
+					<p></p>
+					<a href="{% url 'pantry:check_email' %}" id="navbarh">Sign Up/In</a>
 				{% endif %}
+			</div>
+		
+			<div class="tabs">
+				{% get_tabs category %}
+				<a class="tab-primary" href="{% url 'pantry:search_by_ingredient' %}">
+					<span>Search by Ingredient</span>
+				</a>
 			</div>
 		</header>
 		
-		<div class="navbar">
-			<div class="tabs">
-				{% get_tabs category %}
-				<div class="tab-primary">
-					<a href="{% url 'pantry:search_by_ingredient' %}">
-						<span>Search by Ingredient</span>
-					</a>
-				</div>
-			</div>
-		</div>
-		
-		<div>
+		<div class="main">
 			{% block body_block %}
 			{% endblock %}
 		</div>

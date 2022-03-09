@@ -7,4 +7,11 @@
 {% endblock %}
 
 {% block body_block %}
+	<h1 class="cat-heading"> Add Recipe</h1>
+	{% if types %}
+		<p class="cat-subheading"> Expand each category to select the ingredients for your recipe:</p>
+		{% get_ingredient_selection types ingredients %}
+	{% else %}
+		<p class="info-message">No ingredients available right now. Please try again later!</p>
+	{% endif %}
 {% endblock %}

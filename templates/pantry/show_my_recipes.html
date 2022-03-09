@@ -7,27 +7,29 @@
 {% endblock %}
 
 {% block body_block %}
+{% if user_accessed.is_authenticated %}
+	{% if recipes %}
 	<div class="cat-header">
 		<h1 class="cat-heading">My Recipes</h1>
-		{% if recipes %}
-		<ul class="dropdown-menu" aria-labelledby="dropdown01">
-			<li><a class="dropdown-item" href="{% url 'pantry:show_recipe' category.slug %}">Filter: Most Popular</a></li>
-			<li><a class="dropdown-item" href="{% url 'pantry:show_recipe' category.slug %}">Filter: Least Popular</a></li>
-			<li><a class="dropdown-item" href="{% url 'pantry:show_recipe' category.slug %}">Filter: Newest</a></li>
-			<li><a class="dropdown-item" href="{% url 'pantry:show_recipe' category.slug %}">Filter: Oldest</a></li>
-		</ul>
-		{% endif %}
+		{% get_recipe_sorter recipes sort_type %}
+	</div>
+	<div class="gap-small"></div>
+	<div class="recipes-big-three">
+		{% for recipe in recipes %}
+			{% recipe_display_grid recipe %}
+		{% endfor %}
 	</div>
 	
-	{% if recipes %}
-		<div class="recipes-big-three">
-			{% for recipe in recipes %}
-				<a href="{% url 'pantry:show_recipe' recipe.slug %}">{{ recipe }}</a>
-			{% endfor %}
-		</div>
 	{% else %}
-		<p class="info-message">You haven't posted any recipes yet.</p>
-		<p class="info-message">If you do, you'll be able to find them here!</p>
+	<h1 class="cat-heading">My Recipes</h1>
+	<p class="info-message">You haven't posted any recipes yet.</p>
+	<p class="info-message">If you do, you'll be able to find them here!</p>
 	{% endif %}
-	
+	<form action="{% url 'pantry:user_profile' user.username %}">
+		<input class="btn-continue" id="back-prof-btn" type="submit" value="Back to profile">
+	</form>
+{% else %}
+	<h1 class="cat-heading">Invalid user</h1>
+	<p class="info-message">Make sure you have the right spelling, and that you're signed in to the correct account!</p>
+{% endif %}
 {% endblock %}

@@ -4,9 +4,10 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from pantry.models import Recipe, Category, Ingredient, IngredientList, UserProfile
-from pantry.forms import UserForm, UserProfileForm, EmailForm, RecipeIngredientsForm
+from pantry.forms import UserForm, UserProfileForm, EmailForm, RecipeForm
 from django.contrib.auth.models import User
 from django.db.models import Q
+
 
 # Dummy views until created
 def show_my_recipes(request, username):
@@ -34,11 +35,22 @@ def user_profile(request, username):
     #context_dict["starred"] = UserProfile.starred
     context_dict["recipes"] = None
     return render(request, 'pantry/user_profile.html', context=context_dict)
+
+# Helper method for sorted recipe display
+def sort_by(recipes, sort):
+    if sort == "newest":
+        recipes.sort(key=lambda x: x.pub_date, reverse=True)
+        sort_type = "Newest"
+    elif sort == "oldest":
+        recipes.sort(key=lambda x: x.pub_date)
+        sort_type = "Oldest"
+    else:
+        recipes.sort(key=lambda x: x.stars, reverse=True)
+        sort_type = "Most Popular"
+    return recipes, sort_type
+
     
-  
-# DONE
-def search_by_ingredient(request):
-    context_dict = {}
+def all_ingredients():
     types = Ingredient.get_types()
     type_names = []
     ingredients = {}
@@ -48,10 +60,68 @@ def search_by_ingredient(request):
         if i.count() > 0:
             type_names.append(t[1])
             ingredients[t[1]] = i
+            
+    return type_names, ingredients
+
+
+# Dummy views until created
     
-    context_dict["types"] = type_names    
-    context_dict["ingredients"] = ingredients
-    return render(request, 'pantry/search_by_ingredient.html', context=context_dict)  
+def edit_profile(request, username):
+    return HttpResponse("Edit profile")
+
+
+# DONE
+@login_required
+def user_profile(request, username):
+    # Renders the user profile page and passes a context dictionary with the recipes starred and written by the user
+    context_dict = {"user_accessed": None, "user_profile": None, "profile_picture": None}
+    try:
+        user = User.objects.get(username=username)
+        user_profile = UserProfile.objects.get(user=user)
+        context_dict["user_accessed"] = user
+        context_dict["user_profile"] = user_profile
+        context_dict["written_recipes"] = Recipe.objects.filter(author=user)
+        context_dict["written_count"] = context_dict["written_recipes"].count()
+        context_dict["starred_recipes"] = user_profile.starred.all()
+        context_dict["starred_count"] = context_dict["starred_recipes"].count()
+        context_dict["profile_picture"] = user_profile.profile_picture
+    except Exception as e:
+        print(e)
+        
+    return render(request, 'pantry/user_profile.html', context=context_dict)
+    
+def show_my_recipes(request, username, sort=None):
+    context_dict = {"user_accessed": None}
+    try:
+        user = User.objects.get(username=username)
+        user_profile = UserProfile.objects.get(user=user)
+        recipes = Recipe.objects.filter(author=user)
+        recipes, sort_type = sort_by(list(recipes), sort)
+        
+        context_dict["user_accessed"] = user
+        context_dict["recipes"] = recipes
+        context_dict["sort_type"] = sort_type
+        context_dict["category"] = "my_recipes"
+    except Exception as e:
+        print(e)
+    return render(request, 'pantry/show_my_recipes.html', context=context_dict)
+    
+def show_starred_recipes(request, username, sort=None):
+    context_dict = {"user_accessed": None}
+    try:
+        user = User.objects.get(username=username)
+        user_profile = UserProfile.objects.get(user=user)
+        recipes = user_profile.starred.all()
+        recipes, sort_type = sort_by(list(recipes), sort)
+        print(sort_type)
+        
+        context_dict["user_accessed"] = user
+        context_dict["recipes"] = recipes
+        context_dict["sort_type"] = sort_type
+        context_dict["category"] = "starred"
+    except Exception as e:
+        print(e)
+    return render(request, 'pantry/show_starred_recipes.html', context=context_dict)
     
 def home(request):
     # Renders the home page, passing a context dictionary with the 2 most popular and 2 most viewed recipes.
@@ -72,66 +142,109 @@ def show_recipe(request, recipe_name_slug):
     
 @login_required
 def add_recipe_ingredients(request):
-	form = RecipeIngredientsForm()
-	
-	if request.method == 'POST':
-		form = RecipeIngredientsForm(request.POST)
-	
-		if form.is_valid():
-			form.save(commit=True)
-			return redirect('/pantry/add_recipe/method')
-		else:
-			print(form.errors)
-	return render(request, 'pantry/add_recipe_ingredients.html', {'form': form})
+    if request.method == 'POST':
+        form = RecipeForm(request.POST)
+    
+        if form.is_valid():
+            form.save(commit=True)
+            return redirect('/pantry/add_recipe/method')
+        else:
+            print(form.errors)
+            return render(request, 'pantry/add_recipe.html', {'form': form})
+    else:
+        type_names, ingredients = all_ingredients()
+        context_dict = {"types": type_names, "ingredients": ingredients}
+        return render(request, 'pantry/add_recipe_ingredients.html', context=context_dict)
 
 @login_required
 def add_recipe_method(request):
-	form = RecipeMethodForm()
-	
-	if request.method == 'POST':
-		form = RecipeMethodForm(request.POST)
-		
-		if form.is_valid():
-			form.save(commit=True)
-			return redirect('/pantry/')
-		else:
-			print(form.errors)
-	return render(request, 'pantry/add_recipe_method.html', {'form': form})
+    form = RecipeMethodForm()
+    
+    if request.method == 'POST':
+        form = RecipeMethodForm(request.POST)
+        
+        if form.is_valid():
+            form.save(commit=True)
+            return redirect('/pantry/')
+        else:
+            print(form.errors)
+    return render(request, 'pantry/add_recipe_method.html', {'form': form})
 
-
-
-def show_category(request, category_title_slug):
+def show_category(request, category_title_slug, sort=None):
     context_dict = {}
     try:
         category = Category.objects.get(slug=category_title_slug)
         recipes = Recipe.objects.filter(category=category)
+        recipes, sort_type = sort_by(list(recipes), sort)
+
         context_dict['recipes'] = recipes
         context_dict['category'] = category
+        context_dict['sort_type'] = sort_type
     except Category.DoesNotExist:
-        context_dict['category'] = None
-        context_dict['recipes'] = None
+        if ingredients == None:
+            context_dict['category'] = None
+            context_dict['recipes'] = None
+        else:
+            context_dict["category"] = "Recipes"
+            context_dict['recipes'] = None
+        
     return render(request, 'pantry/show_category.html', context=context_dict)
 
 
-def keyword_search_results(request):
+def search_by_ingredient(request):
+    type_names, ingredients = all_ingredients()
+    context_dict = {"types": type_names, "ingredients": ingredients}
+    return render(request, 'pantry/search_by_ingredient.html', context=context_dict)
+
+
+def search_by_ingredient_results(request, sort=None):
+    print(request.method)
+    if request.method == 'POST':
+        ingredients = request.POST.getlist('ingredients')
+    else:
+        ingredients = request.session.get('ingredients')
+
+    recipes = set()
+    if ingredients:
+        print(ingredients)
+        for ingredient_id in ingredients:
+            ingredient = Ingredient.objects.get(pk=ingredient_id)
+            ing_recipes = IngredientList.objects.filter(ingredient=ingredient).values('recipe')
+            ing_recipes = {Recipe.objects.get(pk=r['recipe']) for r in ing_recipes}
+            recipes = recipes.union(ing_recipes)    
+            
+        recipes, sort_type = sort_by(list(recipes), sort)
+        request.session['ingredients'] = ingredients
+        context_dict = {"recipes" : recipes, "sort_type" : sort_type, "category" : "by_ingredient"}
+        return render(request, 'pantry/search_by_ingredient_results.html', context=context_dict)
+    else:
+        return render(request, 'pantry/search_by_ingredient_results.html', context={})
+
+
+def search_results(request, sort=None):
     if request.method == 'POST':
         searched = request.POST.get('searched')
-        recipes = set()
-        if searched:
-            keywords = searched.split()
-            for k in keywords:
-                recipes = recipes.union(Recipe.objects.filter(Q(title__contains=k) | Q(steps__contains=k)))
-            context_dict = {'searched':searched, 'recipes':recipes}
-            return render(request, 'pantry/search_results.html', context=context_dict)
-        else: 
-            return render(request, 'pantry/search_results.html', {})
     else:
+        searched = request.session.get('searched')
+        
+    recipes = set()
+    if searched:
+        keywords = searched.split()
+        for k in keywords:
+            recipes = recipes.union(Recipe.objects.filter(Q(title__contains=k) | Q(steps__contains=k)))
+            
+        recipes, sort_type = sort_by(list(recipes), sort)
+        request.session['searched'] = searched
+        context_dict = {'searched': searched, 'recipes':recipes, 'sort_type': sort_type}
+        return render(request, 'pantry/search_results.html', context=context_dict)
+    else: 
         return render(request, 'pantry/search_results.html', {})
+
 
 # Register view
 def sign_up(request):
     registered = False
-
+    
     if request.method == 'POST':
         user_form = UserForm(request.POST)
         profile_form = UserProfileForm(request.POST)
@@ -206,6 +319,8 @@ def sign_in(request):
         else:
             print(f"Invalid login details: {request.session['username']}, {password}")
             context_dict['error'] = "Wrong password, try again."
+        
+        return render(request, 'pantry/sign_in.html', context=context_dict)
 
     else:
         return redirect(reverse('pantry:check_email'))

@@ -1,3 +1,5 @@
+import os
+from django.utils.deconstruct import deconstructible
 from django.db import models
 from django.template.defaultfilters import slugify
 from django.contrib.auth.models import User
@@ -5,6 +7,21 @@ import inflect
 
 p = inflect.engine()
 
+# Sets name of media when saved, to make sense for relevant model
+@deconstructible
+class FileRenamed(object):
+    def __init__(self, path):
+        self.path = path
+
+    def __call__(self, instance, filename):
+        ext = filename.split('.')[-1]
+        if isinstance(instance, Recipe):
+            filename = f"{instance.slug}.{ext}"
+        elif isinstance(instance, UserProfile):
+            filename = f"{instance.user.username}.{ext}"
+        else:
+            filename = f"{instance.pk}.{ext}"
+        return os.path.join(self.path, filename)
 
 
 class Category(models.Model):
@@ -68,7 +85,7 @@ class Recipe(models.Model):
             ("advanced", "Advanced")
         ) 
     )
-    picture = models.ImageField(upload_to='recipe_pictures', blank=True)
+    picture = models.ImageField(upload_to=FileRenamed('recipe_pictures'), blank=True)
     pub_date = models.DateField()
     stars = models.IntegerField()
     slug = models.SlugField(unique=True)
@@ -91,8 +108,7 @@ class IngredientList(models.Model):
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    
-    profile_picture = models.ImageField(upload_to='profile_pictures', blank=True)
+    profile_picture = models.ImageField(upload_to=FileRenamed('profile_pictures'), blank=True)
     starred = models.ManyToManyField(Recipe)
 
     def __str__(self):

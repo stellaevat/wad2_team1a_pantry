@@ -7,7 +7,6 @@
 {% endblock %}
 
 {% block body_block %}
-
 	<div class="logo">
 		<img class="logo-welcome" src="{% static 'img/welcome.png' %}" alt="Welcome to the Pantry">
 		<p class="welcome-message">where you can find recipes with ingredients already in your pantry!</p>
@@ -15,34 +14,32 @@
 	
 	<div class="verticals-two">
 		<div class="vertical-featured">
-			<h2 class="vertical-title">MOST POPULAR</h2><br />
+			<h2 class="vertical-title">MOST POPULAR</h2>
 			{% if popular_list %}
-				<div class="recipes-small-two">
-					{% for recipe in popular_list %}
-						{% recipe_display_grid recipe True %}
-						<div class="gap"></div>
-					{% endfor %}
-				</div>
+			<div class="recipes-small-two">
+				{% for recipe in popular_list %}
+					{% recipe_display_grid recipe small=True %}
+				{% endfor %}
+			</div>
 			{% else %}
-				<p class="info-message">No popular recipes to display.</p>
-				<p class="info-message">Try browsing categories, or search by ingredient!</p>
-				<div class="gap-small"></div>
+			<p class="info-message">No popular recipes to display.</p>
+			<p class="info-message">Try browsing categories, or search by ingredient!</p>
+			<div class="gap-small"></div>
 			{% endif %}
 		</div>
 		
 		<div class="vertical-featured">
-			<h2 class="vertical-title">MOST RECENT</h2><br />
+			<h2 class="vertical-title">MOST RECENT</h2>
 			{% if recent_list %}
-				<div class="recipes-small-two">
-					{% for recipe in recent_list %}
-						{% recipe_display_grid recipe True %}
-						<div class="gap"></div>
-					{% endfor %}
-				</div>
+			<div class="recipes-small-two">
+				{% for recipe in recent_list %}
+					{% recipe_display_grid recipe True %}
+				{% endfor %}
+			</div>
 			{% else %}
-				<p class="info-message">No recent recipes to display.</p>
-				<p class="info-message">Try browsing categories, or search by ingredient!</p>
-				<div class="gap-small"></div>
+			<p class="info-message">No recent recipes to display.</p>
+			<p class="info-message">Try browsing categories, or search by ingredient!</p>
+			<div class="gap-small"></div>
 			{% endif %}
 		</div>
 	</div>

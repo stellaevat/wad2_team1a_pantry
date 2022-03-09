@@ -8,61 +8,64 @@
 
 {% block body_block %}
 	{% if recipe %}
-		<div class="header-featured">
-			<img class="banner" src="/media/recipe_pictures/{{ recipe.slug }}.jpg" alt="{{ recipe.title }}" width="1900px" style="width:100%; height:400px;object-fit:cover">
-			<h1 class="title-featured">{{ recipe.title }}</h1>
-			<div class="stars">
-				<img class="icon-small" src="{% static 'img/star-dark.png' %}" alt="Stars" width="10" height="10">
-				{{ recipe.stars }}
-			</div>
+	<div class="header-featured">
+		<img class="banner" src="/media/{{ recipe.picture }}" alt="{{ recipe.title }}">
+		<div class="banner-text">
+			<h1 class="cat-heading" id="recipe-title">{{ recipe.title }}</h1>
+			<div class="gap-small"></div>
 			<div class="info-tags">
 				<div class="tag">
-					<p class="recipe-tag-head">Preparation</p>
+					<strong class="recipe-tag-head">Preparation</strong>
 					<p class="recipe-tag-info">{{ recipe.prep_time }} min</p>
 				</div>
 				<div class="tag">
-					<p class="recipe-tag-head">Cooking</p>
+					<strong class="recipe-tag-head">Cooking</strong>
 					<p class="recipe-tag-info">{{ recipe.cook_time }} min</p>
 				</div>
 				<div class="tag">
-					<p class="recipe-tag-head">Difficulty</p>
+					<strong class="recipe-tag-head">Difficulty</strong>
 					<p class="recipe-tag-info">{{ recipe.difficulty }}</p>
 				</div>
 				<div class="tag">
-					<p class="recipe-tag-head">Servings</p>
+					<strong class="recipe-tag-head">Servings</strong>
 					<p class="recipe-tag-info">{{ recipe.servings }}</p>
 				</div>
+				<div class="tag">
+					<img class="icon-big recipe-tag-head" src="{% static 'img/star-orange.png' %}" alt="Stars">
+					<p class="recipe-tag-info">{{ recipe.stars }}</p>
+				</div>
 			</div>
-			{% if user.is_authenticated %}
-				<button class="btn-white-big" type="button">
-					<img class="icon-big" src="{% static 'img/star-dark.png' %}" alt="Star" width="25" height="25">
-					Star
-				</button>
+		</div>
+		{% if user.is_authenticated %}
+		<button class="btn-inverted" id="star-btn" type="button">
+			<img class="icon-big" src="{% static 'img/star-dark.png' %}" alt="Star">
+			Star
+		</button>
+		{% endif %}
+	</div>
+	
+	<div class="verticals-left-narrow">
+		<div class="vertical-featured" id="ingredients">
+			<h2 class="vertical-title">INGREDIENTS</h2></br>
+			{% if ingredients %}
+				<ul class="ingredient-list">
+					{% for ing in ingredients %}
+						<li class="ingredient">{{ ing.quantity }} {{ ing.ingredient.name }}</li>
+					{% endfor %}
+				</ul>
+			{% else %}
+				<p class="info-message">No ingredients required for this recipe!</p>
 			{% endif %}
 		</div>
 		
-		<div class="verticals-left-narrow">
-			<div class="vertical-featured">
-				<h2 class="vertical-title">INGREDIENTS</h2></br>
-				{% if ingredients %}
-					<ul class="ingredient-list">
-						{% for ing in ingredients %}
-							<li class="ingredient">{{ ing.quantity }} {{ ing.ingredient.name }}</li>
-						{% endfor %}
-					</ul>
-				{% else %}
-					<p class="info-message">No ingredients required for this recipe!</p>
-				{% endif %}
-			</div>
-			
-			<div class="long-text">
-				<h2 class="vertical-title">METHOD</h2></br>
-				{{ recipe.steps }}
-			</div>
+		<div class="vertical">
+			<h2 class="vertical-title">METHOD</h2></br>
+			<div class="long-text">{{ recipe.steps }}</div>
 		</div>
+	</div>
 		
 	{% else %}
-		<h1 class="cat-heading">We couldn't find this recipe...</h1>
-		<p class="info-message">Maybe the author deleted it, or something went wrong - make sure you have the right link!</p>
+	<h1 class="cat-heading">We couldn't find this recipe...</h1>
+	<p class="info-message">Maybe the author deleted it, or something went wrong - make sure you have the right link!</p>
 	{% endif %}
 {% endblock %}

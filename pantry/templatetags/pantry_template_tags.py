@@ -8,23 +8,40 @@ def get_tabs(current_tab=None):
     
 @register.inclusion_tag('pantry/recipe_display_grid.html')
 def recipe_display_grid(recipe, small=False, by_ingredient=False, selected=None):
-    div_class = "recipe-grid"
     if small:
-        div_class += "-small"
-    ingredients = None
+        size = "small"
+    else:
+        size = "big"
     if by_ingredient:
         ingredients = IngredientList.objects.filter(recipe=recipe).count()
+    else: 
+        ingredients = None
+        
     return {'recipe': recipe,
-            'div_class': div_class,
+            'size': size,
             'time': recipe.prep_time + recipe.cook_time,
             'by_ingredient': by_ingredient,
             'selected': selected,
             'ingredients': ingredients,}
+ 
+@register.inclusion_tag('pantry/recipe_sorter.html') 
+def get_recipe_sorter(recipes, sort_type=None, category=None):
+    return {'recipes': recipes,
+            'sort_type': sort_type,
+            'category': category}
+    
+    
+@register.inclusion_tag('pantry/ingredient_selection.html')
+def get_ingredient_selection(types, ingredients):
+    return {'types': types, 'ingredients': ingredients,}
     
 @register.filter
 def get_profile_picture(user):
-    user_profile = UserProfile.filter(user=user)
-    return user_profile.profile_picture
+    try:
+        user_profile = UserProfile.objects.get(user=user)
+        return user_profile.profile_picture
+    except:
+        return None
     
 @register.filter
 def get_recipes_by_author(user):

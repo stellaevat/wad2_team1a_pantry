@@ -14,8 +14,10 @@
 	
 	<div class="login-area">
 		{% if success %}
-			<p class="login-success">{{ success }}</p>
-			<a class="btn-continue" href="{% url 'pantry:user_profile' username %}">View profile</a>
+			<p class="login-prompt">{{ success }}</p>
+			<form action="{% url 'pantry:user_profile' username %}">
+				<input class="btn-continue" id="view-prof-btn" type="submit" value="View profile">
+			</form>
 		{% else %}
 			<p class="login-prompt">Sign in with your password:</p>
 			<form id="form-sign-in" method="post" action="{% url 'pantry:sign_in' %}">

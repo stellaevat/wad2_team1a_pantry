@@ -13,10 +13,10 @@ from django.contrib.auth.models import User
 def populate():
 
     users = [
-        {"email" : "johndoe@gmail.com", "username" : "johndoe", "password" : "password"},
-        {"email" : "benking@gmail.com", "username" : "benking", "password" : "password"},
-        {"email" : "joebloggs@gmail.com", "username" : "joebloggs", "password" : "password"},
-        {"email" : "sallywalker@gmail.com", "username" : "sallywalker", "password" : "password"}
+        {"email" : "johndoe@gmail.com", "username" : "johndoe", "password" : "password", "filename" : "johndoe.jpg"},
+        {"email" : "benking@gmail.com", "username" : "benking", "password" : "password", "filename" : "benking.jpg"},
+        {"email" : "joebloggs@gmail.com", "username" : "joebloggs", "password" : "password", "filename" : "joebloggs.jpg"},
+        {"email" : "sallywalker@gmail.com", "username" : "sallywalker", "password" : "password", "filename" : "sallywalker.jpg"}
     ]
 
     categories = [
@@ -77,7 +77,7 @@ Put 100g plain flour and a pinch of salt into a large mixing bowl. Make a well i
 Pour in about 50ml from the 300ml of semi-skimmed milk and 1 tbsp sunflower oil then start whisking from the centre, gradually drawing the flour into the eggs, milk and oil. Once all the flour is incorporated, beat until you have a smooth, thick paste. Add a little more milk if it is too stiff to beat.
 Add a good splash of milk and whisk to loosen the thick batter. While still whisking, pour in a steady stream of the remaining milk. Continue pouring and whisking until you have a batter that is the consistency of slightly thick single cream.
 Heat the pan over a moderate heat, then wipe it with oiled kitchen paper.
-        """, "ingredients" : {"Flour":"100g", "Eggs":"2", "Milk":"300ml", "Sunflower Oil":"1 tbsp", "Salt":"a pinch"}, "category" : ["Vegetarian", "Under 30'", "Easy Meals"], "prep_time" : 10, "cook_time" : 30, "servings" : 4,
+        """, "ingredients" : {"Flour":"100g", "Eggs":"2", "Milk":"300ml", "Sunflower Oil":"1 tbsp", "Salt":"a pinch"}, "category" : ["Vegetarian", "Under 30'","Desserts", "Easy Meals"], "prep_time" : 10, "cook_time" : 30, "servings" : 4,
          "difficulty" : "easy", "pub_date" : datetime.date(2022,2,28), "stars" : 64, "filename" : "pancakes.jpg"},
 
          {"name":"New York cheesecake", "author" : "benking", "steps" : 
@@ -121,9 +121,10 @@ def add_ingredient(ingredient):
     return i
 
 def add_user(user):
+    path = os.getcwd() + "\\media\\profile_pictures\\"
     u = User.objects.get_or_create(username=user["username"], email=user["email"], password=user["password"])[0]
     u.save()
-    p = UserProfile.objects.get_or_create(user=u)[0]
+    p = UserProfile.objects.get_or_create(user=u, profile_picture=path+user["filename"])[0]
     p.save()
     return u
 
@@ -147,6 +148,6 @@ def add_recipe(recipe):
     return r
 
 if __name__ == "__main__":
-    print("Starting Rango population script...")
+    print("Starting Pantry population script...")
     populate()
 

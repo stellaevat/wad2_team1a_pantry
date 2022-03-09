@@ -7,39 +7,29 @@
 {% endblock %}
 
 {% block body_block %}
-	{% if types %}
-	<form action = "">
-		{% for t in types %}
-			<button type="button" class="collapsible" style="width:90%;height:75px;border-radius:0px;"><strong>{{ t }}</strong><br /></button>
-			<div class="collapsing" style="padding:10px">
-			{% for ingredient in ingredients|get_item:t %}
-				<input type="checkbox" id="{{ ingredient }}" name="{{ ingredient }}" value="{{ ingredient }}">
-				<label for ="{{ ingredient }}" >{{ ingredient }}</label>
+	<h1 class="cat-heading"> Search by Ingredient</h1>
+	{% if done %}
+		{% if recipes %}
+		<div class="cat-header">
+			<h1 class="cat-heading">Here's Some Recipes!</h1>
+			{% get_recipe_sorter recipes sort_type category %}
+		</div>
+		<div class="gap-small"></div>
+		<div class="recipes-big-three">
+			{% for recipe in recipes %}
+				{% recipe_display_grid recipe %}
 			{% endfor %}
-			</div>
-		{% endfor %}
-		<br />
-		<input type="submit" value="Done" style="color:white; background-color:var(--burgundy); height:50px; width:100px;border-radius: 25px;border-color: var(--burgundy);">
-	</form>
+		</div>
+		{% else %}
+			<p class="info-message">You don't have enough ingredients for any of our recipes. Try browsing categories or use the search bar!</p>
+		{% endif %}
+	{% else %}
+		<p class="cat-subheading"> Expand each category to select all the ingredients you want to use today:</p>
+		{% if types %}
+			{% get_ingredient_selection types ingredients %}
+		{% else %}
+			<p class="info-message">No ingredients to display yet. Try browsing categories or use the search bar!</p>
+		{% endif %}
 	{% endif %}
-
-<script>
-	//This script is from w3schools.org and has been slightly changed
-	var collapsible = document.getElementsByClassName("collapsible");
-	var i;
-		
-	for (i = 0; i < collapsible.length; i++) {
-		collapsible[i].addEventListener("click", function() {
-			this.classList.toggle("active");
-			var collapsing = this.nextElementSibling;
-			if (collapsing.style.display === "block") {
-				collapsing.style.display = "none";
-			} else {
-				collapsing.style.display = "block";
-			}
-		});
-	}
-</script>
-
 {% endblock %}
 

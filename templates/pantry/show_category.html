@@ -8,25 +8,22 @@
 
 {% block body_block %}
 	{% if category %}
+		{% if recipes %}
 		<div class="cat-header">
 			<h1 class="cat-heading">Explore Our {{ category.name }}...</h1>
-			{% if recipes %}
-			<ul class="dropdown-menu" aria-labelledby="dropdown01">
-				<li><a class="dropdown-item" href="{% url 'pantry:show_recipe' category.slug %}">Filter: Most Popular</a></li>
-				<li><a class="dropdown-item" href="{% url 'pantry:show_recipe' category.slug %}">Filter: Newest</a></li>
-				<li><a class="dropdown-item" href="{% url 'pantry:show_recipe' category.slug %}">Filter: Oldest</a></li>
-			</ul>
-			{% endif %}
+			{% get_recipe_sorter recipes sort_type category %}
+		</div>
+		<div class="gap-small"></div>
+		<div class="recipes-big-three">
+			{% for recipe in recipes %}
+				{% recipe_display_grid recipe %}
+			{% endfor %}
 		</div>
 		
-		{% if recipes %}
-			<div class="recipes-big-three">
-				{% for recipe in recipes %}
-					<a href="{% url 'pantry:show_recipe' recipe.slug %}">{{ recipe }}</a>
-				{% endfor %}
-			</div>
 		{% else %}
-			<p class="info-message">No recipes in this category yet. Try browsing other categories, or search by ingredient!</p>
+			<h1 class="cat-heading">Explore Our {{ category.name }}...</h1>
+			<p class="info-message">No recipes in this category yet.</p>
+			<p class="info-message">Try browsing other categories, or search by ingredient!</p>
 		{% endif %}
 	{% else %}
 		<h1 class="cat-heading">No {{ category.name }} category found.</h1>
