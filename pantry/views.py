@@ -9,31 +9,31 @@ from django.contrib.auth.models import User
 from django.db.models import Q
 
 
-# Dummy views until created
+#Filters recipes by author, making sure they were written by the currently signed in user
+#NOTE: Not fully tested as you cannot currently create recipes
 def show_my_recipes(request, username):
     user = request.user
     context_dict = {}
     context_dict["recipes"] = Recipe.objects.filter(author = user)
     return render(request, 'pantry/show_my_recipes.html', context=context_dict)   
 
+#Filters the recipes by those starred by the user.
+#NOTE: Not fully tested as you cannot currently create recipes
 def show_starred_recipes(request, username):
     user = request.user #the django user object
-    userProfile = UserProfile.objects.filter(user = user) #The specific objtect of type UserProfile from models. (this one has the starred recipes)
     context_dict = {}
-    #context_dict["recipes"] = userProfile.starred.get()
-    context_dict["recipes"] = None
+    context_dict["recipes"] = UserProfile.objects.filter(user = user).starred.all()  
     return render(request, 'pantry/show_starred_recipes.html', context=context_dict)
 
+
+# Renders the user profile page and passes a context dictionary with the recipes starred and written by the user
+#NOTE: Not fully tested as you cannot currently create recipes
 @login_required
 def user_profile(request, username):
-    # Renders the user profile page and passes a context dictionary with the recipes starred and written by the user
-    
     user = request.user #the django user object
-    userProfile = UserProfile.objects.filter(user = user) #The specific objtect of type UserProfile from models. (this one has the starred recipes)
     context_dict = {}
     context_dict["written"] = Recipe.objects.filter(author = user);
-    #context_dict["starred"] = UserProfile.starred
-    context_dict["recipes"] = None
+    context_dict["starred"] = UserProfile.objects.filter(user = user).starred.all()    
     return render(request, 'pantry/user_profile.html', context=context_dict)
 
 # Helper method for sorted recipe display
