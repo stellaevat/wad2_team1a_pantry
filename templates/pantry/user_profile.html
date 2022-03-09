@@ -7,7 +7,7 @@
 {% endblock %}
 
 {% block body_block %}
-{% if user_accessed.is_authenticated %}
+{% if user == user_accessed %}
 	<div class="header-featured">
 		<img class="banner" id="profile-banner" src="{% static 'img/profile-banner-default.png' %}" alt="User profile">
 		<div class="profile-picture-area">

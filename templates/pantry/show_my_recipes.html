@@ -7,7 +7,7 @@
 {% endblock %}
 
 {% block body_block %}
-{% if user_accessed.is_authenticated %}
+{% if user == user_accessed %}
 	{% if recipes %}
 	<div class="cat-header">
 		<h1 class="cat-heading">My Recipes</h1>

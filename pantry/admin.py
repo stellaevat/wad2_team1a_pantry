@@ -3,11 +3,13 @@ from pantry.models import UserProfile, Category, Ingredient, Recipe, IngredientL
 
 class CategoryAdmin(admin.ModelAdmin):
     prepopulated_fields = {'slug':('name',)}
+    list_display = ('name', 'tab')
     
 class RecipeAdmin(admin.ModelAdmin):
     prepopulated_fields = {'slug':('title',)}
+    list_display = ('title', 'author', 'pub_date', 'stars')
     
-# Id is of interest when search by ingredient / adding recipe ingredients, in case of error
+# Id is of interest when resolving issues with search by ingredient / adding recipe ingredients
 class IngredientAdmin(admin.ModelAdmin):
     list_display = ('name', 'ingredient_type', 'id')
 

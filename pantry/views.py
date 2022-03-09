@@ -4,7 +4,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from pantry.models import Recipe, Category, Ingredient, IngredientList, UserProfile
-from pantry.forms import UserForm, UserProfileForm, EmailForm, RecipeForm
+from pantry.forms import UserForm, UserProfileForm, EmailForm, RecipeForm, EditProfileForm, ProfilePictureForm
 from django.contrib.auth.models import User
 from django.db.models import Q
 
@@ -64,12 +64,6 @@ def all_ingredients():
     return type_names, ingredients
 
 
-# Dummy views until created
-    
-def edit_profile(request, username):
-    return HttpResponse("Edit profile")
-
-
 # DONE
 @login_required
 def user_profile(request, username):
@@ -113,7 +107,6 @@ def show_starred_recipes(request, username, sort=None):
         user_profile = UserProfile.objects.get(user=user)
         recipes = user_profile.starred.all()
         recipes, sort_type = sort_by(list(recipes), sort)
-        print(sort_type)
         
         context_dict["user_accessed"] = user
         context_dict["recipes"] = recipes
@@ -198,7 +191,6 @@ def search_by_ingredient(request):
 
 
 def search_by_ingredient_results(request, sort=None):
-    print(request.method)
     if request.method == 'POST':
         ingredients = request.POST.getlist('ingredients')
     else:
@@ -206,7 +198,6 @@ def search_by_ingredient_results(request, sort=None):
 
     recipes = set()
     if ingredients:
-        print(ingredients)
         for ingredient_id in ingredients:
             ingredient = Ingredient.objects.get(pk=ingredient_id)
             ing_recipes = IngredientList.objects.filter(ingredient=ingredient).values('recipe')
@@ -218,7 +209,7 @@ def search_by_ingredient_results(request, sort=None):
         context_dict = {"recipes" : recipes, "sort_type" : sort_type, "category" : "by_ingredient"}
         return render(request, 'pantry/search_by_ingredient_results.html', context=context_dict)
     else:
-        return render(request, 'pantry/search_by_ingredient_results.html', context={})
+        return redirect(reverse('pantry:search_by_ingredient'))
 
 
 def search_results(request, sort=None):
@@ -240,37 +231,39 @@ def search_results(request, sort=None):
     else: 
         return render(request, 'pantry/search_results.html', {})
 
-
 # Register view
 def sign_up(request):
     registered = False
-    
-    if request.method == 'POST':
-        user_form = UserForm(request.POST)
-        profile_form = UserProfileForm(request.POST)
+    email = request.session.get('email')
+    if email:
+        if request.method == 'POST':
+            user_form = UserForm(request.POST)
+            profile_form = UserProfileForm(request.POST)
 
-        if user_form.is_valid() and profile_form.is_valid():
-            user = user_form.save()
-            user.set_password(user.password)
-            user.email = request.session['email']
-            user.save()
+            if user_form.is_valid() and profile_form.is_valid():
+                user = user_form.save()
+                user.set_password(user.password)
+                user.email = email
+                user.save()
 
-            profile = profile_form.save(commit=False)
-            profile.user = user
-            profile.save()
-            registered = True
-            
-            user = authenticate(username=user_form.data["username"], password=user_form.data["password"])
-            login(request, user)
+                profile = profile_form.save(commit=False)
+                profile.user = user
+                profile.save()
+                registered = True
+                
+                user = authenticate(username=user_form.data["username"], password=user_form.data["password"])
+                login(request, user)
+            else:
+                context_dict = {'user_form': user_form, 'profile_form': profile_form, 'registered': registered, 'error': list(user_form.errors.values())[0]}
+                return render(request, 'pantry/sign_up.html', context=context_dict)
         else:
-            context_dict = {'user_form': user_form, 'profile_form': profile_form, 'registered': registered, 'error': list(user_form.errors.values())[0]}
-            return render(request, 'pantry/sign_up.html', context=context_dict)
-    else:
-        user_form = UserForm()
-        profile_form = UserProfileForm()
+            user_form = UserForm()
+            profile_form = UserProfileForm()
         
-    context_dict = {'user_form': user_form, 'profile_form': profile_form, 'registered': registered}
-    return render(request, 'pantry/sign_up.html', context=context_dict)
+        context_dict = {'user_form': user_form, 'profile_form': profile_form, 'registered': registered}
+        return render(request, 'pantry/sign_up.html', context=context_dict)
+    else:
+        return redirect(reverse('pantry:check_email'))
 
 # Check email view before logging in / signing up
 def check_email(request):
@@ -304,27 +297,29 @@ def check_email(request):
 
 # Sign in view
 def sign_in(request):
-    if request.method == 'POST':
-        username = request.session['username']
-        password = request.POST.get('password')
-        user = authenticate(username=username, password=password)
-        context_dict = {'username':username}
-    
-        if user:
-            if user.is_active:
-                login(request, user)
-                context_dict['success'] = "You've signed in successfully!"
-            else:
-                context_dict['error'] = "Your Pantry account is disabled."
-        else:
-            print(f"Invalid login details: {request.session['username']}, {password}")
-            context_dict['error'] = "Wrong password, try again."
+    username = request.session.get('username')
+    if username:
+        if request.method == 'POST':
+            password = request.POST.get('password')
+            user = authenticate(username=username, password=password)
+            context_dict = {'username':username}
         
-        return render(request, 'pantry/sign_in.html', context=context_dict)
+            if user:
+                if user.is_active:
+                    login(request, user)
+                    context_dict['success'] = "You've signed in successfully!"
+                else:
+                    context_dict['error'] = "Your Pantry account is disabled."
+            else:
+                print(f"Invalid login details: {request.session['username']}, {password}")
+                context_dict['error'] = "Wrong password, try again."
+            
+            return render(request, 'pantry/sign_in.html', context=context_dict)
 
+        else:
+            return redirect(reverse('pantry:check_email'))
     else:
         return redirect(reverse('pantry:check_email'))
-
 
 # Logout view restricted to authenticated users
 @login_required

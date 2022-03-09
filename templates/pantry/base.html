@@ -24,9 +24,9 @@
 				{% endif %}
 			</div>
 
-			<form class="search-bar" method="post", action="{% url 'pantry:search_results' %}">
+			<form class="search-bar" method="post" action="{% url 'pantry:search_results' %}" >
 				{% csrf_token %}
-				<input type="search" placeholder="Search recipes" aria-label="Search" name="searched">
+				<input type="search" placeholder="Search recipes" aria-label="Search" name="searched" required>
 			</form>
 			
 			<div class="navbar-right-align">
