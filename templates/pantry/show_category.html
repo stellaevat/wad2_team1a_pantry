@@ -11,7 +11,7 @@
 		{% if recipes %}
 		<div class="cat-header">
 			<h1 class="cat-heading">Explore Our {{ category.name }}...</h1>
-			{% get_recipe_sorter recipes sort_type category %}
+			{% get_recipe_sorter sort_type %}
 		</div>
 		<div class="gap-small"></div>
 		<div class="recipes-big-three">
@@ -26,6 +26,7 @@
 			<p class="info-message">Try browsing other categories, or search by ingredient!</p>
 		{% endif %}
 	{% else %}
-		<h1 class="cat-heading">No {{ category.name }} category found.</h1>
+		<h1 class="cat-heading">No '{{ false_category }}' category found</h1>
+		<p class="info-message">Make sure you have the right spelling, or try browsing our other categories!</p>
 	{% endif %}
 {% endblock %}

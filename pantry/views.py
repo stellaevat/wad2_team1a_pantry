@@ -4,37 +4,9 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from pantry.models import Recipe, Category, Ingredient, IngredientList, UserProfile
-from pantry.forms import UserForm, UserProfileForm, EmailForm, RecipeForm, EditProfileForm, ProfilePictureForm
+from pantry.forms import UserForm, UserProfileForm, EmailForm, RecipeForm
 from django.contrib.auth.models import User
 from django.db.models import Q
-
-
-#Filters recipes by author, making sure they were written by the currently signed in user
-#NOTE: Not fully tested as you cannot currently create recipes
-def show_my_recipes(request, username):
-    user = request.user
-    context_dict = {}
-    context_dict["recipes"] = Recipe.objects.filter(author = user)
-    return render(request, 'pantry/show_my_recipes.html', context=context_dict)   
-
-#Filters the recipes by those starred by the user.
-#NOTE: Not fully tested as you cannot currently create recipes
-def show_starred_recipes(request, username):
-    user = request.user #the django user object
-    context_dict = {}
-    context_dict["recipes"] = UserProfile.objects.filter(user = user).starred.all()  
-    return render(request, 'pantry/show_starred_recipes.html', context=context_dict)
-
-
-# Renders the user profile page and passes a context dictionary with the recipes starred and written by the user
-#NOTE: Not fully tested as you cannot currently create recipes
-@login_required
-def user_profile(request, username):
-    user = request.user #the django user object
-    context_dict = {}
-    context_dict["written"] = Recipe.objects.filter(author = user);
-    context_dict["starred"] = UserProfile.objects.filter(user = user).starred.all()    
-    return render(request, 'pantry/user_profile.html', context=context_dict)
 
 # Helper method for sorted recipe display
 def sort_by(recipes, sort):
@@ -63,8 +35,13 @@ def all_ingredients():
             
     return type_names, ingredients
 
+# Dummy
+@login_required
+def edit_profile(request, username):
+    return HttpResponse("Edit profile")
 
-# DONE
+# Renders the user profile page and passes a context dictionary with the recipes starred and written by the user
+#NOTE: Not fully tested as you cannot currently create recipes
 @login_required
 def user_profile(request, username):
     # Renders the user profile page and passes a context dictionary with the recipes starred and written by the user
@@ -84,7 +61,14 @@ def user_profile(request, username):
         
     return render(request, 'pantry/user_profile.html', context=context_dict)
     
-def show_my_recipes(request, username, sort=None):
+#Filters recipes by author, making sure they were written by the currently signed in user (includes sorting function).
+#NOTE: Not fully tested as you cannot currently create recipes
+@login_required
+def show_my_recipes(request, username, sort=None, sort_new=None):
+    # If new sort type is appended to end of the url, switch to that sorting
+    if sort_new:
+        return redirect(reverse('pantry:my_recipes', args=(username, sort_new)))
+    
     context_dict = {"user_accessed": None}
     try:
         user = User.objects.get(username=username)
@@ -99,8 +83,16 @@ def show_my_recipes(request, username, sort=None):
     except Exception as e:
         print(e)
     return render(request, 'pantry/show_my_recipes.html', context=context_dict)
+ 
+
+#Filters the recipes by those starred by the user (includes sorting function).
+#NOTE: Not fully tested as you cannot currently create recipes 
+@login_required
+def show_starred_recipes(request, username, sort=None, sort_new=None):
+    # If new sort type is appended to end of the url, switch to that sorting
+    if sort_new:
+        return redirect(reverse('pantry:starred_recipes', args=(username, sort_new)))
     
-def show_starred_recipes(request, username, sort=None):
     context_dict = {"user_accessed": None}
     try:
         user = User.objects.get(username=username)
@@ -163,7 +155,11 @@ def add_recipe_method(request):
             print(form.errors)
     return render(request, 'pantry/add_recipe_method.html', {'form': form})
 
-def show_category(request, category_title_slug, sort=None):
+def show_category(request, category_title_slug, sort=None, sort_new=None):
+    # If new sort type is appended to end of the url, switch to that sorting
+    if sort_new:
+        return redirect(reverse('pantry:show_category', args=(category_title_slug, sort_new)))
+    
     context_dict = {}
     try:
         category = Category.objects.get(slug=category_title_slug)
@@ -174,12 +170,8 @@ def show_category(request, category_title_slug, sort=None):
         context_dict['category'] = category
         context_dict['sort_type'] = sort_type
     except Category.DoesNotExist:
-        if ingredients == None:
-            context_dict['category'] = None
-            context_dict['recipes'] = None
-        else:
-            context_dict["category"] = "Recipes"
-            context_dict['recipes'] = None
+        context_dict["false_category"] = category_title_slug
+        return render(request, 'pantry/show_category.html', context=context_dict)
         
     return render(request, 'pantry/show_category.html', context=context_dict)
 
@@ -190,7 +182,11 @@ def search_by_ingredient(request):
     return render(request, 'pantry/search_by_ingredient.html', context=context_dict)
 
 
-def search_by_ingredient_results(request, sort=None):
+def search_by_ingredient_results(request, sort=None, sort_new=None):
+    # If new sort type is appended to end of the url, switch to that sorting
+    if sort_new:
+        return redirect(reverse('pantry:search_by_ingredient_results', args=(sort_new)))
+    
     if request.method == 'POST':
         ingredients = request.POST.getlist('ingredients')
     else:
@@ -212,7 +208,9 @@ def search_by_ingredient_results(request, sort=None):
         return redirect(reverse('pantry:search_by_ingredient'))
 
 
-def search_results(request, sort=None):
+def search_results(request, sort=None, sort_new=None):
+    if sort_new:
+        return redirect(reverse('pantry:search_results', args=(sort_new)))
     if request.method == 'POST':
         searched = request.POST.get('searched')
     else:
