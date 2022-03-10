@@ -21,7 +21,32 @@ def sort_by(recipes, sort):
         sort_type = "Most Popular"
     return recipes, sort_type
 
+# Helper method for switching sorting type or redirecting invalid sorting types
+def sort_redirect(sort, sort_new, link, param=None):
+    sort_types = {"popular", "newest", "oldest"}
+    if param:
+        args = [param]
+    else:
+        args = []
+
+    # New sort type has been appended to the url
+    if sort_new:
+        # If valid redirect to it
+        if sort_new in sort_types:
+            args.append(sort_new)
+            print(args)
+            return True, redirect(reverse('pantry:' + link, args=tuple(args)))
+        # If invalid discard it
+        elif sort in sort_types:
+            args.append(sort)
+            return True, redirect(reverse('pantry:' + link, args=tuple(args)))
+
+    # If first sort type is invalid discard it too
+    if sort not in sort_types:
+        return True, redirect(reverse('pantry:' + link, args=tuple(args)))
+    return False, None
     
+# Helper method for ingredient display
 def all_ingredients():
     types = Ingredient.get_types()
     type_names = []
@@ -63,9 +88,11 @@ def user_profile(request, username):
 #NOTE: Not fully tested as you cannot currently create recipes
 @login_required
 def show_my_recipes(request, username, sort=None, sort_new=None):
-    # If new sort type is appended to end of the url, switch to that sorting
-    if sort_new:
-        return redirect(reverse('pantry:my_recipes', args=(username, sort_new)))
+    # Handle changes in sorting type and invalid sort types
+    if sort:
+        invalid, redir = sort_redirect(sort, sort_new, "my_recipes", username)
+        if invalid:
+            return redir
     
     context_dict = {"user_accessed": None}
     try:
@@ -87,10 +114,12 @@ def show_my_recipes(request, username, sort=None, sort_new=None):
 #NOTE: Not fully tested as you cannot currently create recipes 
 @login_required
 def show_starred_recipes(request, username, sort=None, sort_new=None):
-    # If new sort type is appended to end of the url, switch to that sorting
-    if sort_new:
-        return redirect(reverse('pantry:starred_recipes', args=(username, sort_new)))
-    
+    # Handle changes in sorting type and invalid sort types
+    if sort:
+        invalid, redir = sort_redirect(sort, sort_new, "starred_recipes", username)
+        if invalid:
+            return redir
+
     context_dict = {"user_accessed": None}
     try:
         user = User.objects.get(username=username)
@@ -154,9 +183,11 @@ def add_recipe_method(request):
     return render(request, 'pantry/add_recipe_method.html', {'form': form})
 
 def show_category(request, category_title_slug, sort=None, sort_new=None):
-    # If new sort type is appended to end of the url, switch to that sorting
-    if sort_new:
-        return redirect(reverse('pantry:show_category', args=(category_title_slug, sort_new)))
+    # Handle changes in sorting type and invalid sort types
+    if sort:
+        invalid, redir = sort_redirect(sort, sort_new, "show_category", category_title_slug)
+        if invalid:
+            return redir
     
     context_dict = {}
     try:
@@ -181,9 +212,11 @@ def search_by_ingredient(request):
 
 
 def search_by_ingredient_results(request, sort=None, sort_new=None):
-    # If new sort type is appended to end of the url, switch to that sorting
-    if sort_new:
-        return redirect(reverse('pantry:search_by_ingredient_results', args=(sort_new)))
+    # Handle changes in sorting type and invalid sort types
+    if sort:
+        invalid, redir = sort_redirect(sort, sort_new, "search_by_ingredient_results")
+        if invalid:
+            return redir
     
     if request.method == 'POST':
         ingredients = request.POST.getlist('ingredients')
@@ -192,8 +225,8 @@ def search_by_ingredient_results(request, sort=None, sort_new=None):
 
     recipes = set()
     if ingredients:
-        for ingredient_id in ingredients:
-            ingredient = Ingredient.objects.get(pk=ingredient_id)
+        for name in ingredients:
+            ingredient = Ingredient.objects.get(name=name)
             ing_recipes = IngredientList.objects.filter(ingredient=ingredient).values('recipe')
             ing_recipes = {Recipe.objects.get(pk=r['recipe']) for r in ing_recipes}
             recipes = recipes.union(ing_recipes)    
@@ -207,8 +240,12 @@ def search_by_ingredient_results(request, sort=None, sort_new=None):
 
 
 def search_results(request, sort=None, sort_new=None):
-    if sort_new:
-        return redirect(reverse('pantry:search_results', args=(sort_new)))
+    # Handle changes in sorting type and invalid sort types
+    if sort:
+        invalid, redir = sort_redirect(sort, sort_new, "search_results")
+        if invalid:
+            return redir
+
     if request.method == 'POST':
         searched = request.POST.get('searched')
     else:
