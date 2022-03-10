@@ -36,13 +36,14 @@
 	
 	<div class="verticals-two">
 		<div class="vertical-featured">
-			<a href="{% url 'pantry:my_recipes' user.username %}"><h2 class="vertical-title">MY RECIPES ({{ written_count }})</h2></a>
+			<h2 class="vertical-title">MY RECIPES</h2>
 			{% if written_recipes %}
 			<div class="recipes-list-view">
 				{% for recipe in written_recipes %}
 					{% recipe_display_grid recipe small=True %}
 				{% endfor %}
 			</div>
+			<a class="link-message" href="{% url 'pantry:my_recipes' user.username %}"><i>view all...</i></a>
 			{% else %}
 			<br />
 			<p class="info-message">You haven't posted any recipes yet.</p>
@@ -52,13 +53,14 @@
 		</div>
 		
 		<div class="vertical-featured">
-			<a href="{% url 'pantry:starred_recipes' user.username %}"><h2 class="vertical-title">STARRED RECIPES ({{ starred_count }})</h2></a>
+			<h2 class="vertical-title">STARRED RECIPES</h2>
 			{% if starred_recipes %}
 			<div class="recipes-small-two">
 				{% for recipe in starred_recipes %}
 					{% recipe_display_grid recipe small=True %}
 				{% endfor %}
 			</div>
+			<a class="link-message" href="{% url 'pantry:starred_recipes' user.username %}"><i>view all...</i></a>
 			{% else %}
 			<br />
 			<p class="info-message">You haven’t starred any recipes yet.</p>
