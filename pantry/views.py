@@ -359,3 +359,6 @@ def sign_in(request):
 def sign_out(request):
     logout(request)
     return redirect(reverse('pantry:home'))
+
+def pagenotfound(request, exception):
+    return render(request, "errors/404.html", {})
