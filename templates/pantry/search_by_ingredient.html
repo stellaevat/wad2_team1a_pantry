@@ -8,28 +8,13 @@
 
 {% block body_block %}
 	<h1 class="cat-heading"> Search by Ingredient</h1>
-	{% if done %}
-		{% if recipes %}
-		<div class="cat-header">
-			<h1 class="cat-heading">Here's Some Recipes!</h1>
-			{% get_recipe_sorter recipes sort_type category %}
-		</div>
-		<div class="gap-small"></div>
-		<div class="recipes-big-three">
-			{% for recipe in recipes %}
-				{% recipe_display_grid recipe %}
-			{% endfor %}
-		</div>
-		{% else %}
-			<p class="info-message">You don't have enough ingredients for any of our recipes. Try browsing categories or use the search bar!</p>
-		{% endif %}
-	{% else %}
+	{% if types %}
 		<p class="cat-subheading"> Expand each category to select all the ingredients you want to use today:</p>
-		{% if types %}
+		<form class="ingredient-selection" action ="{% url 'pantry:search_by_ingredient_results' %}" method="post">
+			{% csrf_token %}
 			{% get_ingredient_selection types ingredients %}
-		{% else %}
-			<p class="info-message">No ingredients to display yet. Try browsing categories or use the search bar!</p>
-		{% endif %}
+		</form>
+	{% else %}
+		<p class="info-message">No ingredients to display yet. Try browsing categories or use the search bar!</p>
 	{% endif %}
 {% endblock %}
-
