@@ -16,15 +16,19 @@
 		<div class="gap-small"></div>
 		<div class="recipes-big-three">
 			{% for recipe in recipes %}
-				{% recipe_display_grid recipe %}
+				{% recipe_grid_display recipe %}
 			{% endfor %}
 		</div>
 	{% elif searched %}
 		<h1 class="central-heading">Search results for '{{ searched }}'...</h1><br />
 		<p class="info-message">No matches for your search. Try using fewer or more general keywords.</p>
 		<p class="info-message">Alternatively, you can browse our categories or search by ingredient!</p>
+		<br /><br />
+		<button class="btn-back" type="button" onclick="history.back()">Back</button>
 	{% else %}
 		<h1 class="central-heading">Search results...</h1><br />
 		<p class="info-message">You haven't searched for anything yet!</p>
+		<br /><br />
+		<button class="btn-back" type="button" onclick="history.back()">Back</button>
 	{% endif %}
 {% endblock %}

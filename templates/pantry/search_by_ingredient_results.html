@@ -7,26 +7,34 @@
 {% endblock %}
 
 {% block body_block %}
-	{% if category %}
+	{% if done %}
 		{% if recipes %}
 			<div class="cat-header">
 				<h1 class="cat-heading">Recipes with selected ingredients...</h1><br />
-				{% get_recipe_sorter sort_type %}
+				{% get_recipe_sorter sort_type True %}
 			</div>
+			<p class="info-message" id="perecnt-explain">The &percnt; tag shows what percentage of the recipe's ingredients you've selected. <br /> The higher the percentage, the better the match!</p>
 			
 			<div class="gap-small"></div>
 			<div class="recipes-big-three">
 				{% for recipe in recipes %}
-					{% recipe_display_grid recipe %}
+					{% recipe_grid_display recipe percent=recipe_percents|get_item:recipe %}
 				{% endfor %}
 			</div>
 		{% else %}
 			<h1 class="central-heading">Recipes with selected ingredients...</h1><br />
-			<p class="info-message">Unfortunately we currently have no recipes with these ingredients.</p>
-			<p class="info-message">Try browsing our categories, or search using the search bar!</p>
+			<p class="info-message">We currently have no recipes with these ingredients. <br /> Try browsing our categories, or search using the search bar!</p>
+			<br /><br />
+			<button class="btn-back" type="button" onclick="history.back()">Back</button>
 		{% endif %}
 	{% else %}
-		<h1 class="central-heading">Recipes with selected ingredients...</h1><br />
-		<p class="info-message">You haven't selected any ingredients!</p>
+		<h1 class="central-heading">Recipes with selected ingredients...</h1>
+		<br /><br />
+		<p class="info-message">You haven't selected any ingredients!</p><br />
+		<form action="{% url 'pantry:search_by_ingredient' %}" method="POST">
+			{% csrf_token %}
+			<input class="btn-continue" id="btn-redir" type="button" onclick="history.back()">Select ingredients</button>
+			}
+		</form>
 	{% endif %}
 {% endblock %}

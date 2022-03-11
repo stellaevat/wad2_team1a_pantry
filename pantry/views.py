@@ -9,40 +9,42 @@ from django.contrib.auth.models import User
 from django.db.models import Q
 
 # Helper method for sorted recipe display
-def sort_by(recipes, sort):
+def sort_by(recipes, sort, by_ingredient=False):    
     if sort == "newest":
-        recipes.sort(key=lambda x: x.pub_date, reverse=True)
+        recipes_sorted = sorted(recipes, key=lambda x: x.pub_date, reverse=True)
         sort_type = "Newest"
     elif sort == "oldest":
-        recipes.sort(key=lambda x: x.pub_date)
+        recipes_sorted = sorted(recipes, key=lambda x: x.pub_date)
         sort_type = "Oldest"
-    else:
-        recipes.sort(key=lambda x: x.stars, reverse=True)
+    elif (sort == "popular") or (not by_ingredient):
+        recipes_sorted = sorted(recipes, key=lambda x: x.stars, reverse=True)
         sort_type = "Most Popular"
-    return recipes, sort_type
+    else:
+        recipes_sorted = sorted(list(recipes.keys()), key=lambda x: recipes[x], reverse=True)
+        sort_type = "Best Match"
+    return recipes_sorted, sort_type
 
 # Helper method for switching sorting type or redirecting invalid sorting types
-def sort_redirect(sort, sort_new, link, param=None):
+def sort_redirect(sort, sort_new, link, param=None, by_ingredient=False):
     sort_types = {"popular", "newest", "oldest"}
-    if param:
-        args = [param]
-    else:
-        args = []
+    args = [param] if param else []
+    # Special situation: search by ingredient, where best match sort also allowed
+    special = by_ingredient and sort == "best_match"
+    special_new = by_ingredient and sort_new == "best_match"
 
     # New sort type has been appended to the url
     if sort_new:
         # If valid redirect to it
-        if sort_new in sort_types:
+        if (sort_new in sort_types) or special_new:
             args.append(sort_new)
-            print(args)
             return True, redirect(reverse('pantry:' + link, args=tuple(args)))
         # If invalid discard it
-        elif sort in sort_types:
+        elif (sort in sort_types) or special:
             args.append(sort)
             return True, redirect(reverse('pantry:' + link, args=tuple(args)))
 
     # If first sort type is invalid discard it too
-    if sort not in sort_types:
+    if (sort not in sort_types) and not special:
         return True, redirect(reverse('pantry:' + link, args=tuple(args)))
     return False, None
     
@@ -218,7 +220,7 @@ def search_by_ingredient(request):
 def search_by_ingredient_results(request, sort=None, sort_new=None):
     # Handle changes in sorting type and invalid sort types
     if sort:
-        invalid, redir = sort_redirect(sort, sort_new, "search_by_ingredient_results")
+        invalid, redir = sort_redirect(sort, sort_new, "search_by_ingredient_results", by_ingredient=True)
         if invalid:
             return redir
     
@@ -227,17 +229,29 @@ def search_by_ingredient_results(request, sort=None, sort_new=None):
     else:
         ingredients = request.session.get('ingredients')
 
-    recipes = set()
+    recipe_percents = {}
     if ingredients:
+        print(ingredients)
         for name in ingredients:
             ingredient = Ingredient.objects.get(name=name)
-            ing_recipes = IngredientList.objects.filter(ingredient=ingredient).values('recipe')
-            ing_recipes = {Recipe.objects.get(pk=r['recipe']) for r in ing_recipes}
-            recipes = recipes.union(ing_recipes)    
+            recipes = IngredientList.objects.filter(ingredient=ingredient).values('recipe')
+            recipes = {Recipe.objects.get(pk=r['recipe']) for r in recipes}
             
-        recipes, sort_type = sort_by(list(recipes), sort)
+            # Keeping count of how many selected ingredients each recipe has
+            for recipe in recipes:
+                if recipe not in recipe_percents:
+                    recipe_percents[recipe] = 1
+                else:
+                    recipe_percents[recipe] += 1
+
+        # Mapping to each recipe the percentage of its total ingredients that the user has selected
+        for recipe, selected in recipe_percents.items():
+            total = recipe.ingredients.count()
+            recipe_percents[recipe] = int(100 * selected / total);
+            
+        recipes, sort_type = sort_by(recipe_percents, sort, True)
         request.session['ingredients'] = ingredients
-        context_dict = {"recipes" : recipes, "sort_type" : sort_type, "category" : "by_ingredient"}
+        context_dict = {"recipes" : recipes, "recipe_percents": recipe_percents, "sort_type" : sort_type, "done": True}
         return render(request, 'pantry/search_by_ingredient_results.html', context=context_dict)
     else:
         return redirect(reverse('pantry:search_by_ingredient'))
