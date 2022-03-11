@@ -104,7 +104,6 @@ def show_my_recipes(request, username, sort=None, sort_new=None):
         context_dict["user_accessed"] = user
         context_dict["recipes"] = recipes
         context_dict["sort_type"] = sort_type
-        context_dict["category"] = "my_recipes"
     except Exception as e:
         print(e)
     return render(request, 'pantry/show_my_recipes.html', context=context_dict)
@@ -130,7 +129,6 @@ def show_starred_recipes(request, username, sort=None, sort_new=None):
         context_dict["user_accessed"] = user
         context_dict["recipes"] = recipes
         context_dict["sort_type"] = sort_type
-        context_dict["category"] = "starred"
     except Exception as e:
         print(e)
     return render(request, 'pantry/show_starred_recipes.html', context=context_dict)
@@ -148,6 +146,7 @@ def show_recipe(request, recipe_name_slug):
         recipe = Recipe.objects.get(slug=recipe_name_slug)
         context_dict["recipe"] = recipe
         context_dict["ingredients"] = IngredientList.objects.filter(recipe=recipe)
+        context_dict["categories"] = recipe.category.all()
         return render(request, 'pantry/show_recipe.html', context=context_dict)
     except Recipe.DoesNotExist:
         return render(request, 'pantry/show_recipe.html', {})
@@ -256,6 +255,8 @@ def search_results(request, sort=None, sort_new=None):
         keywords = searched.split()
         for k in keywords:
             recipes = recipes.union(Recipe.objects.filter(Q(title__contains=k) | Q(steps__contains=k)))
+            for cat in Category.objects.filter(Q(name__contains=k)):
+                recipes = recipes.union(cat.recipe_set.all())
             
         recipes, sort_type = sort_by(list(recipes), sort)
         request.session['searched'] = searched
