@@ -19,6 +19,8 @@ from django.conf import settings
 from django.conf.urls.static import static
 from pantry import views
 
+handler404 = 'pantry.views.pagenotfound'
+
 urlpatterns = [
     path('', views.home, name='home'),
     path('pantry/', include('pantry.urls')),
