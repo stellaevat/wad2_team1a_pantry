@@ -54,11 +54,11 @@ a {
 
 .central-heading {
 	font-size: 35px;
-	text-align: center;
 }
 
 .cat-subheading, .login-prompt {
 	padding: 5px 0px 10px 0px;
+	font-size: 18px;
 }
 
 .welcome-message {
@@ -71,11 +71,19 @@ a {
 	position: relative;
 	top: 10px;
 	font-style: italic;
+	line-height: 22px;
+}
+
+.info-message#perecnt-explain {
+	text-align: left;
+	padding-left: calc(35vw - 225px);
+	font-size: 18px;
 }
 
 .error-message {
 	font-style: italic;
 	color: var(--orange);
+	line-height: 22px
 }
 
 
@@ -111,8 +119,8 @@ button {
 }
 
 .btn-continue, .btn-back {
-	min-height: 60px;
-	min-width: 120px;
+	height: 60px;
+	width: 120px;
 	font-size: 20px;
 	margin: 5px;
 	padding: 15px;
@@ -122,6 +130,13 @@ button {
 	background-color: var(--burgundy);
 	color: var(--light);
 	border-radius: 30px;
+}
+
+.btn-continue#btn-redir {
+	height: auto;
+	width: auto;
+	min-height: 60px;
+	min-width: 120px;
 }
 
 .btn-back {
@@ -374,7 +389,11 @@ button {
 }
 
 .main-info-big {
-	font-size: 25px;
+	font-size: 26px;
+}
+
+.secondary-info-big * {
+	font-size: 20px;
 }
 
 /* All grids */

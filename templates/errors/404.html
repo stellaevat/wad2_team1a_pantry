@@ -14,7 +14,7 @@
 		<br />
 		<form action="{% url 'pantry:home' %}" method="POST">
 			{% csrf_token %}
-			<button class="btn-continue" type="submit">Go to homepage</button>
+			<button class="btn-continue" id="btn-redir" type="submit">Go to homepage</button>
 		</form>
 	</div>
 {% endblock %}

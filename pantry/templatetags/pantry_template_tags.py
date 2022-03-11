@@ -6,27 +6,18 @@ register = template.Library()
 def get_tabs(current_tab=None):
     return {'tabs': Category.objects.filter(tab=True), 'current_tab': current_tab}
     
-@register.inclusion_tag('pantry/recipe_display_grid.html')
-def recipe_display_grid(recipe, small=False, by_ingredient=False, selected=None):
-    if small:
-        size = "small"
-    else:
-        size = "big"
-    if by_ingredient:
-        ingredients = IngredientList.objects.filter(recipe=recipe).count()
-    else: 
-        ingredients = None
-        
+@register.inclusion_tag('pantry/recipe_grid_display.html')
+def recipe_grid_display(recipe, small=False, percent=None):
+    size = "small" if small else "big"   
     return {'recipe': recipe,
             'size': size,
             'time': recipe.prep_time + recipe.cook_time,
-            'by_ingredient': by_ingredient,
-            'selected': selected,
-            'ingredients': ingredients,}
+            'percent': percent,}
  
 @register.inclusion_tag('pantry/recipe_sorter.html') 
-def get_recipe_sorter(sort_type=None):
-    return {'sort_type': sort_type}
+def get_recipe_sorter(sort_type=None, by_ingredient=False):
+    return {'sort_type': sort_type,
+            'by_ingredient': by_ingredient}
 
 @register.inclusion_tag('pantry/categories_dropdown.html')
 def get_categories_dropdown():
@@ -51,6 +42,9 @@ def get_recipes_by_author(user):
     
 @register.filter
 def get_item(dictionary, key):
-    return dictionary.get(key)
+    try:
+        return dictionary[key]
+    except:
+        return ""
     
 # Recipe thumbnail, include new paras, dropdown display(?)

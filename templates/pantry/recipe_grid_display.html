@@ -16,13 +16,12 @@
 				<img class="icon-small" src="{% static 'img/timer-light.png' %}" alt="Cooking time">
 				{{ time }}'
 			</div>
+			{% if percent %}
 			<div class="ing-info-{{ size }}">
-			{% if by_ingredient %}
-				<img class="icon-small" src="{% static 'img/tick-light.png' %}" alt="Ingredients">
-				{{ selected }}/{{ ingredients }}
-			{% endif %}
+				&percnt; {{ percent }}
 			</div>
-				
+			{% endif %}
+			<div></div>
 		</div>
 	</div>
 </a>
