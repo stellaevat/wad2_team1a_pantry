@@ -30,7 +30,8 @@ def get_recipe_sorter(sort_type=None):
 
 @register.inclusion_tag('pantry/categories_dropdown.html')
 def get_categories_dropdown():
-    return {'categories': Category.objects.filter(tab=False)}
+    return {'tabs': Category.objects.filter(tab=True),
+            'categories': Category.objects.filter(tab=False)}
     
 @register.inclusion_tag('pantry/ingredient_selection.html')
 def get_ingredient_selection(types, ingredients):

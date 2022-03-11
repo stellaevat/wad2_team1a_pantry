@@ -16,7 +16,7 @@
 			{% else %}
 			<img class="profile-picture-big" src="{% static 'img/profile-picture-default.png' %}" alt="User profile">
 			{% endif %}
-			<h1 class="cat-heading" id="username">{{ user.username }}</h1><br />
+			<h1 class="heading-central" id="username">{{ user.username }}</h1><br />
 			<div class="profile-buttons">
 				<form action="{% url 'pantry:add_recipe_ingredients' %}">
 					<button class="btn-inverted" type="submit" value="Add Recipe">
@@ -43,7 +43,11 @@
 					{% recipe_display_grid recipe small=True %}
 				{% endfor %}
 			</div>
-			<a class="link-message" href="{% url 'pantry:my_recipes' user.username %}"><i>view all...</i></a>
+				{% if written_count > 4 %}
+				<a class="link-message" href="{% url 'pantry:my_recipes' user.username %}"><i>view all ({{ written_count }})...</i></a>
+				{% else %}
+				<a class="link-message" href="{% url 'pantry:my_recipes' user.username %}"><i>view all...</i></a>
+				{% endif %}
 			{% else %}
 			<br />
 			<p class="info-message">You haven't posted any recipes yet.</p>
@@ -60,7 +64,11 @@
 					{% recipe_display_grid recipe small=True %}
 				{% endfor %}
 			</div>
-			<a class="link-message" href="{% url 'pantry:starred_recipes' user.username %}"><i>view all...</i></a>
+				{% if starred_count > 4 %}
+				<a class="link-message" href="{% url 'pantry:starred_recipes' user.username %}"><i>view all ({{ starred_count }})...</i></a>
+				{% else %}
+				<a class="link-message" href="{% url 'pantry:starred_recipes' user.username %}"><i>view all...</i></a>
+				{% endif %}
 			{% else %}
 			<br />
 			<p class="info-message">You haven’t starred any recipes yet.</p>

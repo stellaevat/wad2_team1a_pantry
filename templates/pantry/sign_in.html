@@ -15,7 +15,8 @@
 	<div class="login-area">
 		{% if success %}
 			<p class="login-prompt">{{ success }}</p>
-			<form action="{% url 'pantry:user_profile' username %}">
+			<form action="{% url 'pantry:user_profile' username %}" method="POST">
+				{% csrf_token %}
 				<input class="btn-continue" id="view-prof-btn" type="submit" value="View profile">
 			</form>
 		{% else %}

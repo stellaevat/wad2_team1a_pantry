@@ -8,15 +8,15 @@
 			{{ recipe.title }}<br />
 		</div>
 		<div class="secondary-info-{{ size }}">
-			<div>
+			<div class="star-info-{{ size }}">
 				<img class="icon-small" src="{% static 'img/star-light.png' %}" alt="Stars">
 				{{ recipe.stars }}
 			</div>
-			<div>
+			<div class="time-info-{{ size }}">
 				<img class="icon-small" src="{% static 'img/timer-light.png' %}" alt="Cooking time">
 				{{ time }}'
 			</div>
-			<div>
+			<div class="ing-info-{{ size }}">
 			{% if by_ingredient %}
 				<img class="icon-small" src="{% static 'img/tick-light.png' %}" alt="Ingredients">
 				{{ selected }}/{{ ingredients }}

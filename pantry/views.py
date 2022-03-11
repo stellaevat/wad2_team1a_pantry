@@ -76,8 +76,12 @@ def user_profile(request, username):
         user_profile = UserProfile.objects.get(user=user)
         context_dict["user_accessed"] = user
         context_dict["user_profile"] = user_profile
-        context_dict["written_recipes"] = Recipe.objects.filter(author=user).order_by('-pub_date')[:4]
-        context_dict["starred_recipes"] = user_profile.starred.all().order_by('-pub_date')[:4]
+        written_recipes = Recipe.objects.filter(author=user).order_by('-pub_date')
+        context_dict["written_recipes"] = written_recipes[:4]
+        context_dict["written_count"] = written_recipes.count()
+        starred_recipes = user_profile.starred.all().order_by('-pub_date')
+        context_dict["starred_recipes"] = starred_recipes[:4]
+        context_dict["starred_count"] = starred_recipes.count()
         context_dict["profile_picture"] = user_profile.profile_picture
     except Exception as e:
         print(e)
