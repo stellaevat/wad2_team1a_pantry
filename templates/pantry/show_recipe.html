@@ -36,6 +36,8 @@
 				</div>
 			</div>
 		</div>
+		
+		
 		{% if user.is_authenticated %}
 		<button class="btn-inverted" id="star-btn" type="button">
 			<img class="icon-big" src="{% static 'img/star-dark.png' %}" alt="Star">
@@ -43,6 +45,15 @@
 		</button>
 		{% endif %}
 	</div>
+	
+	{% if categories %}
+	<div class="category-tags">
+		
+		{% for cat in categories %}
+		<a class="cat-tag" href="{% url 'pantry:show_category' cat.slug %}">{{ cat.name }}</a>
+		{% endfor %}
+	</div>
+	{% endif %}
 	
 	<div class="verticals-left-narrow">
 		<div class="vertical-featured" id="ingredients">
