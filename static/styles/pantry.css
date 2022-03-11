@@ -542,7 +542,6 @@ button {
 	color:var(--dark);
 	border-radius: 0px 0px 20px 20px;
 	padding: 12px 35px 12px 10px;
-	text-decoration: none;
 	text-align: left;
 	display: block;
 	font-size: 14px;
@@ -584,7 +583,6 @@ button {
 .dropdown-items-cats a {
 	background-color: var(--medium);
 	color:var(--dark);
-	text-decoration: none;
 	text-align: left;
 	display: block;
 	width: 100%;
@@ -727,23 +725,21 @@ button {
 }
 
 .verticals-left-narrow {
-	overflow: hidden;
     position: relative;
 	padding-left: calc(35vw - 300px);
-	padding-right: calc(35vw - 300px);
+	padding-right: calc(35vw - 250px);
+	display:grid;
+	grid-template-columns: 1fr 2fr;
+	column-gap: 15px;
 }
 
 .verticals-left-narrow * {
-	overflow: hidden;
     position: relative;
-}
-
-.vertical {
-	padding-left: 15px;
 }
 
 .vertical-featured#ingredients {
 	width: 300px;
+	overflow: hidden;
 }
 
 .ingredient {
@@ -751,11 +747,23 @@ button {
 	text-align: left;
 }
 
-.long-text {
-	text-align: left;
-	line-height: 24pt;
-	padding-left: 30px;
+.vertical {
+	margin-left: 15px;
 }
+
+.long-text {
+	text-align: justify;
+	line-height: 24pt;
+}
+
+ol li {
+	padding-left: 5px;
+}
+
+ol li::marker {
+	font-weight: bold;
+}
+	
 
 /* WINDOW RESIZE */
 

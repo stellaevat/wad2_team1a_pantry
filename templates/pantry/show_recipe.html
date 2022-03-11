@@ -56,23 +56,28 @@
 	{% endif %}
 	
 	<div class="verticals-left-narrow">
-		<div class="vertical-featured" id="ingredients">
-			<h2 class="vertical-title">INGREDIENTS</h2></br>
-			{% if ingredients %}
-				<ul class="ingredient-list">
-					{% for ing in ingredients %}
-						<li class="ingredient">{{ ing.quantity }} {{ ing.ingredient.name }}</li>
-					{% endfor %}
-				</ul>
-			{% else %}
-				<p class="info-message">No ingredients required for this recipe!</p>
-				<div class="gap-small"></div>
-			{% endif %}
+		<div>
+			<div class="vertical-featured" id="ingredients">
+				<h2 class="vertical-title">INGREDIENTS</h2></br>
+				{% if ingredients %}
+					<ul class="ingredient-list">
+						{% for ing in ingredients %}
+							<li class="ingredient">{{ ing.quantity }} {{ ing.ingredient.name }}</li>
+						{% endfor %}
+					</ul><br />
+				{% else %}
+					<p class="info-message">No ingredients required for this recipe!</p>
+					<div class="gap-small"></div>
+				{% endif %}
+			</div>
 		</div>
-		
 		<div class="vertical">
 			<h2 class="vertical-title">METHOD</h2></br>
-			<div class="long-text">{{ recipe.steps }}</div>
+			<ol>
+			{% for step in method %}
+				<li class="long-text">{{ step }}</li><br />
+			{% endfor %}
+			</ol>
 		</div>
 	</div>
 		

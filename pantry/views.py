@@ -149,6 +149,7 @@ def show_recipe(request, recipe_name_slug):
         context_dict = {}
         recipe = Recipe.objects.get(slug=recipe_name_slug)
         context_dict["recipe"] = recipe
+        context_dict["method"] = recipe.steps.split("/n")
         context_dict["ingredients"] = IngredientList.objects.filter(recipe=recipe)
         context_dict["categories"] = recipe.category.all()
         return render(request, 'pantry/show_recipe.html', context=context_dict)
