@@ -49,9 +49,10 @@ a {
 .cat-heading {
 	font-size: 35px;
 	text-align: left;
+	padding-left: 10px;
 }
 
-.heading-central {
+.central-heading {
 	font-size: 35px;
 	text-align: center;
 }
@@ -71,6 +72,12 @@ a {
 	top: 10px;
 	font-style: italic;
 }
+
+.error-message {
+	font-style: italic;
+	color: var(--orange);
+}
+
 
 .gap {
 	height: calc(5vw + 100px);
@@ -104,10 +111,11 @@ button {
 }
 
 .btn-continue, .btn-back {
-	height: 60px;
-	width: 120px;
+	min-height: 60px;
+	min-width: 120px;
 	font-size: 20px;
 	margin: 5px;
+	padding: 15px;
 }
 
 .btn-continue {
@@ -169,7 +177,6 @@ button {
 .banner img {
 	width: 1900px;
 }
-
 
 /* NAVBAR & TABS */
 .navbar {
@@ -783,10 +790,6 @@ button {
 		padding-right: 28px;
 	}
 	
-	.cat-heading {
-		padding-left: 10px;
-	}
-
 	.time-info-small, .time-info-big {
 		display: none;
 	}

@@ -3,14 +3,18 @@
 {% load pantry_template_tags %}
 
 {% block title_block %}
-	Home
+	Page not found
 {% endblock %}
 
 {% block body_block %}
 	<div class="logo">
 		<img class="logo-welcome" src="{% static 'img/welcome.png' %}" alt="Welcome to the Pantry">
-		<p class="welcome-message">We couldn't find the page you were looking for!</p>
-
-        <a class="btn-continue" id="view-prof-btn" href="{% url 'pantry:home' %}" style="width:500px;height:200px">Back to the homepage</a>
+		<p class="error-message">We couldn't find the page you were looking for!</p>
+		
+		<br />
+		<form action="{% url 'pantry:home' %}" method="POST">
+			{% csrf_token %}
+			<button class="btn-continue" type="submit">Go to homepage</button>
+		</form>
 	</div>
 {% endblock %}
