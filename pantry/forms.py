@@ -38,13 +38,13 @@ class EmailForm(forms.ModelForm):
 
 class RecipeForm(forms.ModelForm):
 	name = forms.CharField(max_length=128, help_text="Please enter the recipe name.")
-	ingredients = forms.CharField(max_length=128, help_text="Please add some ingredients.")
+	method = forms.CharField(help_text="Please explain the method for the Recipe.")
 	stars = forms.IntegerField(widget=forms.HiddenInput(), initial=0)
 	slug = forms.CharField(widget=forms.HiddenInput(), required=False)
 	
 	class Meta:
 		model = Recipe
-		fields = ('name', 'ingredients')
+		fields = ('name', 'method')
         
 class RecipeIngredientsForm(forms.ModelForm):
     # Ignore this field, required for compilation until actual implementation is done

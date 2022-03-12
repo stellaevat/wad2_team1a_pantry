@@ -176,10 +176,10 @@ def add_recipe_ingredients(request):
 
 @login_required
 def add_recipe_method(request):
-    form = RecipeMethodForm()
+    form = RecipeForm()
     
     if request.method == 'POST':
-        form = RecipeMethodForm(request.POST)
+        form = RecipeForm(request.POST)
         
         if form.is_valid():
             form.save(commit=True)
