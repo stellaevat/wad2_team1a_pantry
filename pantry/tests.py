@@ -332,3 +332,38 @@ class PantryAdminInterfaceTests(TestCase):
 
         # Check each model is present.
         self.assertTrue('Categories' in response_body, f"{FAILURE_HEADER}The Category model was not found in the admin interface. If you did add the model to admin.py, did you add the correct plural spelling (Categories)?{FAILURE_FOOTER}")
+
+class PantryPopulationScriptTests(TestCase):
+    """
+    Tests whether the population script puts the expected data into a test database.
+    Expects that the population script has the populate() function.
+    """
+    def setUp(self):
+        """
+        Imports and runs the population script, calling the populate() method.
+        """
+        try:
+            import population_script
+        except ImportError:
+            raise ImportError(f"{FAILURE_HEADER}The tests could not import the population_script. Check it's in the right location (the first wad2_team1a_pantry directory).{FAILURE_FOOTER}")
+
+        if 'populate' not in dir(population_script):
+            raise NameError(f"{FAILURE_HEADER}The populate() function does not exist in the population_script module. This is required.{FAILURE_FOOTER}")
+
+        # Call the population script -- any exceptions raised here do not have fancy error messages to help readers.
+        population_script.populate()
+
+    def test_categories(self):
+        """
+        There should be 13 categories from population_script.
+        """
+        categories = Category.objects.filter()
+        categories_len = len(categories)
+        categories_strs = map(str, categories)
+
+        self.assertEqual(categories_len, 13, f"{FAILURE_HEADER}Expecting 13 categories to be created from the population_script module; found {categories_len}.{FAILURE_FOOTER}")
+        self.assertTrue('Mains' in categories_strs, f"{FAILURE_HEADER}The category 'Mains' was expected but not created by population_script.{FAILURE_FOOTER}")
+        self.assertTrue('Vegan' in categories_strs, f"{FAILURE_HEADER}The category 'Vegan' was expected but not created by population_script.{FAILURE_FOOTER}")
+        self.assertTrue('Breakfast' in categories_strs, f"{FAILURE_HEADER}The category 'Breakfast' was expected but not created by population_script.{FAILURE_FOOTER}")
+
+    
