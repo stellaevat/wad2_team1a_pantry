@@ -5,6 +5,7 @@ import importlib
 from django.urls import reverse
 from django.conf import settings
 from pantry.models import Category, Ingredient, Recipe, IngredientList
+from django.contrib.auth.models import User
 
 FAILURE_HEADER = f"{os.linesep}{os.linesep}{os.linesep}================{os.linesep}TwD TEST FAILURE =({os.linesep}================{os.linesep}"
 FAILURE_FOOTER = f"{os.linesep}"
@@ -217,7 +218,7 @@ class PantryDatabaseConfigurationTests(TestCase):
             else:
                 warnings.warn("You don't appear to have a .gitignore file in place in your repository.")
 
-class Chapter5ModelTests(TestCase):
+class PantryModelTests(TestCase):
     """
     Are the models set up correctly, and do all the required attributes (post exercises) exist?
     """
@@ -299,3 +300,35 @@ class Chapter5ModelTests(TestCase):
 
         self.assertEqual(str(category_mains), "Mains", f"{FAILURE_HEADER}The __str__() method in the Category class has not been implemented correctly.{FAILURE_FOOTER}")
         self.assertEqual(str(ingredient_cheese), "Cheese", f"{FAILURE_HEADER}The __str__() method in the Page class has not been implemented correctly.{FAILURE_FOOTER}")
+
+class PantryAdminInterfaceTests(TestCase):
+    """
+    A series of tests that examines the authentication functionality (for user creation and logging in), and admin interface changes.
+    Have all the admin interface tweaks been applied, and have the models been added to the admin app?
+    """
+    def setUp(self):
+        """
+        Create a user account for use in testing and logs them in.
+        """
+        User.objects.create_superuser('testAdmin', 'email@email.com', 'adminPassword123')
+        self.client.login(username='testAdmin', password='adminPassword123')
+
+        category = Category.objects.get_or_create(name='TestCategory')[0]
+        Ingredient.objects.get_or_create(name="TestIngredient1", ingredient_type="dairy")
+
+    def test_admin_interface_accessible(self):
+        response = self.client.get('/admin/')
+        self.assertEqual(response.status_code, 200, f"{FAILURE_HEADER}The admin interface is not accessible. Check that you didn't delete the 'admin/' URL pattern in your project's urls.py module.{FAILURE_FOOTER}")
+
+    def test_models_present(self):
+        """
+        Checks whether the models are present within the admin interface homepage.
+        """
+        response = self.client.get('/admin/')
+        response_body = response.content.decode()
+
+        # Is the Pantry app present in the admin interface's homepage?
+        self.assertTrue('Models in the Pantry application' in response_body, f"{FAILURE_HEADER}The Pantry app wasn't listed on the admin interface's homepage. You haven't added the models to the admin interface.{FAILURE_FOOTER}")
+
+        # Check each model is present.
+        self.assertTrue('Categories' in response_body, f"{FAILURE_HEADER}The Category model was not found in the admin interface. If you did add the model to admin.py, did you add the correct plural spelling (Categories)?{FAILURE_FOOTER}")
