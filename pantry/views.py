@@ -272,9 +272,21 @@ def search_results(request, sort=None, sort_new=None):
     if searched:
         keywords = searched.split()
         for k in keywords:
-            recipes = recipes.union(Recipe.objects.filter(Q(title__contains=k) | Q(steps__contains=k)))
-            for cat in Category.objects.filter(Q(name__contains=k)):
+            # Ensure keyword not surrounded by letters/digits in the text
+            regex = fr'(?<![a-z0-9]){k}(?![a-z0-9])'.format(k=k)
+            
+            # Keyword in recipe title or method
+            recipes = recipes.union(Recipe.objects.filter(Q(title__iregex=regex) | Q(steps__iregex=regex)))
+            
+            # Keyword in recipe category tags
+            for cat in Category.objects.filter(name__iregex=regex):
                 recipes = recipes.union(cat.recipe_set.all())
+            
+            # Keyword in recipe ingredients
+            for ing in Ingredient.objects.filter(name__iregex=regex):
+                lists = IngredientList.objects.filter(ingredient=ing)
+                for l in lists:
+                    recipes.add(l.recipe)
             
         recipes, sort_type = sort_by(list(recipes), sort)
         request.session['searched'] = searched
