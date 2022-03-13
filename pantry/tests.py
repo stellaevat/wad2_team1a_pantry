@@ -276,7 +276,7 @@ class Chapter5ModelTests(TestCase):
         category_snacks = Category.objects.get(name="Snacks")
         self.assertEqual(category_snacks.tab, False, f"{FAILURE_HEADER}Tests on the Category model failed. Check you have all required attributes (including those specified in the exercises!), and try again.{FAILURE_FOOTER}")
 
-    def test_page_model(self):
+    def test_ingredient_model(self):
         """
         Runs some tests on the Ingredient model.
         Do the correct attributes exist?
@@ -289,3 +289,13 @@ class Chapter5ModelTests(TestCase):
 
         ingredient_bread = Ingredient.objects.get(name="Bread")
         self.assertEqual(ingredient_bread.ingredient_type, "carbs", f"{FAILURE_HEADER}Tests on the Ingredient model failed. Check you have all required attributes.{FAILURE_FOOTER}")
+
+    def test_str_method(self):
+        """
+        Tests to see if the correct __str__() method has been implemented for each model.
+        """
+        category_mains = Category.objects.get(name="Mains")
+        ingredient_cheese = Ingredient.objects.get(name="Cheese")
+
+        self.assertEqual(str(category_mains), "Mains", f"{FAILURE_HEADER}The __str__() method in the Category class has not been implemented correctly.{FAILURE_FOOTER}")
+        self.assertEqual(str(ingredient_cheese), "Cheese", f"{FAILURE_HEADER}The __str__() method in the Page class has not been implemented correctly.{FAILURE_FOOTER}")
