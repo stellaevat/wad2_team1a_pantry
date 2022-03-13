@@ -7,12 +7,14 @@
 {% endblock %}
 
 {% block body_block %}
-	<h1 class="cat-heading"> Search by Ingredient</h1>
-	<p class="cat-subheading"> Expand each category to select all the ingredients you want to use today:</p>
+	<h1 class="central-heading">Search by Ingredient</h1>
 	{% if types %}
-		{% get_ingredient_selection types ingredients %}
+		<p class="cat-subheading">Expand each category to select all the ingredients you want to use today:</p>
+		<form class="ingredient-selection" action ="{% url 'pantry:search_by_ingredient_results' %}" method="post">
+			{% csrf_token %}
+			{% get_ingredient_selection types ingredients %}
+		</form>
 	{% else %}
 		<p class="info-message">No ingredients to display yet. Try browsing categories or use the search bar!</p>
 	{% endif %}
 {% endblock %}
-

@@ -1,0 +1,20 @@
+{% extends 'pantry/base.html' %}
+{% load staticfiles %}
+{% load pantry_template_tags %}
+
+{% block title_block %}
+	Page not found
+{% endblock %}
+
+{% block body_block %}
+	<div class="logo">
+		<img class="logo-welcome" src="{% static 'img/welcome.png' %}" alt="Welcome to the Pantry">
+		<p class="error-message">We couldn't find the page you were looking for!</p>
+		
+		<br />
+		<form action="{% url 'pantry:home' %}" method="POST">
+			{% csrf_token %}
+			<button class="btn-continue" id="btn-redir" type="submit">Go to homepage</button>
+		</form>
+	</div>
+{% endblock %}

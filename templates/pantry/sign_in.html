@@ -15,7 +15,10 @@
 	<div class="login-area">
 		{% if success %}
 			<p class="login-prompt">{{ success }}</p>
-			<a class="btn-continue" href="{% url 'pantry:user_profile' username %}">View profile</a>
+			<form action="{% url 'pantry:user_profile' username %}" method="POST">
+				{% csrf_token %}
+				<input class="btn-continue" id="view-prof-btn" type="submit" value="View profile">
+			</form>
 		{% else %}
 			<p class="login-prompt">Sign in with your password:</p>
 			<form id="form-sign-in" method="post" action="{% url 'pantry:sign_in' %}">
@@ -23,7 +26,7 @@
 				
 				<input type="password" name="password" placeholder="Enter password" value="" size="50"/><br />
 				{% if error %}
-						<p class="login-error">{{ error }}</p>
+						<p class="error-message">{{ error }}</p>
 				{% endif %}
 				<button class="btn-back" type="button" onclick="history.back()">Back</button>
 				<input class="btn-continue" type="submit" value="Continue" />

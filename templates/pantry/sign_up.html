@@ -14,7 +14,10 @@
 	<div class="login-area">
 		{% if registered %}
 			<p class="login-prompt">You've registered successfully - you can now add and star recipes!</p><br />
-			<a class="btn-continue" href="{% url 'pantry:user_profile' user.username %}">View profile</a>
+			<form action="{% url 'pantry:user_profile' user.username %}" method="POST">
+				{% csrf_token %}
+				<input class="btn-continue" id="view-prof-btn" type="submit" value="View profile">
+			</form>
 		{% else %}
 			<p class="login-prompt">Create your account here:</p>
 			<form id="form-sign-up" method="post" action="{% url 'pantry:sign_up' %}" enctype="multipart/form-data">
@@ -24,7 +27,7 @@
 				{{ user_form.password }}<br />
 				{{ user_form.confirm_password }}<br />
 				{% if error %}
-					<p class="login-error">{{ error }}</p>
+					<p class="error-message">{{ error }}</p>
 				{% endif %}
 				
 				<button class="btn-back" type="button" onclick="history.back()">Back</button>

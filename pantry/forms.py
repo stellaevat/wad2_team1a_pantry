@@ -4,7 +4,6 @@ from django.contrib.auth.models import User
 from pantry.models import UserProfile, Recipe
 
 class UserForm(forms.ModelForm):
-    email = forms.EmailField(required=False, widget=forms.HiddenInput())
     username = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'Enter username', 'class': 'login-input'}))
     password = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder': 'Enter password', 'class': 'login-input'}))
     confirm_password = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder': 'Confirm password', 'class': 'login-input'}))
@@ -39,19 +38,21 @@ class EmailForm(forms.ModelForm):
 
 class RecipeForm(forms.ModelForm):
 	name = forms.CharField(max_length=128, help_text="Please enter the recipe name.")
+	method = forms.CharField(help_text="Please explain the method for the Recipe.")
 	stars = forms.IntegerField(widget=forms.HiddenInput(), initial=0)
 	slug = forms.CharField(widget=forms.HiddenInput(), required=False)
 	
 	class Meta:
 		model = Recipe
-		fields = ('name',)
+		fields = ('name', 'method')
         
 class RecipeIngredientsForm(forms.ModelForm):
     # Ignore this field, required for compilation until actual implementation is done
     name = forms.CharField(max_length=128, help_text="Please enter the recipe name.")
+    ingredients = forms.CharField(max_length=128, help_text="Please add some ingredients.")
     class Meta:
         model = Recipe
-        fields = ('name',)
+        fields = ('name', 'ingredients')
 
 class RecipeQuantitesForm(forms.ModelForm):
     pass

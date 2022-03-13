@@ -1,0 +1,20 @@
+{% load staticfiles %}
+{% load pantry_template_tags %}
+
+<div class="dropdown-menu-sorter" aria-labelledby="dropdown01">
+	<button class="dropdown-main-sorter" style="">Sort : &nbsp; {{ sort_type }}  &#9660;</button>
+	<div class="dropdown-items-sorter">
+		{% if by_ingredient and sort_type != "Best Match" %}
+		<a class="dropdown-item-sorter" href="best_match">Best Match</a>
+		{% endif %}
+		{% if sort_type != "Most Popular" %}
+		<a class="dropdown-item-sorter" href="popular">Most Popular</a>
+		{% endif %}
+		{% if sort_type != "Newest" %}
+		<a class="dropdown-item-sorter" href="newest">Newest</a>
+		{% endif %}
+		{% if sort_type != "Oldest" %}
+		<a class="dropdown-item-sorter" href="oldest">Oldest</a>
+		{% endif %}
+	</div>
+</div>

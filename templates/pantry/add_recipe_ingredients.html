@@ -7,10 +7,13 @@
 {% endblock %}
 
 {% block body_block %}
-	<h1 class="cat-heading"> Add Recipe</h1>
+	<h1 class="central-heading"> Add Recipe</h1>
 	{% if types %}
 		<p class="cat-subheading"> Expand each category to select the ingredients for your recipe:</p>
-		{% get_ingredient_selection types ingredients %}
+		<form class="ingredient-selection" action ="{% url 'pantry:add_recipe_ingredients' %}" method="post">
+			{% csrf_token %}
+			{% get_ingredient_selection types ingredients %}
+		</form>
 	{% else %}
 		<p class="info-message">No ingredients available right now. Please try again later!</p>
 	{% endif %}

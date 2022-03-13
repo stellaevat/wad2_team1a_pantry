@@ -9,7 +9,7 @@
 {% block body_block %}
 	<h1>Add a Recipe</h1>
 		<div>
-		<form id="RecipeForm" method="post" action="/pantry/add_recipe/ingredients">
+		<form id="RecipeForm" method="post" action="/pantry/add_recipe/method">
 		{% csrf_token %}
 		{% for hidden in form.hidden_fields %}
 			{{ hidden }}
@@ -18,7 +18,8 @@
 			{{ field.errors }}
 			{{ field.help_text }}
 			{{ field }}
+			<br>
 		{% endfor %}
-		<input type="submit" name="continue" value="Continue" />
+		<input type="submit" name="submit" value="Submit" />
 		</div>
 {% endblock %}
