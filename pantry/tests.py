@@ -4,6 +4,7 @@ import os
 import importlib
 from django.urls import reverse
 from django.conf import settings
+from pantry.models import Category, Ingredient, Recipe, IngredientList
 
 FAILURE_HEADER = f"{os.linesep}{os.linesep}{os.linesep}================{os.linesep}TwD TEST FAILURE =({os.linesep}================{os.linesep}"
 FAILURE_FOOTER = f"{os.linesep}"
@@ -215,3 +216,62 @@ class PantryDatabaseConfigurationTests(TestCase):
                 self.assertTrue(self.does_gitignore_include_database(gitignore_path), f"{FAILURE_HEADER}Your .gitignore file does not include 'db.sqlite3' -- you should exclude the database binary file from all commits to your Git repository.{FAILURE_FOOTER}")
             else:
                 warnings.warn("You don't appear to have a .gitignore file in place in your repository.")
+
+class Chapter5ModelTests(TestCase):
+    """
+    Are the models set up correctly, and do all the required attributes (post exercises) exist?
+    """
+    def setUp(self):
+        category_mains = Category.objects.get_or_create(name="Mains", tab=True)
+        category_apps = Category.objects.get_or_create(name="Appetizers", tab=True)
+        category_desserts = Category.objects.get_or_create(name="Desserts", tab=True)
+        category_easy = Category.objects.get_or_create(name="Easy Meals", tab=True)
+        category_u30 = Category.objects.get_or_create(name="Under 30'", tab=True)
+
+        category_vegan = Category.objects.get_or_create(name="Vegan", tab=False)
+        category_healthy = Category.objects.get_or_create(name="Healthy", tab=False)
+        category_gf = Category.objects.get_or_create(name="GlutenFree", tab=False)
+        category_vegetarian = Category.objects.get_or_create(name="Vegetarian", tab=False)
+        category_breakfast = Category.objects.get_or_create(name="Breakfast", tab=False)
+        category_lunch = Category.objects.get_or_create(name="Lunch", tab=False)
+        category_dinner = Category.objects.get_or_create(name="Dinner", tab=False)
+        category_snacks = Category.objects.get_or_create(name="Snacks", tab=False)
+
+        ingredient_cheese = Ingredient.objects.get_or_create(name="Cheese", ingredient_type="dairy")
+        ingredient_beef = Ingredient.objects.get_or_create(name="Beef", ingredient_type="meats")
+        ingredient_bread = Ingredient.objects.get_or_create(name="Bread", ingredient_type="carbs")
+
+    def test_category_model(self):
+        """
+        Runs a series of tests on the Category model.
+        Do all the correct attributes exist?
+        """
+        category_mains = Category.objects.get(name="Mains")
+        self.assertEqual(category_mains.tab, True, f"{FAILURE_HEADER}Tests on the Category model failed. Check you have all required attributes (including those specified in the exercises!), and try again.{FAILURE_FOOTER}")
+
+        category_apps = Category.objects.get(name="Appetizers")
+        self.assertEqual(category_apps.tab, True, f"{FAILURE_HEADER}Tests on the Category model failed. Check you have all required attributes (including those specified in the exercises!), and try again.{FAILURE_FOOTER}")
+
+        category_desserts = Category.objects.get(name="Desserts")
+        self.assertEqual(category_desserts.tab, True, f"{FAILURE_HEADER}Tests on the Category model failed. Check you have all required attributes (including those specified in the exercises!), and try again.{FAILURE_FOOTER}")
+
+        category_easy = Category.objects.get(name="Easy Meals")
+        self.assertEqual(category_easy.tab, True, f"{FAILURE_HEADER}Tests on the Category model failed. Check you have all required attributes (including those specified in the exercises!), and try again.{FAILURE_FOOTER}")
+
+        category_u30 = Category.objects.get(name="Under 30'")
+        self.assertEqual(category_u30.tab, True, f"{FAILURE_HEADER}Tests on the Category model failed. Check you have all required attributes (including those specified in the exercises!), and try again.{FAILURE_FOOTER}")
+
+        category_vegan = Category.objects.get(name="Vegan")
+        self.assertEqual(category_vegan.tab, False, f"{FAILURE_HEADER}Tests on the Category model failed. Check you have all required attributes (including those specified in the exercises!), and try again.{FAILURE_FOOTER}")
+
+        category_breakfast = Category.objects.get(name="Breakfast")
+        self.assertEqual(category_breakfast.tab, False, f"{FAILURE_HEADER}Tests on the Category model failed. Check you have all required attributes (including those specified in the exercises!), and try again.{FAILURE_FOOTER}")
+
+        category_lunch = Category.objects.get(name="Lunch")
+        self.assertEqual(category_lunch.tab, False, f"{FAILURE_HEADER}Tests on the Category model failed. Check you have all required attributes (including those specified in the exercises!), and try again.{FAILURE_FOOTER}")
+
+        category_dinner = Category.objects.get(name="Dinner")
+        self.assertEqual(category_dinner.tab, False, f"{FAILURE_HEADER}Tests on the Category model failed. Check you have all required attributes (including those specified in the exercises!), and try again.{FAILURE_FOOTER}")
+
+        category_snacks = Category.objects.get(name="Snacks")
+        self.assertEqual(category_snacks.tab, False, f"{FAILURE_HEADER}Tests on the Category model failed. Check you have all required attributes (including those specified in the exercises!), and try again.{FAILURE_FOOTER}")
