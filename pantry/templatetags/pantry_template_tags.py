@@ -35,6 +35,19 @@ def get_profile_picture(user):
         return user_profile.profile_picture
     except:
         return None
+
+@register.filter
+def check_if_starred(user,recipe):
+    try:
+        user_profile = UserProfile.objects.get(user=user)
+        print(user_profile.starred)
+        print(recipe)
+        if UserProfile.objects.filter(starred=recipe).exists():
+            return True
+        else:
+            return False
+    except:
+        return False
     
 @register.filter
 def get_recipes_by_author(user):

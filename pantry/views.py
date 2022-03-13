@@ -7,6 +7,41 @@ from pantry.models import Recipe, Category, Ingredient, IngredientList, UserProf
 from pantry.forms import UserForm, UserProfileForm, EmailForm, RecipeForm
 from django.contrib.auth.models import User
 from django.db.models import Q
+from django.http import JsonResponse
+
+#Starring Functionality
+@login_required
+def star(request, recipe_name_slug, username):
+    recipe_name_slug = recipe_name_slug.capitalize()
+    r = Recipe.objects.get(title=recipe_name_slug)
+    r.stars += 1
+    r.save()
+
+    u = UserProfile.objects.get(user=User.objects.get(username=username))
+    u.starred.add(r)
+    u.save()
+
+    data = {"name" : "calum"}
+
+
+    return JsonResponse('data', safe=False)
+
+#Unstarring Functionality
+@login_required
+def unstar(request, recipe_name_slug, username):
+    recipe_name_slug = recipe_name_slug.capitalize()
+    r = Recipe.objects.get(title=recipe_name_slug)
+    r.stars -= 1
+    r.save()
+
+    u = UserProfile.objects.get(user=User.objects.get(username=username))
+    u.starred.remove(r)
+    u.save()
+
+    data = {"name" : "calum"}
+
+
+    return JsonResponse('data', safe=False)
 
 # Helper method for sorted recipe display
 def sort_by(recipes, sort, by_ingredient=False):    
