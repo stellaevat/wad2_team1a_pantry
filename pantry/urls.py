@@ -26,6 +26,8 @@ urlpatterns = [
     path('add_recipe/method/', views.add_recipe_method, name="add_recipe_method"),
   
     path('recipe/<slug:recipe_name_slug>/', views.show_recipe, name="show_recipe"),
+    path('recipe/<slug:recipe_name_slug>/star/<str:username>/', views.star, name="star"),
+    path('recipe/<slug:recipe_name_slug>/unstar/<str:username>/', views.unstar, name="unstar"),
     path('category/<slug:category_title_slug>/', views.show_category, name="show_category"),
     path('category/<slug:category_title_slug>/<slug:sort>/', views.show_category, name="show_category"),
     path('category/<slug:category_title_slug>/<slug:sort>/<slug:sort_new>/', views.show_category, name="show_category"),
