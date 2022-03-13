@@ -63,6 +63,7 @@ class PantryTemplateStructureTests(TestCase):
         self.project_base_dir = os.getcwd()
         self.templates_dir = os.path.join(self.project_base_dir, 'templates')
         self.pantry_templates_dir = os.path.join(self.templates_dir, 'pantry')
+        self.errors_templates_dir = os.path.join(self.templates_dir, 'errors')
 
     def test_templates_directory_exists(self):
         """
@@ -77,6 +78,13 @@ class PantryTemplateStructureTests(TestCase):
         """
         directory_exists = os.path.isdir(self.pantry_templates_dir)
         self.assertTrue(directory_exists, f"{FAILURE_HEADER}The Pantry templates directory does not exist.{FAILURE_FOOTER}")
+
+    def test_errors_templates_directory_exists(self):
+        """
+        Does the templates/errors/ directory exist?
+        """
+        directory_exists = os.path.isdir(self.errors_templates_dir)
+        self.assertTrue(directory_exists, f"{FAILURE_HEADER}The errors templates directory does not exist.{FAILURE_FOOTER}")
 
     def test_template_dir_setting(self):
         """
@@ -108,6 +116,9 @@ class PantryTemplateStructureTests(TestCase):
         """
         Checks that all html files are located in the templates directory
         """
+
+        error404_path = os.path.join(self.errors_templates_dir, '404.html')
+
         base_path = os.path.join(self.pantry_templates_dir, 'base.html')
         home_path = os.path.join(self.pantry_templates_dir, 'home.html')
         tabs_path = os.path.join(self.pantry_templates_dir, 'tabs.html')
@@ -131,6 +142,9 @@ class PantryTemplateStructureTests(TestCase):
         show_my_recipes_path = os.path.join(self.pantry_templates_dir, 'show_my_recipes.html')
         show_recipe_path = os.path.join(self.pantry_templates_dir, 'show_recipe.html')
         show_starred_recipes_path = os.path.join(self.pantry_templates_dir, 'show_starred_recipes.html')
+
+
+        self.assertTrue(os.path.isfile(error404_path), f"{FAILURE_HEADER}Your 404.html template does not exist, or is in the wrong location.{FAILURE_FOOTER}")
 
         self.assertTrue(os.path.isfile(base_path), f"{FAILURE_HEADER}Your base.html template does not exist, or is in the wrong location.{FAILURE_FOOTER}")
         self.assertTrue(os.path.isfile(home_path), f"{FAILURE_HEADER}Your home.html template does not exist, or is in the wrong location.{FAILURE_FOOTER}")
