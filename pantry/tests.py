@@ -133,7 +133,7 @@ class PantryTemplateStructureTests(TestCase):
         add_recipe_path = os.path.join(self.pantry_templates_dir, 'add_recipe.html')
         add_recipe_ingredients_path = os.path.join(self.pantry_templates_dir, 'add_recipe_ingredients.html')
         ingredient_selection_path = os.path.join(self.pantry_templates_dir, 'ingredient_selection.html')
-        recipe_display_grid_path = os.path.join(self.pantry_templates_dir, 'recipe_display_grid.html')
+        recipe_display_grid_path = os.path.join(self.pantry_templates_dir, 'recipe_grid_display.html')
 
         search_by_ingredient_path = os.path.join(self.pantry_templates_dir, 'search_by_ingredient.html')
         search_results_path = os.path.join(self.pantry_templates_dir, 'search_results.html')
@@ -160,7 +160,7 @@ class PantryTemplateStructureTests(TestCase):
         self.assertTrue(os.path.isfile(add_recipe_path), f"{FAILURE_HEADER}Your add_recipe.html template does not exist, or is in the wrong location.{FAILURE_FOOTER}")
         self.assertTrue(os.path.isfile(add_recipe_ingredients_path), f"{FAILURE_HEADER}Your add_recipe_ingredients.html template does not exist, or is in the wrong location.{FAILURE_FOOTER}")
         self.assertTrue(os.path.isfile(ingredient_selection_path), f"{FAILURE_HEADER}Your ingredient_selection.html template does not exist, or is in the wrong location.{FAILURE_FOOTER}")
-        self.assertTrue(os.path.isfile(recipe_display_grid_path), f"{FAILURE_HEADER}Your recipe_display_grid.html template does not exist, or is in the wrong location.{FAILURE_FOOTER}")
+        self.assertTrue(os.path.isfile(recipe_display_grid_path), f"{FAILURE_HEADER}Your recipe_grid_display.html template does not exist, or is in the wrong location.{FAILURE_FOOTER}")
 
         self.assertTrue(os.path.isfile(search_by_ingredient_path), f"{FAILURE_HEADER}Your search_by_ingredient.html template does not exist, or is in the wrong location.{FAILURE_FOOTER}")
         self.assertTrue(os.path.isfile(search_results_path), f"{FAILURE_HEADER}Your search_results.html template does not exist, or is in the wrong location.{FAILURE_FOOTER}")
