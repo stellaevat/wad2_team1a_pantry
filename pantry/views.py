@@ -231,7 +231,6 @@ def search_by_ingredient_results(request, sort=None, sort_new=None):
 
     recipe_percents = {}
     if ingredients:
-        print(ingredients)
         for name in ingredients:
             ingredient = Ingredient.objects.get(name=name)
             recipes = IngredientList.objects.filter(ingredient=ingredient).values('recipe')
