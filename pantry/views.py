@@ -63,7 +63,16 @@ def all_ingredients():
 # Dummy
 @login_required
 def edit_profile(request, username):
-    return HttpResponse("Edit profile")
+    context_dict = {}
+    if request.method == 'POST':
+        EditUserProfile_Form = UserProfileForm(request.POST)
+        if EditUserProfile_Form.is_valid():
+            #process form data
+            return HttpResponseRedirect('/thanks/')
+    else:
+        EditUserProfile_Form = UserProfileForm()
+    context_dict["edit_profile_form"] = EditUserProfile_Form
+    return render(request, 'pantry/edit_profile.html', context=context_dict)
 
 # Renders the user profile page and passes a context dictionary with the recipes starred and written by the user
 #NOTE: Not fully tested as you cannot currently create recipes
