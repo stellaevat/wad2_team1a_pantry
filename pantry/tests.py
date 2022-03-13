@@ -275,3 +275,17 @@ class Chapter5ModelTests(TestCase):
 
         category_snacks = Category.objects.get(name="Snacks")
         self.assertEqual(category_snacks.tab, False, f"{FAILURE_HEADER}Tests on the Category model failed. Check you have all required attributes (including those specified in the exercises!), and try again.{FAILURE_FOOTER}")
+
+    def test_page_model(self):
+        """
+        Runs some tests on the Ingredient model.
+        Do the correct attributes exist?
+        """
+        ingredient_cheese = Ingredient.objects.get(name="Cheese")
+        self.assertEqual(ingredient_cheese.ingredient_type, "dairy", f"{FAILURE_HEADER}Tests on the Ingredient model failed. Check you have all required attributes.{FAILURE_FOOTER}")
+
+        ingredient_beef = Ingredient.objects.get(name="Beef")
+        self.assertEqual(ingredient_beef.ingredient_type, "meats", f"{FAILURE_HEADER}Tests on the Ingredient model failed. Check you have all required attributes.{FAILURE_FOOTER}")
+
+        ingredient_bread = Ingredient.objects.get(name="Bread")
+        self.assertEqual(ingredient_bread.ingredient_type, "carbs", f"{FAILURE_HEADER}Tests on the Ingredient model failed. Check you have all required attributes.{FAILURE_FOOTER}")
