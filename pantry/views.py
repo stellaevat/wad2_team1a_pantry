@@ -12,12 +12,13 @@ from django.http import JsonResponse
 #Starring Functionality
 @login_required
 def star(request, recipe_name_slug, username):
-    recipe_name_slug = recipe_name_slug.capitalize()
-    r = Recipe.objects.get(title=recipe_name_slug)
+    recipe_name_slug = request.GET['recipe_name_slug']
+    username = request.GET['username']
+    r = Recipe.objects.get(title__iexact=recipe_name_slug)
     r.stars += 1
     r.save()
 
-    u = UserProfile.objects.get(user=User.objects.get(username=username))
+    u = UserProfile.objects.get(user=User.objects.get(username__iexact=username))
     u.starred.add(r)
     u.save()
 
@@ -29,7 +30,8 @@ def star(request, recipe_name_slug, username):
 #Unstarring Functionality
 @login_required
 def unstar(request, recipe_name_slug, username):
-    recipe_name_slug = recipe_name_slug.capitalize()
+    recipe_name_slug = request.GET['recipe_name_slug']
+    username = request.GET['username']
     r = Recipe.objects.get(title=recipe_name_slug)
     r.stars -= 1
     r.save()
