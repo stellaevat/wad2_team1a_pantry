@@ -60,7 +60,6 @@ def all_ingredients():
             
     return type_names, ingredients
 
-# Dummy
 @login_required
 def edit_profile(request, username):
     context_dict = {}

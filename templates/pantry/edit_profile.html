@@ -8,7 +8,7 @@
 
 {% block body_block %}
 	<p class="edit-prompt">Edit your profile here:</p>
-		<form id="form-edit-profile" method="post" action="{% url 'pantry:edit_profile' %}" enctype="multipart/form-data">
+		<form id="form-edit-profile" method="post" action="{% url 'pantry:edit_profile' user.username %}" enctype="multipart/form-data">
 			{% csrf_token %}
 			{{ edit_profile_form.password }}<br />
 			{{ edit_profile_form.confirm_password }}<br />
@@ -21,4 +21,5 @@
 			<input class="btn-continue" type="submit" value="Continue" />
 		</form>
 	
+
 {% endblock %}
