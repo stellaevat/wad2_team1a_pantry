@@ -183,8 +183,8 @@ class PantryDatabaseConfigurationTests(TestCase):
         """
         Does the DATABASES settings variable exist, and does it have a default configuration?
         """
-        self.assertTrue(settings.DATABASES, f"{FAILURE_HEADER}Your project's settings module does not have a DATABASES variable, which is required. Check the start of Chapter 5.{FAILURE_FOOTER}")
-        self.assertTrue('default' in settings.DATABASES, f"{FAILURE_HEADER}You do not have a 'default' database configuration in your project's DATABASES configuration variable. Check the start of Chapter 5.{FAILURE_FOOTER}")
+        self.assertTrue(settings.DATABASES, f"{FAILURE_HEADER}Your project's settings module does not have a DATABASES variable.{FAILURE_FOOTER}")
+        self.assertTrue('default' in settings.DATABASES, f"{FAILURE_HEADER}You do not have a 'default' database configuration in your project's DATABASES configuration variable.{FAILURE_FOOTER}")
 
     def test_gitignore_for_database(self):
         """
@@ -193,11 +193,11 @@ class PantryDatabaseConfigurationTests(TestCase):
         git_base_dir = os.popen('git rev-parse --show-toplevel').read().strip()
 
         if git_base_dir.startswith('fatal'):
-            warnings.warn("You don't appear to be using a Git repository for your codebase. Although not strictly required, it's *highly recommended*. Skipping this test.")
+            warnings.warn("You don't appear to be using a Git repository for your codebase.")
         else:
             gitignore_path = os.path.join(git_base_dir, '.gitignore')
 
             if os.path.exists(gitignore_path):
                 self.assertTrue(self.does_gitignore_include_database(gitignore_path), f"{FAILURE_HEADER}Your .gitignore file does not include 'db.sqlite3' -- you should exclude the database binary file from all commits to your Git repository.{FAILURE_FOOTER}")
             else:
-                warnings.warn("You don't appear to have a .gitignore file in place in your repository. We ask that you consider this! Read the Don't git push your Database paragraph in Chapter 5.")
+                warnings.warn("You don't appear to have a .gitignore file in place in your repository.")
