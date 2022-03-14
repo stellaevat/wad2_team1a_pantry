@@ -63,10 +63,7 @@ class RecipeForm(forms.ModelForm):
     
     class Meta:
         model = Recipe
-        if Category.objects.all():
-            exclude = ('stars', 'slug', 'ingredients', 'author', 'pub_date')
-        else:
-            exclude = ('stars', 'slug', 'ingredients', 'author', 'pub_date', 'category')
+        exclude = ('stars', 'slug', 'ingredients', 'author', 'pub_date')
             
 class RecipeIngredientsForm(forms.ModelForm):
     ingredients = forms.CharField(max_length=128, help_text="Please add some ingredients.", required=False)

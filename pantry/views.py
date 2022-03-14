@@ -303,6 +303,7 @@ def add_recipe_method(request):
     context_dict['quantities_form'] = quantities_form
     context_dict['ingredients'] = ingredients
     context_dict['ing_count'] = len(ingredients)
+    context_dict['categories'] = True if Category.objects.all() else False
     return render(request, 'pantry/add_recipe_method.html', context=context_dict)
 
 def show_category(request, category_title_slug, sort=None, sort_new=None):
