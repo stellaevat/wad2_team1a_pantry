@@ -81,6 +81,10 @@ def populate():
         {"name" : "Goat Cheese", "ingredient_type" : "dairy"},
         {"name" : "Walnut", "ingredient_type" : "grains"},
         {"name" : "Honey Mustard Vinaigrette", "ingredient_type" : "condiments"},
+        {"name" : "Ciabatta Loaf", "ingredient_type" : "carbs"},
+        {"name" : "Parsley", "ingredient_type" : "herbs"},
+        {"name" : "Parmesan", "ingredient_type" : "dairy"},
+        {"name" : "Sage", "ingredient_type" : "herbs"},
     ]
 
     
@@ -140,6 +144,14 @@ Using a spatula, fold the omelet in half. Cook for another 30 seconds, then slid
         """Combine the chicken, arugula, cranberries, avocado, goat cheese, walnuts, vinaigrette, salt, and pepper in a large bowl, using your hands or 2 forks to fully incorporate the dressing.""", "ingredients" : {"Chicken":["12 Oz",False], "Arugula":["12 Cups",False], "Cranberry" : ["1/4 cup", True], "Avocado":["1",False], "Goat Cheese":["1/4",False], "Walnut":["1/4 Cup",True], "Honey Mustard Vinaigrette":["1/4 Cup",False]}, "category" : ["Mains", "Easy Meals", "Vegan", "Vegetarian", "Lunch"], "prep_time" : 5, "cook_time" : 0, "servings" : 4,
          "difficulty" : "easy", "pub_date" : datetime.date(2022,2,14), "stars" : 50, "filename" : "grilled-chicken-and-avocado-salad.jpg"},
 
+         {"name":"Garlic Bread Toasts", "author" : "joebloggs", "steps" : 
+        """Slice the bread in half lengthwise. Toast the crust side for 2 mins until really crispy. Mix together butter, garlic and parsley in a bowl. Spread over the cut bread halves. Sprinkle over the Parmesan. Just before serving place on a baking sheet, then cook under a hot grill for 5 mins until toasty and lightly golden. Let it cool for 1 min before cutting into thick slices.""", "ingredients" : {"Ciabatta Loaf":["2",True], "Butter":["140g",False], "Garlic" : ["4-6 Cloves", False], "Parsley":["A Handful of",False], "Parmesan":["2 tbsp",False]}, "category" : ["Appetizers", "Easy Meals", "Under 30'", "Vegetarian", "Lunch", "Dinner","Snacks"], "prep_time" : 10, "cook_time" : 7, "servings" : 12,
+         "difficulty" : "easy", "pub_date" : datetime.date(2022,2,1), "stars" : 77, "filename" : "garlic-bread-toasts.jpg"},
+
+         {"name":"Grilled & Roasted Potatoes", "author" : "sallywalker", "steps" : 
+        """Preheat the oven to 200°C/400°F/gas 6. Roast the potatoes, uncovered, for 45 minutes on the top shelf, or until cooked through and lightly golden. Squeeze the soft garlic cloves out of their skins, to serve.""", "ingredients" : {"Sage":["1 Bunch",False], "Lemon":["1.5",True], "Garlic" : ["1 Bulb", False], "Olive Oil":["1 tbsp",False]}, "category" : ["Appetizers", "Easy Meals", "GlutenFree", "Vegetarian", "Lunch", "Dinner","Snacks"], "prep_time" : 10, "cook_time" : 45, "servings" : 6,
+         "difficulty" : "easy", "pub_date" : datetime.date(2022,1,1), "stars" : 10, "filename" : "grilled-and-roasted-potatoes.jpg"},
+
     ]
 
 
@@ -177,6 +189,7 @@ def add_ingredient(ingredient):
 def add_user(user):
     path = os.getcwd() + "\\media\\profile_pictures\\"
     u = User.objects.get_or_create(username=user["username"], email=user["email"], password=user["password"])[0]
+    u.set_password(user["password"])
     u.save()
     p = UserProfile.objects.get_or_create(user=u, profile_picture=path+user["filename"])[0]
     p.save()

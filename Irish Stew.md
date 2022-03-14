@@ -34,5 +34,35 @@ serves 2
 easy
 Easy Meals, Mains, Under 30'
 
+Garlic Bread Toasts
+
+Slice the bread in half lengthwise. Toast the crust side for 2 mins until really crispy. Mix together butter, garlic and parsley in a bowl. Spread over the cut bread halves. Sprinkle over the Parmesan. Just before serving place on a baking sheet, then cook under a hot grill for 5 mins until toasty and lightly golden. Let it cool for 1 min before cutting into thick slices.
+
+Ciabatta Loaf 2
+Butter 140g
+Garlic 4-6 Cloves
+Parsley Handful
+Parmesan 2 tbsp
+
+10 mins prep
+7 mins cook
+easy
+serves 12
+
+
+Grilled & roasted potatoes
+
+Preheat the oven to 200°C/400°F/gas 6. Roast the potatoes, uncovered, for 45 minutes on the top shelf, or until cooked through and lightly golden. Squeeze the soft garlic cloves out of their skins, to serve.
+
+Sage 1 Bunch
+Lemon 1.5
+Olive Oil 1tbsp
+Garlic 1 Bulb
+Potato 1.5kg
+
+easy
+serves 6
+10 mins prep
+45 mins cook
 
 
