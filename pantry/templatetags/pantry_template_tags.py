@@ -40,7 +40,7 @@ def get_profile_picture(user):
 def check_if_starred(user,recipe):
     try:
         user_profile = UserProfile.objects.get(user=user)
-        if UserProfile.objects.filter(starred=recipe).exists():
+        if recipe in Recipe.objects.filter(users=user_profile):
             return True
         else:
             return False
