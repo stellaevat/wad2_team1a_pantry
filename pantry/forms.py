@@ -1,5 +1,5 @@
 from django import forms
-from django.forms import TextInput, EmailInput
+from django.forms import TextInput, EmailInput, NumberInput, ClearableFileInput
 from django.contrib.auth.models import User
 from pantry.models import UserProfile, Recipe, Category, IngredientList
 from pantry.custom_widgets import ColumnCheckboxSelectMultiple
@@ -44,20 +44,30 @@ class RecipeForm(forms.ModelForm):
     DIFFICULTIES.extend(list(Recipe.get_difficulties()))
     DIFFICULTIES = tuple(DIFFICULTIES)
     
-    title = forms.CharField(max_length=128, help_text="Recipe title: ")
-    steps = forms.CharField(help_text="Method: ", widget=forms.Textarea())
-    prep_time = forms.IntegerField(help_text="Approximate preparation time (mins): ")
-    cook_time = forms.IntegerField(help_text="Approximate cooking time (mins): ")
+    title = forms.CharField(max_length=128, help_text="Recipe title: ",
+            widget=TextInput(attrs={"class":"long-info"}))
+    picture = forms.ImageField(help_text="Recipe photo: ",
+              widget=ClearableFileInput(attrs={"class":"picture-upload"}))
+    prep_time = forms.IntegerField(help_text="Preparation time (mins): ",
+                widget=NumberInput(attrs={"class":"short-info"}))
+    cook_time = forms.IntegerField(help_text="Cooking time (mins): ",
+                widget=NumberInput(attrs={"class":"short-info"}))
     difficulty = forms.ChoiceField(help_text="Difficulty: ", choices=DIFFICULTIES)
-    servings = forms.IntegerField(help_text="Servings: ")
-    category = forms.ModelMultipleChoiceField(help_text="Categories: ", queryset=Category.objects.all(),
-               widget=ColumnCheckboxSelectMultiple(columns=3, class_whole="checkbox-area", class_column="checkbox-column", separator="gap", attrs={"class":"checkbox"}))
-    picture = forms.ImageField(help_text="Recipe picture: ")
+    servings = forms.IntegerField(help_text="Servings: ",
+               widget=NumberInput(attrs={"class":"short-info"}))
+    steps = forms.CharField(max_length=2048, help_text="Method: ", widget=forms.Textarea(attrs={"id":"method-input"}), required=True)
+    # Custom widget to display checkboxes in columns
+    category = forms.ModelMultipleChoiceField(help_text="Categories: ", queryset=Category.objects.all(), required=False,
+               widget=ColumnCheckboxSelectMultiple(columns=3, class_whole="checkbox-area",
+               class_column="checkbox-column", separator="gap", attrs={"class":"checkbox"}))
     
     class Meta:
         model = Recipe
-        exclude = ('stars', 'slug', 'ingredients', 'author', 'pub_date')
-        
+        if Category.objects.all():
+            exclude = ('stars', 'slug', 'ingredients', 'author', 'pub_date')
+        else:
+            exclude = ('stars', 'slug', 'ingredients', 'author', 'pub_date', 'category')
+            
 class RecipeIngredientsForm(forms.ModelForm):
     ingredients = forms.CharField(max_length=128, help_text="Please add some ingredients.", required=False)
     class Meta:
@@ -65,7 +75,7 @@ class RecipeIngredientsForm(forms.ModelForm):
         fields = ('ingredients',)
 
 class RecipeQuantitesForm(forms.ModelForm):
-    quantity = forms.CharField(required=False)
+    quantity = forms.CharField(max_length=20,required=False)
     plural = forms.BooleanField(required=False)
     class Meta:
         model = IngredientList

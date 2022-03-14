@@ -505,6 +505,7 @@ button {
 	width: 15px;
 	height: 15px;
 	margin: 0px;
+	margin: 0px;
 	padding: 0px;
 }
 
@@ -521,10 +522,16 @@ button {
 #ingr-btn {
 	position: fixed;
 	bottom: 50px;
-	right: calc(25vw - 150px);
+	right: calc(25vw - 250px);
 	z-index: 1;
 }
 
+#bottom-left {
+	position: fixed;
+	bottom: 50px;
+	left: calc(25vw - 250px);
+	z-index: 1;
+}
 
 /* DROPDOWN (SORTER)
 (Inspired by the w3schools dropdown menu section) */
@@ -797,19 +804,88 @@ ol li::marker {
 	font-weight: bold;
 }
 
+/* ADD RECIPE METHOD PAGE */
+#RecipeForm {
+	padding: 0px calc(35vw - 250px);
+	columns: 2;
+	column-gap: 20px;
+}
+
+.general-info-area, .main-info-area {
+	height: 100%;
+	text-align: left;
+	position: relative;
+	background-color: white;
+	padding: 20px;
+	break-inside: avoid-column;
+	overflow: hidden;
+}
+
+.general-info-area * {
+	margin: 10px 0px;
+}
+
+.main-info-area *  {
+	margin: 2px 0px;
+}
+
+.ingredient-info {
+	display: grid;
+	grid-template-columns: 1fr 2fr 2fr;
+	grid-column-gap: 5px;
+}
+
+.ingredient-info * {
+	text-align: left;
+	white-space: nowrap;
+	line-height: 40px;
+}
+
+#method-input {
+	text-align: left;
+	width: 95%;
+	padding: 5px;
+	position: relative;
+	bottom: 7px;
+}
+
+#column2 * {
+	text-align: center;
+}
+
+.instruction, .hint {
+	text-align: left;
+	padding-bottom: 5px;
+}
+
+.long-info {
+	max-width: calc(20vw + 20px);
+}
+
+.short-info {
+	max-width: calc(5vw + 50px);
+}
+
+.picture-upload {
+	width: 256px;
+	background-color: white;
+}
+
 .checkbox-area {
 	display: flex;
-	justify-content: space-around;
+	justify-content: space-between;
 	overflow:hidden;
-	padding: 5px calc(35vw - 200px);
+	width: 90%;
+	margin-bottom: -10px;
 }
 
 .checkbox-column * {
 	float: left;
+	margin: auto;
+	padding: 1px;
+	white-space: nowrap;
+	overflow:hidden;
 }
-
-
-	
 
 /* WINDOW RESIZE */
 
@@ -847,4 +923,26 @@ ol li::marker {
 	.time-info-small, .time-info-big {
 		display: none;
 	}
+	
+	.checkbox-area {
+		display: block;
+	}
+	
+	.checkbox-area * {
+		float: left;
+	}
+	
+	#ingr-btn {
+		bottom: 25px;
+		right: calc(20vw);
+	}
+
+	#bottom-left {
+		bottom: 25px;
+		left: calc(20vw);
+	}
+}
+
+.hint, .error-message {
+	color: var(--orange);
 }
