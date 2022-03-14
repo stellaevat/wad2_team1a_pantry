@@ -1,13 +1,48 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
-from django.http import HttpResponse, HttpResponseRedirect
-from django.urls import reverse
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
+from django.urls import reverse
 from pantry.models import Recipe, Category, Ingredient, IngredientList, UserProfile
 from pantry.forms import UserForm, UserProfileForm, EmailForm, RecipeForm, RecipeIngredientsForm, RecipeQuantitesForm
 from django.contrib.auth.models import User
 from django.db.models import Q
 import datetime
+
+#Starring Functionality
+@login_required
+def star(request, recipe_name_slug, username):
+    recipe_name_slug = request.GET['recipe_name_slug']
+    username = request.GET['username']
+    r = Recipe.objects.get(title__iexact=recipe_name_slug)
+    r.stars += 1
+    r.save()
+
+    u = UserProfile.objects.get(user=User.objects.get(username__iexact=username))
+    u.starred.add(r)
+    u.save()
+
+    data = {"name" : "calum"}
+
+    return JsonResponse('data', safe=False)
+
+#Unstarring Functionality
+@login_required
+def unstar(request, recipe_name_slug, username):
+    recipe_name_slug = request.GET['recipe_name_slug']
+    username = request.GET['username']
+    r = Recipe.objects.get(title=recipe_name_slug)
+    r.stars -= 1
+    r.save()
+
+    u = UserProfile.objects.get(user=User.objects.get(username=username))
+    u.starred.remove(r)
+    u.save()
+
+    data = {"name" : "calum"}
+
+
+    return JsonResponse('data', safe=False)
 
 # Helper method for sorted recipe display
 def sort_by(recipes, sort, by_ingredient=False):    

@@ -2,6 +2,7 @@
 {% load staticfiles %}
 {% load pantry_template_tags %}
 
+
 {% block title_block %}
 	{{ recipe.title }}
 {% endblock %}
@@ -32,17 +33,24 @@
 				</div>
 				<div class="tag">
 					<img class="icon-big recipe-tag-head" src="{% static 'img/star-orange.png' %}" alt="Stars">
-					<p class="recipe-tag-info">{{ recipe.stars }}</p>
+					<p class="recipe-tag-info" id="starinfo">{{ recipe.stars }}</p>
 				</div>
 			</div>
 		</div>
 		
 		
 		{% if user.is_authenticated %}
-		<button class="btn-inverted" id="star-btn" type="button">
-			<img class="icon-big" src="{% static 'img/star-dark.png' %}" alt="Star">
-			Star
-		</button>
+			{% if not user|check_if_starred:recipe %}
+			<button class="btn-inverted" id="star-btn" type="button" onclick="a()">
+				<img class="icon-big" src="{% static 'img/star-dark.png' %}" alt="Star" id="starbuttonid">
+				Star
+			</button>
+			{% else %}
+			<button class="btn-inverted" id="star-btn" type="button" onclick="b()">
+				<img class="icon-big" src="{% static 'img/star-dark.png' %}" alt="Unstar" id="starbuttonid">
+				Unstar
+			</button>
+			{% endif %}
 		{% endif %}
 	</div>
 	
@@ -85,4 +93,55 @@
 	<h1 class="central-heading">We couldn't find this recipe...</h1>
 	<p class="info-message">Maybe the author deleted it, or something went wrong - make sure you have the right link!</p>
 	{% endif %}
+
+	
+<script>
+	function a() {
+		var username = "{{ user.username }}"
+		var recipe_name_slug = "{{ recipe.title }}"
+	  	
+
+		$.ajax({
+			url: 'star/' + username,
+			data: {
+          		'recipe_name_slug': recipe_name_slug,
+				'username' : username
+        	},
+			dataType: 'json',
+			success: function () {
+				document.getElementById("star-btn").innerHTML = `<img class="icon-big" src="{% static 'img/star-dark.png' %}" alt="Unstar" id="starbuttonid">
+				Unstar`;
+				document.getElementById("star-btn").setAttribute('onclick','b()');
+				var counter = document.getElementById("starinfo").innerHTML;
+				counter++;
+				document.getElementById("starinfo").innerHTML = counter;
+			}
+		});
+
+    };
+
+	function b() {
+		var username = "{{ user.username }}"
+		var recipe_name_slug = "{{ recipe.title }}"
+	  	
+
+		$.ajax({
+			url: 'unstar/' + username,
+			data: {
+          		'recipe_name_slug': recipe_name_slug,
+				'username' : username
+        	},
+			dataType: 'json',
+			success: function () {
+				document.getElementById("star-btn").innerHTML = `<img class="icon-big" src="{% static 'img/star-dark.png' %}" alt="Star" id="starbuttonid">
+				Star`
+				document.getElementById("star-btn").setAttribute('onclick','a()')
+				var counter = document.getElementById("starinfo").innerHTML;
+				counter--;
+				document.getElementById("starinfo").innerHTML = counter;
+			}
+		});
+
+    };
+</script>
 {% endblock %}

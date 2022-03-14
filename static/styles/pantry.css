@@ -719,6 +719,15 @@ button {
 	z-index: 1;
 }
 
+#unstar-btn {
+	width: 130px;
+	height: 60px;
+	position: fixed;
+	top: 140px;
+	right: 5vw;
+	z-index: 1;
+}
+
 .category-tags {
 	padding: 0px calc(35vw - 300px) 20px calc(35vw - 300px);
 	display: flex;
