@@ -194,6 +194,10 @@ button {
 	width: 1900px;
 }
 
+.line-break {
+	width: 100%;
+}
+
 /* NAVBAR & TABS */
 .navbar {
 	position: fixed;
@@ -783,6 +787,19 @@ ol li {
 ol li::marker {
 	font-weight: bold;
 }
+
+.checkbox-area {
+	display: flex;
+	justify-content: space-around;
+	overflow:hidden;
+	padding: 5px calc(35vw - 200px);
+}
+
+.checkbox-column * {
+	float: left;
+}
+
+
 	
 
 /* WINDOW RESIZE */

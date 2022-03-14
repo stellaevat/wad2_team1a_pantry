@@ -152,7 +152,7 @@ def show_recipe(request, recipe_name_slug):
         context_dict = {}
         recipe = Recipe.objects.get(slug=recipe_name_slug)
         context_dict["recipe"] = recipe
-        context_dict["method"] = recipe.steps.split("/n")
+        context_dict["method"] = recipe.steps.splitlines()
         context_dict["ingredients"] = IngredientList.objects.filter(recipe=recipe)
         context_dict["categories"] = recipe.category.all()
         return render(request, 'pantry/show_recipe.html', context=context_dict)
@@ -197,8 +197,11 @@ def add_recipe_method(request):
                 recipe.stars = 0
                 recipe.author = request.user
                 recipe.save()
+                # Save categories now that recipe has id
+                recipe_form.save_m2m()
                 recipe.ingredients.add(*ingredients)
                 recipe.save()
+                # Add ingredients, quantities, plurals
                 for i, ing in enumerate(ingredients):
                     ingList = IngredientList.objects.get(recipe=recipe, ingredient=ing)
                     ingList.quantity = request.POST.get(ing.name + "-quantity", "")

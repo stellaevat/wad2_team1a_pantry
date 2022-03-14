@@ -41,7 +41,7 @@ class Category(models.Model):
         verbose_name_plural = "Categories"
 
 class Ingredient(models.Model):
-    types = (("meats", "Meat, Seafood & Substitutes"),
+    TYPES = (("meats", "Meat, Seafood & Substitutes"),
             ("dairy", "Eggs, Dairy & Substitutes"),
             ("veg", "Vegetables & Funghi"),
             ("pulses", "Pulses"),
@@ -55,20 +55,24 @@ class Ingredient(models.Model):
             ("drinks", "Beverages"))
             
     name = models.CharField(max_length=128,unique=True)
-    ingredient_type = models.CharField(max_length = 128, choices=types)
+    ingredient_type = models.CharField(max_length = 16, choices=TYPES)
     
 
     def __str__(self):
         return self.name
-    
-    @classmethod
-    def get_types(cls):
-        return cls.types
 
     def get_plural(self):
         return p.plural(self.name)
+        
+    @classmethod
+    def get_types(cls):
+        return cls.TYPES
 
 class Recipe(models.Model):
+    DIFFICULTIES = (("easy", "Easy"),
+                    ("medium", "Medium"),
+                    ("advanced", "Advanced")) 
+                    
     title = models.CharField(max_length=128,unique = True)
     author = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     steps = models.CharField(max_length=2048)
@@ -77,14 +81,7 @@ class Recipe(models.Model):
     category = models.ManyToManyField(Category)
     cook_time = models.IntegerField()
     servings = models.IntegerField()
-    difficulty = models.CharField(
-        max_length = 16,
-        choices = (
-            ("easy", "Easy"),
-            ("medium", "Medium"),
-            ("advanced", "Advanced")
-        ) 
-    )
+    difficulty = models.CharField(max_length = 16, choices = DIFFICULTIES)
     picture = models.ImageField(upload_to=FileRenamed('recipe_pictures'), blank=True)
     pub_date = models.DateField()
     stars = models.IntegerField()
@@ -96,6 +93,10 @@ class Recipe(models.Model):
 
     def __str__(self):
         return self.title
+        
+    @classmethod
+    def get_difficulties(cls):
+        return cls.DIFFICULTIES
         
 class IngredientList(models.Model):
     recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)

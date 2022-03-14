@@ -2,6 +2,8 @@ from django import forms
 from django.forms import TextInput, EmailInput
 from django.contrib.auth.models import User
 from pantry.models import UserProfile, Recipe, Category, IngredientList
+from pantry.custom_widgets import ColumnCheckboxSelectMultiple
+
 
 class UserForm(forms.ModelForm):
     username = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'Enter username', 'class': 'login-input'}))
@@ -37,13 +39,19 @@ class EmailForm(forms.ModelForm):
         fields = ('email',)
 
 class RecipeForm(forms.ModelForm):
+    # Add blank default for difficulty
+    DIFFICULTIES = [('', '--------')]
+    DIFFICULTIES.extend(list(Recipe.get_difficulties()))
+    DIFFICULTIES = tuple(DIFFICULTIES)
+    
     title = forms.CharField(max_length=128, help_text="Recipe title: ")
     steps = forms.CharField(help_text="Method: ", widget=forms.Textarea())
     prep_time = forms.IntegerField(help_text="Approximate preparation time (mins): ")
     cook_time = forms.IntegerField(help_text="Approximate cooking time (mins): ")
-    difficulty = forms.CharField(help_text="Difficulty: ")
+    difficulty = forms.ChoiceField(help_text="Difficulty: ", choices=DIFFICULTIES)
     servings = forms.IntegerField(help_text="Servings: ")
-    category = forms.ModelMultipleChoiceField(help_text="Categories: ", queryset=Category.objects.all())
+    category = forms.ModelMultipleChoiceField(help_text="Categories: ", queryset=Category.objects.all(),
+               widget=ColumnCheckboxSelectMultiple(columns=3, class_whole="checkbox-area", class_column="checkbox-column", separator="gap", attrs={"class":"checkbox"}))
     picture = forms.ImageField(help_text="Recipe picture: ")
     
     class Meta:
