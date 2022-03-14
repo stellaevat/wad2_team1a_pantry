@@ -64,4 +64,16 @@ def get_number(ingredient, plural):
         return ingredient.get_plural()
     else:
         return ingredient.name
-  
+
+@register.filter
+def format_time(mins):
+    hours = int(mins / 60)
+    mins = mins % 60
+    
+    time = ""
+    if hours:
+        time += str(hours) + " h"
+    if mins:
+        time += " " + str(mins) + " min"
+    return time
+          

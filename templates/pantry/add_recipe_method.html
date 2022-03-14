@@ -24,14 +24,14 @@
 			{% csrf_token %}
 
 			{% for field in recipe_form.visible_fields %}
-				{{ field.errors }}
 				{{ field.help_text }}
 				{{ field }}
-				<br>
+				{{ field.errors }}
+				<br/>
 			{% endfor %}
 			
 			{% if ingredients %}
-			Enter quantity/measuring unit for each ingredient, and whether it should be displayed in plural:
+			Enter the quantity for each ingredient, and whether it should be displayed in plural:
 				{% for ingredient in ingredients %}
 					<div class="ingredient-list">
 						<label for="{{ ingredient }}">{{ ingredient }}:</label>

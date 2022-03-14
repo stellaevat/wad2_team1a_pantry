@@ -17,11 +17,11 @@
 			<div class="info-tags">
 				<div class="tag">
 					<strong class="recipe-tag-head">Preparation</strong>
-					<p class="recipe-tag-info">{{ recipe.prep_time }} min</p>
+					<p class="recipe-tag-info">{{ recipe.prep_time|format_time }}</p>
 				</div>
 				<div class="tag">
 					<strong class="recipe-tag-head">Cooking</strong>
-					<p class="recipe-tag-info">{{ recipe.cook_time }} min</p>
+					<p class="recipe-tag-info">{{ recipe.cook_time|format_time }}</p>
 				</div>
 				<div class="tag">
 					<strong class="recipe-tag-head">Difficulty</strong>
@@ -83,7 +83,9 @@
 			<h2 class="vertical-title">METHOD</h2></br>
 			<ol>
 			{% for step in method %}
+				{% if step %}
 				<li class="long-text">{{ step }}</li><br />
+				{% endif %}
 			{% endfor %}
 			</ol>
 		</div>
