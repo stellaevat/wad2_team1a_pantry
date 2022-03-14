@@ -7,19 +7,42 @@
 {% endblock %}
 
 {% block body_block %}
-	<h1>Add a Recipe</h1>
-		<div>
-		<form id="RecipeForm" method="post" action="/pantry/add_recipe/method">
-		{% csrf_token %}
-		{% for hidden in form.hidden_fields %}
-			{{ hidden }}
-		{% endfor %}
-		{% for field in form.visible_fields %}
-			{{ field.errors }}
-			{{ field.help_text }}
-			{{ field }}
-			<br>
-		{% endfor %}
-		<input type="submit" name="submit" value="Submit" />
-		</div>
+	<h1 class="central-heading">Add Recipe</h1>
+	{% if recipe %}
+		<p class="info-message">Your recipe has been added successfully! <br /> Thank you for contributing to the Pantry!</p>
+		<br />
+		<form action="{% url 'pantry:show_recipe' recipe.slug %}" method="POST">
+			{% csrf_token %}
+			<button class="btn-continue" id="btn-redir" type="submit">View recipe</button>
+		</form>
+	{% elif error %}
+		<p class="info-message">Something went wrong! <br /> Please go back and have another go, or try again later!</p>
+		<br />
+		<button class="btn-back" type="button" onclick="history.back()">Back</button>
+	{% else %}
+		<form id="RecipeForm" method="post" action="{% url 'pantry:add_recipe_method' %}" enctype="multipart/form-data">
+			{% csrf_token %}
+
+			{% for field in recipe_form.visible_fields %}
+				{{ field.errors }}
+				{{ field.help_text }}
+				{{ field }}
+				<br>
+			{% endfor %}
+			
+			{% if ingredients %}
+			Enter quantity/measuring unit for each ingredient, and whether it should be displayed in plural:
+				{% for ingredient in ingredients %}
+					<div class="ingredient-list">
+						<label for="{{ ingredient }}">{{ ingredient }}:</label>
+						<input class="quantity" type="text" id="{{ ingredient.name }}-quantity" name="{{ ingredient.name }}-quantity"/>
+						<label for="{{ ingredient }}">Plural?</label>
+						<input type="hidden" name="plural" value="False"/>
+						<input class="checkbox" type="checkbox" id="{{ ingredient.name }}-plural" name="{{ ingredient.name }}-plural" />
+					</div><br>
+				{% endfor %}
+			{% endif %}
+			<input type="submit" name="submit" value="Submit" />
+		</form>
+	{% endif %}
 {% endblock %}

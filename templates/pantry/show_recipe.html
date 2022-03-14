@@ -62,7 +62,7 @@
 				{% if ingredients %}
 					<ul class="ingredient-list">
 						{% for ing in ingredients %}
-							<li class="ingredient">{{ ing.quantity }} {{ ing.ingredient.name }}</li>
+							<li class="ingredient">{{ ing.quantity }} {{ ing.ingredient|get_number:ing.plural }}</li>
 						{% endfor %}
 					</ul><br />
 				{% else %}
@@ -82,7 +82,7 @@
 	</div>
 		
 	{% else %}
-	<h1 class="cat-heading">We couldn't find this recipe...</h1>
+	<h1 class="central-heading">We couldn't find this recipe...</h1>
 	<p class="info-message">Maybe the author deleted it, or something went wrong - make sure you have the right link!</p>
 	{% endif %}
 {% endblock %}

@@ -47,4 +47,10 @@ def get_item(dictionary, key):
     except:
         return ""
     
-# Recipe thumbnail, include new paras, dropdown display(?)
+@register.filter
+def get_number(ingredient, plural):
+    if plural:
+        return ingredient.get_plural()
+    else:
+        return ingredient.name
+  

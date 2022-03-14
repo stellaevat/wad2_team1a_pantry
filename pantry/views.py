@@ -4,9 +4,10 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from pantry.models import Recipe, Category, Ingredient, IngredientList, UserProfile
-from pantry.forms import UserForm, UserProfileForm, EmailForm, RecipeForm
+from pantry.forms import UserForm, UserProfileForm, EmailForm, RecipeForm, RecipeIngredientsForm, RecipeQuantitesForm
 from django.contrib.auth.models import User
 from django.db.models import Q
+import datetime
 
 # Helper method for sorted recipe display
 def sort_by(recipes, sort, by_ingredient=False):    
@@ -161,14 +162,17 @@ def show_recipe(request, recipe_name_slug):
 @login_required
 def add_recipe_ingredients(request):
     if request.method == 'POST':
-        form = RecipeForm(request.POST)
+        form = RecipeIngredientsForm(request.POST)
     
         if form.is_valid():
-            form.save(commit=True)
-            return redirect('/pantry/add_recipe/method')
+            ingredients = request.POST.getlist('ingredients')
+            request.session['ingredients'] = ingredients
+            return redirect(reverse('pantry:add_recipe_method'))
         else:
             print(form.errors)
-            return render(request, 'pantry/add_recipe.html', {'form': form})
+            type_names, ingredients = all_ingredients()
+            context_dict = {"types": type_names, "ingredients": ingredients, 'form': form}
+            return render(request, 'pantry/add_recipe_ingredients.html', context=context_dict)
     else:
         type_names, ingredients = all_ingredients()
         context_dict = {"types": type_names, "ingredients": ingredients}
@@ -176,17 +180,49 @@ def add_recipe_ingredients(request):
 
 @login_required
 def add_recipe_method(request):
-    form = RecipeForm()
+    context_dict = {}
+    recipe_form = RecipeForm()
+    quantities_form = RecipeQuantitesForm()
+    ingredients = request.session.get('ingredients')
+    ingredients = [Ingredient.objects.get(name=name) for name in ingredients]
     
     if request.method == 'POST':
-        form = RecipeForm(request.POST)
+        recipe_form = RecipeForm(request.POST, request.FILES)
+        quantities_form = RecipeQuantitesForm(request.POST)
         
-        if form.is_valid():
-            form.save(commit=True)
-            return redirect('/pantry/')
+        if recipe_form.is_valid() and quantities_form.is_valid():
+            try:
+                recipe = recipe_form.save(commit=False)
+                recipe.pub_date = datetime.datetime.now().date()
+                recipe.stars = 0
+                recipe.author = request.user
+                recipe.save()
+                recipe.ingredients.add(*ingredients)
+                recipe.save()
+                for i, ing in enumerate(ingredients):
+                    ingList = IngredientList.objects.get(recipe=recipe, ingredient=ing)
+                    ingList.quantity = request.POST.get(ing.name + "-quantity", "")
+                    ingList.plural = True if request.POST.get(ing.name + "-plural", False) else False
+                    ingList.save()
+
+                context_dict['recipe'] = recipe
+                return render(request, 'pantry/add_recipe_method.html', context=context_dict)
+            except Exception as e:
+                print(e)
+                if recipe:
+                    recipe.delete()
+                context_dict['error'] = True
         else:
-            print(form.errors)
-    return render(request, 'pantry/add_recipe_method.html', {'form': form})
+            print(recipe_form.errors, quantities_form.errors)
+            context_dict['recipe_form'] = recipe_form
+            context_dict['quantities_form'] = quantities_form
+            context_dict['ingredients'] = ingredients
+            return render(request, 'pantry/add_recipe_method.html', context=context_dict)
+            
+    context_dict['recipe_form'] = recipe_form
+    context_dict['quantities_form'] = quantities_form
+    context_dict['ingredients'] = ingredients
+    return render(request, 'pantry/add_recipe_method.html', context=context_dict)
 
 def show_category(request, category_title_slug, sort=None, sort_new=None):
     # Handle changes in sorting type and invalid sort types
