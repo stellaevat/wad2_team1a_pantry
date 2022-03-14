@@ -519,17 +519,17 @@ button {
 	content: "\2796";
 }
 
-#ingr-btn {
+#ingr-btn, #add-btn {
 	position: fixed;
-	bottom: 50px;
-	right: calc(25vw - 250px);
+	bottom: 20px;
+	right: calc(15vw - 100px);
 	z-index: 1;
 }
 
-#bottom-left {
+#back-left-btn {
 	position: fixed;
-	bottom: 50px;
-	left: calc(25vw - 250px);
+	bottom: 20px;
+	left: calc(15vw - 100px);
 	z-index: 1;
 }
 
@@ -931,15 +931,21 @@ ol li::marker {
 	.checkbox-area * {
 		float: left;
 	}
-	
+}
+
+@media only screen and (max-width: 1100px) {
 	#ingr-btn {
-		bottom: 25px;
-		right: calc(20vw);
+		right: calc(3vw);
+	}
+	
+	#add-btn {
+		top: 95px;
+		right: calc(3vw);
 	}
 
-	#bottom-left {
-		bottom: 25px;
-		left: calc(20vw);
+	#back-left-btn {
+		top: 95px;
+		left: calc(3vw);
 	}
 }
 

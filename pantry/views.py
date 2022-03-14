@@ -399,7 +399,6 @@ def search_results(request, sort=None, sort_new=None):
         searched = request.POST.get('searched')
     else:
         searched = request.session.get('searched')
-        print(searched)
         
     recipes = set()
     if searched:
