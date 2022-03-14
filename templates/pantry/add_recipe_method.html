@@ -27,9 +27,11 @@
 			<div class="general-info-area">
 				{% for field in recipe_form.visible_fields %}
 					{% if field != recipe_form.steps %}
-						{{ field.help_text }}
-						{{ field }}
-						<span class="error-message">{{ field.errors|get_item:0 }}</span>
+						{% if field != recipe_form.category or categories %}
+							{{ field.help_text }}
+							{{ field }}
+							<span class="error-message">{{ field.errors|get_item:0 }}</span>
+						{% endif %}
 					{% endif %}
 					<br/>
 				{% endfor %}
