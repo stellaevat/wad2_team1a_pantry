@@ -52,9 +52,9 @@ def get_recipes_by_author(user):
     return Recipe.objects.filter(author=user)
     
 @register.filter
-def get_item(dictionary, key):
+def get_item(iterable, key):
     try:
-        return dictionary[key]
+        return iterable[key]
     except:
         return ""
     

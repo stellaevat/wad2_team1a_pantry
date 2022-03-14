@@ -9,6 +9,23 @@ from django.contrib.auth.models import User
 from django.db.models import Q
 import datetime
 
+# Stores any fields added to request.session to pass info from one view to the other
+session_modifications = set()
+
+# Clears added fields from request.session when no longer required
+# Needs to be called at the beginning of every view
+def reset_session(request, exception=None):
+    removed_modifications = set()
+    for mod in session_modifications:
+        if request.session[mod]:
+            if not exception or mod not in exception:
+                del request.session[mod]
+                removed_modifications.add(mod)
+    for mod in removed_modifications:
+        session_modifications.remove(mod)
+    return request
+
+
 #Starring Functionality
 @login_required
 def star(request, recipe_name_slug, username):
@@ -101,12 +118,15 @@ def all_ingredients():
 # Dummy
 @login_required
 def edit_profile(request, username):
+    request = reset_session(request)
     return HttpResponse("Edit profile")
 
 # Renders the user profile page and passes a context dictionary with the recipes starred and written by the user
 #NOTE: Not fully tested as you cannot currently create recipes
 @login_required
 def user_profile(request, username):
+    request = reset_session(request)
+    
     # Renders the user profile page and passes a context dictionary with the recipes starred and written by the user
     context_dict = {"user_accessed": None, "user_profile": None, "profile_picture": None}
     try:
@@ -130,6 +150,8 @@ def user_profile(request, username):
 #NOTE: Not fully tested as you cannot currently create recipes
 @login_required
 def show_my_recipes(request, username, sort=None, sort_new=None):
+    request = reset_session(request)
+    
     # Handle changes in sorting type and invalid sort types
     if sort:
         invalid, redir = sort_redirect(sort, sort_new, "my_recipes", username)
@@ -155,6 +177,8 @@ def show_my_recipes(request, username, sort=None, sort_new=None):
 #NOTE: Not fully tested as you cannot currently create recipes 
 @login_required
 def show_starred_recipes(request, username, sort=None, sort_new=None):
+    request = reset_session(request)
+    
     # Handle changes in sorting type and invalid sort types
     if sort:
         invalid, redir = sort_redirect(sort, sort_new, "starred_recipes", username)
@@ -176,6 +200,8 @@ def show_starred_recipes(request, username, sort=None, sort_new=None):
     return render(request, 'pantry/show_starred_recipes.html', context=context_dict)
     
 def home(request):
+    request = reset_session(request)
+    
     # Renders the home page, passing a context dictionary with the 2 most popular and 2 most viewed recipes.
     context_dict = {}
     context_dict["popular_list"] = Recipe.objects.order_by("-stars")[:2]
@@ -183,6 +209,8 @@ def home(request):
     return render(request, 'pantry/home.html', context_dict)
     
 def show_recipe(request, recipe_name_slug):
+    request = reset_session(request)
+    
     try:
         context_dict = {}
         recipe = Recipe.objects.get(slug=recipe_name_slug)
@@ -196,30 +224,41 @@ def show_recipe(request, recipe_name_slug):
     
 @login_required
 def add_recipe_ingredients(request):
+    request = reset_session(request)
+    
+    type_names, ingredients = all_ingredients()
+    context_dict = {"types": type_names, "ingredients": ingredients}
+    
     if request.method == 'POST':
         form = RecipeIngredientsForm(request.POST)
     
         if form.is_valid():
             ingredients = request.POST.getlist('ingredients')
             request.session['ingredients'] = ingredients
+            session_modifications.add('ingredients')
             return redirect(reverse('pantry:add_recipe_method'))
         else:
             print(form.errors)
-            type_names, ingredients = all_ingredients()
-            context_dict = {"types": type_names, "ingredients": ingredients, 'form': form}
+            contect_dict['form'] = form
             return render(request, 'pantry/add_recipe_ingredients.html', context=context_dict)
     else:
-        type_names, ingredients = all_ingredients()
-        context_dict = {"types": type_names, "ingredients": ingredients}
         return render(request, 'pantry/add_recipe_ingredients.html', context=context_dict)
 
 @login_required
 def add_recipe_method(request):
+    if request.META.get('HTTP_REFERER'):
+        request = reset_session(request, exception={'ingredients'})
+    else:
+        request = reset_session(request)
+        
     context_dict = {}
     recipe_form = RecipeForm()
     quantities_form = RecipeQuantitesForm()
     ingredients = request.session.get('ingredients')
     ingredients = [Ingredient.objects.get(name=name) for name in ingredients]
+    
+    if not ingredients:
+        return redirect(reverse('pantry:add_recipe_ingredients'))
     
     if request.method == 'POST':
         recipe_form = RecipeForm(request.POST, request.FILES)
@@ -250,19 +289,25 @@ def add_recipe_method(request):
                 if recipe:
                     recipe.delete()
                 context_dict['error'] = True
+                return render(request, 'pantry/add_recipe_method.html', context=context_dict)
+                
         else:
             print(recipe_form.errors, quantities_form.errors)
             context_dict['recipe_form'] = recipe_form
             context_dict['quantities_form'] = quantities_form
             context_dict['ingredients'] = ingredients
-            return render(request, 'pantry/add_recipe_method.html', context=context_dict)
-            
+        return render(request, 'pantry/add_recipe_method.html', context=context_dict)
+     
+    
     context_dict['recipe_form'] = recipe_form
     context_dict['quantities_form'] = quantities_form
     context_dict['ingredients'] = ingredients
+    context_dict['ing_count'] = len(ingredients)
     return render(request, 'pantry/add_recipe_method.html', context=context_dict)
 
 def show_category(request, category_title_slug, sort=None, sort_new=None):
+    request = reset_session(request)
+    
     # Handle changes in sorting type and invalid sort types
     if sort:
         invalid, redir = sort_redirect(sort, sort_new, "show_category", category_title_slug)
@@ -286,12 +331,19 @@ def show_category(request, category_title_slug, sort=None, sort_new=None):
 
 
 def search_by_ingredient(request):
+    request = reset_session(request)
+    
     type_names, ingredients = all_ingredients()
     context_dict = {"types": type_names, "ingredients": ingredients}
     return render(request, 'pantry/search_by_ingredient.html', context=context_dict)
 
 
 def search_by_ingredient_results(request, sort=None, sort_new=None):
+    if request.META.get('HTTP_REFERER'):
+        request = reset_session(request, exception={'ingredients'})
+    else:
+        request = reset_session(request)
+        
     # Handle changes in sorting type and invalid sort types
     if sort:
         invalid, redir = sort_redirect(sort, sort_new, "search_by_ingredient_results", by_ingredient=True)
@@ -324,6 +376,7 @@ def search_by_ingredient_results(request, sort=None, sort_new=None):
             
         recipes, sort_type = sort_by(recipe_percents, sort, True)
         request.session['ingredients'] = ingredients
+        session_modifications.add('ingredients')
         context_dict = {"recipes" : recipes, "recipe_percents": recipe_percents, "sort_type" : sort_type, "done": True}
         return render(request, 'pantry/search_by_ingredient_results.html', context=context_dict)
     else:
@@ -331,6 +384,11 @@ def search_by_ingredient_results(request, sort=None, sort_new=None):
 
 
 def search_results(request, sort=None, sort_new=None):
+    if request.META.get('HTTP_REFERER'):
+        request = reset_session(request, exception={'searched'})
+    else:
+        request = reset_session(request)
+        
     # Handle changes in sorting type and invalid sort types
     if sort:
         invalid, redir = sort_redirect(sort, sort_new, "search_results")
@@ -341,6 +399,7 @@ def search_results(request, sort=None, sort_new=None):
         searched = request.POST.get('searched')
     else:
         searched = request.session.get('searched')
+        print(searched)
         
     recipes = set()
     if searched:
@@ -364,6 +423,7 @@ def search_results(request, sort=None, sort_new=None):
             
         recipes, sort_type = sort_by(list(recipes), sort)
         request.session['searched'] = searched
+        session_modifications.add('searched')
         context_dict = {'searched': searched, 'recipes':recipes, 'sort_type': sort_type}
         return render(request, 'pantry/search_results.html', context=context_dict)
     else: 
@@ -371,6 +431,11 @@ def search_results(request, sort=None, sort_new=None):
 
 # Register view
 def sign_up(request):
+    if request.META.get('HTTP_REFERER'):
+        request = reset_session(request, exception={'email'})
+    else:
+        request = reset_session(request)
+        
     registered = False
     email = request.session.get('email')
     if email:
@@ -405,6 +470,8 @@ def sign_up(request):
 
 # Check email view before logging in / signing up
 def check_email(request):
+    request = reset_session(request)
+    
     # If HTTP POST we want to process data
     if request.method == 'POST':
         # Gather email provided by the user
@@ -417,10 +484,12 @@ def check_email(request):
             if User.objects.filter(email=user_email).exists():
                 user = User.objects.get(email=user_email)
                 request.session['username'] = user.username
+                session_modifications.add('username')
                 return render(request, 'pantry/sign_in.html', context = {'username': user.username})
             else:
                 # If email does not exist redirect to signup page
                 request.session['email'] = user_email
+                session_modifications.add('email')
                 user_form = UserForm()
                 profile_form = UserProfileForm()
                 return render(request, 'pantry/sign_up.html', {'user_form': user_form, 'profile_form': profile_form})
@@ -435,6 +504,11 @@ def check_email(request):
 
 # Sign in view
 def sign_in(request):
+    if request.META.get('HTTP_REFERER'):
+        request = reset_session(request, exception={'username'})
+    else:
+        request = reset_session(request)
+        
     username = request.session.get('username')
     if username:
         if request.method == 'POST':
@@ -466,4 +540,5 @@ def sign_out(request):
     return redirect(reverse('pantry:home'))
 
 def pagenotfound(request, exception):
+    request = reset_session(request)
     return render(request, "errors/404.html", {})
