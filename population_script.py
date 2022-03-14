@@ -177,6 +177,7 @@ def add_ingredient(ingredient):
 def add_user(user):
     path = os.getcwd() + "\\media\\profile_pictures\\"
     u = User.objects.get_or_create(username=user["username"], email=user["email"], password=user["password"])[0]
+    u.set_password(user["password"])
     u.save()
     p = UserProfile.objects.get_or_create(user=u, profile_picture=path+user["filename"])[0]
     p.save()
