@@ -4,7 +4,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from pantry.models import Recipe, Category, Ingredient, IngredientList, UserProfile
-from pantry.forms import UserForm, UserProfileForm, EmailForm, RecipeForm
+from pantry.forms import UserForm, UserProfileForm, EmailForm, RecipeForm, EditUserForm, EditUserProfileForm
 from django.contrib.auth.models import User
 from django.db.models import Q
 
@@ -62,16 +62,30 @@ def all_ingredients():
 
 @login_required
 def edit_profile(request, username):
-    context_dict = {}
     if request.method == 'POST':
-        EditUserProfile_Form = UserProfileForm(request.POST)
-        if EditUserProfile_Form.is_valid():
-            #process form data
-            return HttpResponseRedirect('/thanks/')
+        user_form = EditUserForm(request.POST, request.FILES, instance = request.user)
+        profile_form = EditUserProfileForm(request.POST)
+        if user_form.is_valid() and profile_form.is_valid():
+            user = user_form.save()
+            user.set_password(user.password)
+            user.save()
+
+            profile = profile_form.save(commit = False)
+            profile.user = user
+            profile.save()
+        
+        else:
+            context_dict = {}
+            context_dict['edit_profile_form'] = user_form
+            context_dict['profile_form'] = profile_form
+            return render(request, 'pantry/edit_profile.html', context=context_dict)
     else:
-        EditUserProfile_Form = UserProfileForm()
-    context_dict["edit_profile_form"] = EditUserProfile_Form
-    return render(request, 'pantry/edit_profile.html', context=context_dict)
+        user_form = EditUserForm(instance = request.user)
+        profile_form = EditUserProfileForm(instance = request.user)
+        context_dict = {}
+        context_dict["edit_profile_form"] = user_form
+        context_dict['profile_form'] = profile_form
+        return render(request, 'pantry/edit_profile.html', context=context_dict)
 
 # Renders the user profile page and passes a context dictionary with the recipes starred and written by the user
 #NOTE: Not fully tested as you cannot currently create recipes

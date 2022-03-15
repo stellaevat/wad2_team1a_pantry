@@ -58,11 +58,17 @@ class RecipeQuantitesForm(forms.ModelForm):
     pass
 
 
-class EditUserProfile(forms.ModelForm):
+class EditUserForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder': 'Enter new password', 'class': 'login-input'}))
     confirm_password = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder': 'Confirm new password', 'class': 'login-input'}))
     profile_picture = forms.ImageField()
 
     class Meta:
+        model = User
+        fields = ('password','confirm_password')
+
+
+class EditUserProfileForm(forms.ModelForm):
+    class Meta:
         model = UserProfile
-        fields = ('password',)
+        fields = ('profile_picture',)
