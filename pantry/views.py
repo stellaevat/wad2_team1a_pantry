@@ -39,7 +39,7 @@ def star(request, recipe_name_slug, username):
     u.starred.add(r)
     u.save()
 
-    data = {"name" : "calum"}
+    data = {}
 
     return JsonResponse('data', safe=False)
 
@@ -56,7 +56,7 @@ def unstar(request, recipe_name_slug, username):
     u.starred.remove(r)
     u.save()
 
-    data = {"name" : "calum"}
+    data = {}
 
 
     return JsonResponse('data', safe=False)

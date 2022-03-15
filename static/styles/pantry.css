@@ -730,6 +730,15 @@ button {
 	z-index: 1;
 }
 
+#del-btn {
+	width: 130px;
+	height: 60px;
+	position: fixed;
+	top: 140px;
+	right: 5vw+5;
+	z-index: 2;
+}
+
 #unstar-btn {
 	width: 130px;
 	height: 60px;
