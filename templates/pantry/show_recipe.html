@@ -49,6 +49,11 @@
 				<span id="star-icon">&starf;</span><span id="star-text">Unstar</span>
 			</button>
 			{% endif %}
+			{% if user.username == recipe.author %}
+			<button class="btn-inverted" id="del-btn" type="button" onclick="b()">
+				Delete
+			</button>
+			{% endif %}
 		{% endif %}
 	</div>
 	
