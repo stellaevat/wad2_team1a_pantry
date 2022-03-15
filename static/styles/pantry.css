@@ -788,20 +788,21 @@ button {
 	left: 17px;
 }
 
-
 .category-tags {
 	padding: 0px calc(35vw - 300px) 20px calc(35vw - 300px);
 	display: flex;
 	justify-content:flex-start;
+	flex-wrap: wrap;
+	gap: 7px;
 	opacity: 0.8;
+	margin-left: 7px;
 }
-
 .category-tags a {
 	background-color: var(--medium);
 	border-radius: 30px;
 	padding: 10px;
-	margin: 0px 5px 0px 5px;
 	font-size: 15px;
+	white-space: nowrap;
 }
 
 .category-tags a:hover {
@@ -853,6 +854,20 @@ ol li {
 ol li::marker {
 	font-weight: bold;
 }
+
+#author {
+	text-align: right;
+	color: var(--orange);
+	position: absolute;
+	bottom: 0px;
+	right: 20px;
+}
+
+#author a {
+	color: var(--orange);
+	font-weight: bold;
+}
+
 
 /* ADD RECIPE METHOD PAGE */
 #RecipeForm {

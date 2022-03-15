@@ -43,11 +43,7 @@
 					{% recipe_grid_display recipe small=True %}
 				{% endfor %}
 			</div>
-				{% if written_count > 4 %}
-				<a class="link-message" href="{% url 'pantry:my_recipes' user.username %}"><i>view all ({{ written_count }})...</i></a>
-				{% else %}
-				<a class="link-message" href="{% url 'pantry:my_recipes' user.username %}"><i>view all...</i></a>
-				{% endif %}
+			<a class="link-message" href="{% url 'pantry:my_recipes' user.username %}"><i>view all ({{ written_count }})...</i></a>
 			{% else %}
 			<br />
 			<p class="info-message">You haven't posted any recipes yet.</p>
