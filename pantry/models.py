@@ -110,7 +110,7 @@ class IngredientList(models.Model):
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     profile_picture = models.ImageField(upload_to=FileRenamed('profile_pictures'), blank=True)
-    starred = models.ManyToManyField(Recipe)
+    starred = models.ManyToManyField(Recipe, related_name="users")
 
     def __str__(self):
         return self.user.username
