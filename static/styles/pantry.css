@@ -903,13 +903,43 @@ ol li::marker {
 	text-align: center;
 }
 
+.tooltip {
+	text-align: right;
+	margin-top: -12px;
+}
+
+.tooltip img {
+	float: right;
+}
+
 .instruction, .hint {
 	text-align: left;
 	padding-bottom: 5px;
 }
 
+.tooltip .hint {
+	margin-top: -50px;
+	display: inline-block;
+	visibility: hidden;
+	width: 80%;
+	background-color: var(--orange);
+	color: var(--light);
+	padding: 5px;
+	border-radius: 6px;
+	opacity: 0;
+	transition: opacity 0.3s;
+	position: relative;
+	top: 15px;
+	right: 5px;
+}
+
+.tooltip:hover .hint {
+	visibility: visible;
+	opacity: 0.9;
+}
+
 .long-info {
-	max-width: calc(20vw + 20px);
+	max-width: calc(25vw);
 }
 
 .short-info {
@@ -981,6 +1011,16 @@ ol li::marker {
 	.checkbox-area * {
 		float: left;
 	}
+	
+	.tooltip {
+		position: relative;
+		top: 8px;
+		margin-right: -10px;
+	}
+	
+	#column3 label {
+	display: none;
+}
 }
 
 @media only screen and (max-width: 1100px) {
@@ -1001,8 +1041,4 @@ ol li::marker {
 
 .error-message {
 	color: var(--orange);
-}
-
-.hint {
-	color: var(--green);
 }

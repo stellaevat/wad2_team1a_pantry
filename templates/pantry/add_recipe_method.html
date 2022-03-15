@@ -27,27 +27,36 @@
 			<div class="general-info-area">
 				{% for field in recipe_form.visible_fields %}
 					{% if field != recipe_form.steps %}
-						{% if field != recipe_form.category or categories %}
+						{% if field != recipe_form.category %}
 							{{ field.help_text }}
 							{{ field }}
 							<span class="error-message">{{ field.errors|get_item:0 }}</span>
+						{% elif categories %}
+							{{ field.help_text }}
+							{{ field }}
+							<span class="error-message">{{ field.errors|get_item:0 }}</span>
+							<div class="tooltip"><img class="icon-big" src="{% static 'img/help-orange.png' %}" alt="Hint">
+								<i class="hint">Hint: Which of these best describe your recipe? Aim for 2 to 5!</i>
+							</div>
 						{% endif %}
 					{% endif %}
 					<br/>
 				{% endfor %}
+				
 				{% if ing_count >= 10 %}
 					<p class="instruction">Enter the method for your recipe:</p>
 					{{ recipe_form.steps }}
 					<span class="error-message">{{ recipe_form.steps.errors|get_item:0 }}</span>
-					<br />
-					<i class="instruction">Hint: Press Enter whenever you move to a new step, but please don't number them!</i>
+					<div class="tooltip"><img class="icon-big" src="{% static 'img/help-orange.png' %}" alt="Hint">
+						<i class="hint">Hint: Press Enter whenever you move to a new step, but please don't number them - we'll do the rest!</i>
+					</div>
 					<br />
 				{% endif %}
 			</div>
 			
 			<div class="main-info-area">
 				{% if ingredients %}
-				<p class="instruction">Enter the quantity for each ingredient, and whether it should be displayed in plural:</p>
+				<p class="instruction">Enter the quantity for each ingredient, and tick if it should be displayed in plural:</p>
 				<div class="ingredient-info">
 					{% for ingredient in ingredients %}
 					<div id="column1">
@@ -63,15 +72,19 @@
 					</div>
 					{% endfor %}
 				</div>
-				<i class="hint">Hint: You can enter numbers, measuring units, or other words! Just make sure to keep it short.</i>
-				<br /><br />
+				<div class="tooltip"><img class="icon-big" src="{% static 'img/help-orange.png' %}" alt="Hint">
+					<i class="hint">Hint: You can enter numbers, measuring units, or other words! Just make sure to keep it short.</i>
+				</div>
+				</br>
 				{% endif %}
 				
 				{% if ing_count < 10 %}
 					<p class="instruction">Enter the method for your recipe:</p>
 					{{ recipe_form.steps }}
 					<span class="error-message">{{ recipe_form.steps.errors|get_item:0 }}<span />
-					<i class="hint">Hint: Press Enter whenever you move to a new step, but please don't number them!</i>
+					<div class="tooltip"><img class="icon-big" src="{% static 'img/help-orange.png' %}" alt="Hint">
+						<i class="hint">Hint: Press Enter whenever you move to a new step, but please don't number them - we'll do the rest!</i>
+					</div>
 					<br />
 				{% endif %}
 			</div>
