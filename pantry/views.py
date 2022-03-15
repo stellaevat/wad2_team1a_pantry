@@ -25,6 +25,17 @@ def reset_session(request, exception=None):
         session_modifications.remove(mod)
     return request
 
+def delete_recipe(request, recipe_name_slug, username):
+    recipe_name_slug = request.GET['recipe_name_slug']
+    username = request.GET['username']
+    if Recipe.objects.filter(title__iexact=recipe_name_slug).exists():
+        Recipe.objects.get(title__iexact=recipe_name_slug).delete()
+    
+    
+    data = {"username" : username}
+
+    return JsonResponse('data', safe=False)
+
 
 #Starring Functionality
 @login_required

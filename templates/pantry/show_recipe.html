@@ -49,9 +49,9 @@
 				<span id="star-icon">&starf;</span><span id="star-text">Unstar</span>
 			</button>
 			{% endif %}
-			{% if user.username == recipe.author %}
-			<button class="btn-inverted" id="del-btn" type="button" onclick="b()">
-				Delete
+			{% if user == recipe.author %}
+			<button class="btn-inverted" id="del-btn" type="button" onclick="confirm()">
+				<span id="del-icon">&#128465;</span><span id="del-text">Delete</span>
 			</button>
 			{% endif %}
 		{% endif %}
@@ -146,6 +146,32 @@
 		});
 
     };
+
+	function confirm() {
+		document.getElementById("del-btn").innerHTML = `<span id="confirm-text">Confirm</span>`;
+		document.getElementById("del-btn").style.backgroundColor = "red";
+		document.getElementById("del-btn").style.color = "white";
+		document.getElementById("del-btn").setAttribute("onclick","del()");
+
+    };
+
+	function del(){
+		var username = "{{ user.username }}"
+		var recipe_name_slug = "{{ recipe.title }}"
+
+
+		$.ajax({
+			url: 'delete_recipe/' + username,
+			data: {
+          		'recipe_name_slug': recipe_name_slug,
+				'username' : username
+        	},
+			dataType: 'json',
+			success: function () {
+				window.location = "/pantry/home";
+			}
+		});
+	}
 	
 </script>
 {% endblock %}
