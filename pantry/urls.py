@@ -32,6 +32,9 @@ urlpatterns = [
     path('category/<slug:category_title_slug>/', views.show_category, name="show_category"),
     path('category/<slug:category_title_slug>/<slug:sort>/', views.show_category, name="show_category"),
     path('category/<slug:category_title_slug>/<slug:sort>/<slug:sort_new>/', views.show_category, name="show_category"),
+    path('recipes_by_<str:username>/', views.show_user_recipes, name="user_recipes"),
+    path('recipes_by_<str:username>/<slug:sort>/', views.show_user_recipes, name="user_recipes"),
+    path('recipes_by_<str:username>/<slug:sort>/<slug:sort_new>/', views.show_user_recipes, name="user_recipes"),
   
     path('search_by_ingredient/', views.search_by_ingredient, name="search_by_ingredient"),
     path('search_by_ingredient/results/', views.search_by_ingredient_results, name="search_by_ingredient_results"),

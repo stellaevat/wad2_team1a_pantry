@@ -55,16 +55,19 @@
 			</button>
 			{% endif %}
 		{% endif %}
+		
+		<i id="author">Posted by <a href="{% url 'pantry:user_recipes' recipe.author.username %}">{{ recipe.author.username }}</a></i>
 	</div>
+	
 	
 	{% if categories %}
 	<div class="category-tags">
-		
 		{% for cat in categories %}
 		<a class="cat-tag" href="{% url 'pantry:show_category' cat.slug %}">{{ cat.name }}</a>
 		{% endfor %}
 	</div>
 	{% endif %}
+	
 	
 	<div class="verticals-left-narrow">
 		<div>

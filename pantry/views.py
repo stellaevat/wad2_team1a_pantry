@@ -341,6 +341,32 @@ def show_category(request, category_title_slug, sort=None, sort_new=None):
         
     return render(request, 'pantry/show_category.html', context=context_dict)
 
+def show_user_recipes(request, username, sort=None, sort_new=None):
+    request = reset_session(request)
+    
+    # Handle changes in sorting type and invalid sort types
+    if sort:
+        invalid, redir = sort_redirect(sort, sort_new, "user_recipes", username)
+        if invalid:
+            return redir
+            
+    context_dict = {"user_accessed": None}
+    try:
+        user = User.objects.get(username=username)
+        if user == request.user:
+            return redirect(reverse('pantry:my_recipes', args=(username,)))
+        
+        user_profile = UserProfile.objects.get(user=user)
+        recipes = Recipe.objects.filter(author=user)
+        if recipes:
+            recipes, sort_type = sort_by(list(recipes), sort)
+            context_dict["user_accessed"] = username
+            context_dict["recipes"] = recipes
+            context_dict["sort_type"] = sort_type
+    except Exception as e:
+        print(e)
+    return render(request, 'pantry/show_user_recipes.html', context=context_dict)
+
 
 def search_by_ingredient(request):
     request = reset_session(request)
@@ -543,6 +569,7 @@ def sign_in(request):
             return redirect(reverse('pantry:check_email'))
     else:
         return redirect(reverse('pantry:check_email'))
+        
 
 # Logout view restricted to authenticated users
 @login_required

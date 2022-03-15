@@ -1,0 +1,25 @@
+{% extends 'pantry/base.html' %}
+{% load staticfiles %}
+{% load pantry_template_tags %}
+
+{% block title_block %}
+	{{ category.name }}
+{% endblock %}
+
+{% block body_block %}
+{% if user_accessed %}
+	<div class="cat-header">
+		<h1 class="cat-heading">Recipes by {{ user_accessed }}</h1>
+		{% get_recipe_sorter sort_type %}
+	</div>
+	<div class="gap-small"></div>
+	<div class="recipes-big-three">
+		{% for recipe in recipes %}
+			{% recipe_grid_display recipe %}
+		{% endfor %}
+	</div>
+{% else %}
+	<h1 class="central-heading">No recipes to display</h1>
+	<p class="info-message">Make sure you have the right link!</p>
+{% endif %}
+{% endblock %}
