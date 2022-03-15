@@ -42,7 +42,7 @@
 		{% if user.is_authenticated and not user.is_staff %}
 			{% if not user|check_if_starred:recipe %}
 			<button class="btn-inverted" id="star-btn" type="button" onclick="star()">
-				<span id="star-icon">&star;</span><span id="star-text">Star</span>
+				<span id="star-icon">&star;</span><span id="star-text">&nbsp; Star</span>
 			</button>
 			{% else %}
 			<button class="btn-inverted" id="star-btn" type="button" onclick="unstar()">
@@ -50,8 +50,8 @@
 			</button>
 			{% endif %}
 			{% if user == recipe.author %}
-			<button class="btn-inverted" id="del-btn" type="button" onclick="confirm()">
-				<span id="del-icon">&#128465;</span><span id="del-text">Delete</span>
+			<button class="btn-inverted" id="del-btn" type="button" onclick="confirmDelete()">
+				<span id="del-icon">&#128465;</span><span id="del-text"> Delete</span>
 			</button>
 			{% endif %}
 		{% endif %}
@@ -101,10 +101,10 @@
 
 	
 <script>
+	
 	function star() {
-		var username = "{{ user.username }}"
-		var recipe_name_slug = "{{ recipe.title }}"
-	  	
+		var username = "{{ user.username }}";
+		var recipe_name_slug = "{{ recipe.title }}";
 
 		$.ajax({
 			url: 'star/' + username,
@@ -114,11 +114,15 @@
         	},
 			dataType: 'json',
 			success: function () {
-				document.getElementById("star-btn").innerHTML = `<span id="star-icon">&starf;</span><span id="star-text">Unstar</span>`;
-				document.getElementById("star-btn").setAttribute('onclick','unstar()');
-				var counter = document.getElementById("starinfo").innerHTML;
-				counter++;
-				document.getElementById("starinfo").innerHTML = counter;
+				var button = document.getElementById("star-btn");
+				var icon = document.getElementById("star-icon");
+				var text = document.getElementById("star-text");
+				var counter = document.getElementById("starinfo");
+		
+				icon.innerHTML = '&starf;';
+				text.innerHTML = 'Unstar';
+				button.setAttribute('onclick','unstar()');
+				counter.innerHTML++;
 			}
 		});
 
@@ -127,7 +131,6 @@
 	function unstar() {
 		var username = "{{ user.username }}"
 		var recipe_name_slug = "{{ recipe.title }}"
-	  	
 
 		$.ajax({
 			url: 'unstar/' + username,
@@ -137,28 +140,36 @@
         	},
 			dataType: 'json',
 			success: function () {
-				document.getElementById("star-btn").innerHTML = `<span id="star-icon">&star;</span><span id="star-text">Star</span>`;
-				document.getElementById("star-btn").setAttribute('onclick','star()');
-				var counter = document.getElementById("starinfo").innerHTML;
-				counter--;
-				document.getElementById("starinfo").innerHTML = counter;
+				var button = document.getElementById("star-btn");
+				var icon = document.getElementById("star-icon");
+				var text = document.getElementById("star-text");
+				var counter = document.getElementById("starinfo");
+
+				icon.innerHTML = '&star;';
+				text.innerHTML = '&nbsp; Star';
+				button.setAttribute('onclick','star()');
+				counter.innerHTML--;
 			}
 		});
 
     };
 
-	function confirm() {
-		document.getElementById("del-btn").innerHTML = `<span id="confirm-text">Confirm</span>`;
-		document.getElementById("del-btn").style.backgroundColor = "red";
-		document.getElementById("del-btn").style.color = "white";
-		document.getElementById("del-btn").setAttribute("onclick","del()");
-
+	function confirmDelete() {
+		var button = document.getElementById("del-btn");
+		var text = document.getElementById("del-text");
+		var icon = document.getElementById("del-icon");
+		var text = document.getElementById("del-text");
+		
+		text.innerHTML = 'Are you sure?';
+		button.id = "del-btn-ext";
+		icon.id = "del-icon-ext";
+		text.id = "del-text-ext";
+		button.setAttribute("onclick", "del()");
     };
 
 	function del(){
 		var username = "{{ user.username }}"
 		var recipe_name_slug = "{{ recipe.title }}"
-
 
 		$.ajax({
 			url: 'delete_recipe/' + username,
@@ -172,6 +183,8 @@
 			}
 		});
 	}
+	
+		
 	
 </script>
 {% endblock %}

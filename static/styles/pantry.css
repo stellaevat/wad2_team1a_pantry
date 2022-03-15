@@ -161,16 +161,6 @@ button {
 	bottom: 3px;
 }
 
-#star-text {
-	position: relative;
-	bottom: 7.5px;
-	font-size: 23px;
-}
-
-#star-icon {
-	font-size: 38px;
-}
-
 .btn-continue:hover, .btn-back:hover {
 	background-color: var(--medium);
 	color: var(--dark);
@@ -743,32 +733,61 @@ button {
 	font-size: 20px;
 }
 
-#star-btn {
+#star-btn, #del-btn, #del-btn-ext {
 	width: 130px;
 	height: 60px;
 	position: fixed;
 	top: 140px;
 	right: 5vw;
 	z-index: 1;
+	text-align:left;
+	border-radius: 25px;
 }
 
-#unstar-btn {
-	width: 130px;
-	height: 60px;
-	position: fixed;
-	top: 140px;
-	right: 5vw;
-	z-index: 1;
+#del-btn, #del-btn-ext {
+	top: 210px;
 }
 
-#del-btn {
-	width: 130px;
-	height: 60px;
-	position: fixed;
-	top: 250px;
-	right: 5vw;
-	z-index: 1;
+#del-btn-ext, #del-btn-ext span {
+	width: 185px;
+	color: var(--light);
+	background-color: var(--orange);
 }
+
+#del-btn-ext:hover, #del-btn-ext:hover span {
+	background-color: var(--red);
+}
+
+#del-text, #del-text-ext, #del-icon-ext {
+	position: relative;
+	bottom: 4.5px;
+	left: 17px;
+	font-size: 23px;
+}
+
+#star-text {
+	position: relative;
+	bottom: 7.5px;
+	left: 15px;
+	font-size: 23px;
+}
+
+#star-icon, #del-icon, #del-icon-ext {
+	position: relative;
+	font-size: 38px;
+	left: 13px;
+}
+
+#del-icon, #del-icon-ext {
+	font-size: 32px;
+	bottom: 1.5px;
+	font-style: bold;
+}
+
+#del-icon {
+	left: 17px;
+}
+
 
 .category-tags {
 	padding: 0px calc(35vw - 300px) 20px calc(35vw - 300px);
@@ -980,6 +999,10 @@ ol li::marker {
 	}
 }
 
-.hint, .error-message {
+.error-message {
 	color: var(--orange);
+}
+
+.hint {
+	color: var(--green);
 }
