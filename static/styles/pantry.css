@@ -117,6 +117,7 @@ button {
 	border: none;
 	border-radius: 30px;
 	cursor: pointer;
+	box-shadow: 0px 8px 10px -15px var(--dark)
 }
 
 .btn-continue, .btn-back {

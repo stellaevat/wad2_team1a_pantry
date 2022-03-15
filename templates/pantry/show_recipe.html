@@ -49,12 +49,13 @@
 				<span id="star-icon">&starf;</span><span id="star-text">Unstar</span>
 			</button>
 			{% endif %}
-			{% if user == recipe.author %}
+		{% endif %}
+		{% if user == recipe.author or user.is_staff %}
 			<button class="btn-inverted" id="del-btn" type="button" onclick="confirmDelete()">
 				<span id="del-icon">&#128465;</span><span id="del-text"> Delete</span>
 			</button>
-			{% endif %}
 		{% endif %}
+		
 		
 		<i id="author">Posted by <a href="{% url 'pantry:user_recipes' recipe.author.username %}">{{ recipe.author.username }}</a></i>
 	</div>
