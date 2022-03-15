@@ -165,6 +165,20 @@
 		icon.id = "del-icon-ext";
 		text.id = "del-text-ext";
 		button.setAttribute("onclick", "del()");
+		button.setAttribute("onmouseleave", "returnnormal()");
+    };
+
+	function returnnormal() {
+		var button = document.getElementById("del-btn-ext");
+		var text = document.getElementById("del-text-ext");
+		var icon = document.getElementById("del-icon-ext");
+		var text = document.getElementById("del-text-ext");
+		
+		text.innerHTML = ' Delete';
+		button.id = "del-btn";
+		icon.id = "del-icon";
+		text.id = "del-text";
+		button.setAttribute("onclick", "confirmDelete()");
     };
 
 	function del(){
