@@ -547,6 +547,7 @@ def sign_in(request):
 # Logout view restricted to authenticated users
 @login_required
 def sign_out(request):
+    request = reset_session(request)
     logout(request)
     return redirect(reverse('pantry:home'))
 
