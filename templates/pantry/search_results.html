@@ -31,4 +31,13 @@
 		<br /><br />
 		<button class="btn-back" type="button" onclick="history.back()">Back</button>
 	{% endif %}
+
+<script>
+	function pop(){
+		var searched = "{{ searched }}";
+		document.getElementById("search-bar-id").setAttribute("value",searched)
+	}
+
+	window.onload = pop;
+</script>
 {% endblock %}
