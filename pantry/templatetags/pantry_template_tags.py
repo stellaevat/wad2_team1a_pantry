@@ -66,7 +66,7 @@ def get_number(ingredient, plural):
         return ingredient.name
 
 @register.filter
-def format_time(mins):
+def format_time(mins, short=False):
     hours = int(mins / 60)
     mins = mins % 60
     
@@ -74,6 +74,10 @@ def format_time(mins):
     if hours:
         time += str(hours) + " h"
     if mins:
-        time += " " + str(mins) + " min"
+        time += " " + str(mins)
+        if short:
+            time += " '"
+        else:
+            time += " min"
     return time
           
