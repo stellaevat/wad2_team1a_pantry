@@ -165,7 +165,11 @@
 		icon.id = "del-icon-ext";
 		text.id = "del-text-ext";
 		button.setAttribute("onclick", "del()");
-		button.setAttribute("onmouseleave", "returnnormal()");
+		button.setAttribute("focusout", "returnnormal()");
+
+		button.addEventListener("focusout", (event) => {
+			returnnormal();
+		});
     };
 
 	function returnnormal() {
@@ -196,9 +200,7 @@
 				window.location = "/pantry/home";
 			}
 		});
-	}
-	
-		
+	}	
 	
 </script>
 {% endblock %}
