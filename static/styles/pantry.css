@@ -156,12 +156,27 @@ button {
 	font-style: bold;
 }
 
+.btn-inverted span {
+	position: relative;
+	bottom: 3px;
+}
+
+#star-text {
+	position: relative;
+	bottom: 7.5px;
+	font-size: 23px;
+}
+
+#star-icon {
+	font-size: 38px;
+}
+
 .btn-continue:hover, .btn-back:hover {
 	background-color: var(--medium);
 	color: var(--dark);
 }
 
-.btn-inverted:hover {
+.btn-inverted:hover, .btn-inverted:hover span {
 	background-color: var(--burgundy);
 	color: var(--light);
 }
@@ -176,6 +191,13 @@ button {
 	height: 20px;
 	position: relative;
 	top: 1px;
+}
+
+.icon-xl {
+	width: 27px;
+	height: 27px;
+	position: relative;
+	top: 1.5px;
 }
 
 .cat-header {

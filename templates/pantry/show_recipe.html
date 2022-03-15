@@ -39,16 +39,14 @@
 		</div>
 		
 		
-		{% if user.is_authenticated %}
+		{% if user.is_authenticated and not user.is_staff %}
 			{% if not user|check_if_starred:recipe %}
-			<button class="btn-inverted" id="star-btn" type="button" onclick="a()">
-				<img class="icon-big" src="{% static 'img/star-dark.png' %}" alt="Star" id="starbuttonid">
-				Star
+			<button class="btn-inverted" id="star-btn" type="button" onclick="star()">
+				<span id="star-icon">&star;</span><span id="star-text">Star</span>
 			</button>
 			{% else %}
-			<button class="btn-inverted" id="star-btn" type="button" onclick="b()">
-				<img class="icon-big" src="{% static 'img/star-dark.png' %}" alt="Unstar" id="starbuttonid">
-				Unstar
+			<button class="btn-inverted" id="star-btn" type="button" onclick="unstar()">
+				<span id="star-icon">&starf;</span><span id="star-text">Unstar</span>
 			</button>
 			{% endif %}
 		{% endif %}
@@ -98,7 +96,7 @@
 
 	
 <script>
-	function a() {
+	function star() {
 		var username = "{{ user.username }}"
 		var recipe_name_slug = "{{ recipe.title }}"
 	  	
@@ -111,9 +109,8 @@
         	},
 			dataType: 'json',
 			success: function () {
-				document.getElementById("star-btn").innerHTML = `<img class="icon-big" src="{% static 'img/star-dark.png' %}" alt="Unstar" id="starbuttonid">
-				Unstar`;
-				document.getElementById("star-btn").setAttribute('onclick','b()');
+				document.getElementById("star-btn").innerHTML = `<span id="star-icon">&starf;</span><span id="star-text">Unstar</span>`;
+				document.getElementById("star-btn").setAttribute('onclick','unstar()');
 				var counter = document.getElementById("starinfo").innerHTML;
 				counter++;
 				document.getElementById("starinfo").innerHTML = counter;
@@ -122,7 +119,7 @@
 
     };
 
-	function b() {
+	function unstar() {
 		var username = "{{ user.username }}"
 		var recipe_name_slug = "{{ recipe.title }}"
 	  	
@@ -135,9 +132,8 @@
         	},
 			dataType: 'json',
 			success: function () {
-				document.getElementById("star-btn").innerHTML = `<img class="icon-big" src="{% static 'img/star-dark.png' %}" alt="Star" id="starbuttonid">
-				Star`
-				document.getElementById("star-btn").setAttribute('onclick','a()')
+				document.getElementById("star-btn").innerHTML = `<span id="star-icon">&star;</span><span id="star-text">Star</span>`;
+				document.getElementById("star-btn").setAttribute('onclick','star()');
 				var counter = document.getElementById("starinfo").innerHTML;
 				counter--;
 				document.getElementById("starinfo").innerHTML = counter;
@@ -145,5 +141,6 @@
 		});
 
     };
+	
 </script>
 {% endblock %}
