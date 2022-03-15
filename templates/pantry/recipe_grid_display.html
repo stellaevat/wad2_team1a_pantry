@@ -14,7 +14,7 @@
 			</div>
 			<div class="time-info-{{ size }}">
 				<img class="icon-small" src="{% static 'img/timer-light.png' %}" alt="Cooking time">
-				{{ time }}'
+				{{ time|format_time:True }}
 			</div>
 			{% if percent %}
 			<div class="ing-info-{{ size }}">
