@@ -20,6 +20,7 @@ from django.conf.urls.static import static, serve
 from pantry import views
 
 handler404 = 'pantry.views.pagenotfound'
+handler500 = 'pantry.views.errorfound'
 
 urlpatterns = [
     path('', views.home, name='home'),

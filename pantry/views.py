@@ -553,3 +553,7 @@ def sign_out(request):
 def pagenotfound(request, exception):
     request = reset_session(request)
     return render(request, "errors/404.html", {})
+
+def errorfound(request):
+    request = reset_session(request)
+    return render(request, "errors/500.html", {})
