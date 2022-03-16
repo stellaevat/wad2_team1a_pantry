@@ -48,10 +48,10 @@ class Ingredient(models.Model):
             ("grains", "Grains, Seeds & Nuts"),
             ("carbs", "Bread, Pasta & Rice"),
             ("fats", "Fats & Oils"),
-            ("herbs", "Herbs & Spices"),
+            ("herbs", "Herbs, Spices & Seasonings"),
             ("condiments", "Condiments & Sauces"),
             ("fruit", "Fruit"),
-            ("sweets", "Sweet & Baking"),
+            ("baking", "Sweet & Baking"),
             ("drinks", "Beverages"))
             
     name = models.CharField(max_length=128,unique=True)
@@ -83,7 +83,7 @@ class Recipe(models.Model):
     category = models.ManyToManyField(Category)
     ingredients = models.ManyToManyField(Ingredient, through='IngredientList')
     author = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
-    pub_date = models.DateField()
+    pub_date = models.DateTimeField()
     stars = models.IntegerField()
     slug = models.SlugField(unique=True)
     
