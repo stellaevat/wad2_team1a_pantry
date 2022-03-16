@@ -108,7 +108,7 @@
 	
 	function star() {
 		var username = "{{ user.username }}";
-		var recipe_name_slug = "{{ recipe.title }}";
+		var recipe_name_slug = "{{ recipe.slug }}";
 
 		$.ajax({
 			url: 'star/' + username,
@@ -134,7 +134,7 @@
 
 	function unstar() {
 		var username = "{{ user.username }}"
-		var recipe_name_slug = "{{ recipe.title }}"
+		var recipe_name_slug = "{{ recipe.slug }}"
 
 		$.ajax({
 			url: 'unstar/' + username,
@@ -191,7 +191,7 @@
 
 	function del(){
 		var username = "{{ user.username }}"
-		var recipe_name_slug = "{{ recipe.title }}"
+		var recipe_name_slug = "{{ recipe.slug }}"
 
 		$.ajax({
 			url: 'delete_recipe/' + username,
