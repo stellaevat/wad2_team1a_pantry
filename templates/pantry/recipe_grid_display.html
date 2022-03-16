@@ -11,11 +11,11 @@
 		</div>
 		<div class="secondary-info-{{ size }}">
 			<div class="star-info-{{ size }}">
-				<img class="icon-small" src="{% static 'img/star-light.png' %}" alt="Stars">
+				<img class="icon-{{ size }}" src="{% static 'img/star-light.png' %}" alt="Stars">
 				{{ recipe.stars }}
 			</div>
 			<div class="time-info-{{ size }}">
-				<img class="icon-small" src="{% static 'img/timer-light.png' %}" alt="Cooking time">
+				<img class="icon-{{ size }}" src="{% static 'img/timer-light.png' %}" alt="Cooking time">
 				{{ time|format_time:True }}
 			</div>
 			{% if percent %}
