@@ -28,8 +28,8 @@ def reset_session(request, exception=None):
 def delete_recipe(request, recipe_name_slug, username):
     recipe_name_slug = request.GET['recipe_name_slug']
     username = request.GET['username']
-    if Recipe.objects.filter(title__iexact=recipe_name_slug).exists():
-        Recipe.objects.get(title__iexact=recipe_name_slug).delete()
+    if Recipe.objects.filter(slug=recipe_name_slug).exists():
+        Recipe.objects.get(slug=recipe_name_slug).delete()
     
     
     data = {"username" : username}
@@ -42,7 +42,7 @@ def delete_recipe(request, recipe_name_slug, username):
 def star(request, recipe_name_slug, username):
     recipe_name_slug = request.GET['recipe_name_slug']
     username = request.GET['username']
-    r = Recipe.objects.get(title__iexact=recipe_name_slug)
+    r = Recipe.objects.get(slug=recipe_name_slug)
     r.stars += 1
     r.save()
 
@@ -59,7 +59,7 @@ def star(request, recipe_name_slug, username):
 def unstar(request, recipe_name_slug, username):
     recipe_name_slug = request.GET['recipe_name_slug']
     username = request.GET['username']
-    r = Recipe.objects.get(title=recipe_name_slug)
+    r = Recipe.objects.get(slug=recipe_name_slug)
     r.stars -= 1
     r.save()
 
