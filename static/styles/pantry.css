@@ -386,6 +386,10 @@ button {
 	font-size: 20px;
 }
 
+.secondary-info-small * {
+	overflow: hidden;
+	white-space: nowrap;
+}
 
 /* Big grid */
 .recipes-big-three {
@@ -425,11 +429,6 @@ button {
 	overflow: hidden;
 	white-space: nowrap;
 	font-size: 20px;
-}
-
-.secondary-info-small * {
-	overflow: hidden;
-	white-space: nowrap;
 }
 
 /* All grids */
@@ -1077,11 +1076,6 @@ ol li::marker {
 	
 	.recipe-grid-small * {
 		max-width: calc(5vw + 80px);
-		left: -7px;
-	}
-	
-	.recipe-thumbnail-small {
-		max-width: 100%;
 	}
 	
 	.recipe-grid-big * {
