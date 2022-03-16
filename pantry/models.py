@@ -62,6 +62,8 @@ class Ingredient(models.Model):
         return self.name
 
     def get_plural(self):
+        if self.name[-1] == "y":
+            return self.name[:-1] + "ies"
         return p.plural(self.name)
         
     @classmethod

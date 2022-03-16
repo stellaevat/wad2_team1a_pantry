@@ -79,5 +79,8 @@ def format_time(mins, short=False):
             time += " '"
         else:
             time += " min"
-    return time
+    if not time:
+        return "0'"
+    else:
+        return time
           
