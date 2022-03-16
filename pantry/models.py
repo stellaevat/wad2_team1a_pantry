@@ -76,7 +76,7 @@ class Recipe(models.Model):
                     ("advanced", "Advanced")) 
                     
     title = models.CharField(max_length=128, unique=True)
-    picture = models.ImageField(upload_to=FileRenamed('recipe_pictures'), blank=True)
+    picture = models.ImageField(upload_to=FileRenamed('recipe_pictures'), blank=True, default='recipe_pictures/banner-default.png')
     prep_time = models.IntegerField()
     cook_time = models.IntegerField()
     servings = models.IntegerField()
@@ -111,7 +111,7 @@ class IngredientList(models.Model):
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    profile_picture = models.ImageField(upload_to=FileRenamed('profile_pictures'), blank=True)
+    profile_picture = models.ImageField(upload_to=FileRenamed('profile_pictures'), blank=True, default='profile_pictures/profile-picture-default.png')
     starred = models.ManyToManyField(Recipe, related_name="users")
 
     def __str__(self):

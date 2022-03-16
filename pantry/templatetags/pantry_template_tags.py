@@ -1,3 +1,6 @@
+import os
+from os.path import exists
+from pathlib import Path
 from django import template
 from pantry.models import Category, Recipe, IngredientList, UserProfile
 register = template.Library()
@@ -79,8 +82,8 @@ def format_time(mins, short=False):
             time += " '"
         else:
             time += " min"
+            
     if not time:
         return "0'"
     else:
         return time
-          
