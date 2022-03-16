@@ -18,10 +18,17 @@ class UserForm(forms.ModelForm):
         cleaned_data = super(UserForm, self).clean()
         password = cleaned_data.get("password")
         confirm_password = cleaned_data.get("confirm_password")
+        username = cleaned_data.get("username")
 
-        if password != confirm_password:
-            self.add_error('confirm_password', "Passwords don't match.")
-            
+        if len(password) < 8:
+            self.add_error('password', "Password too short - it must contain at least 8 characters.")
+        elif password.isnumeric():
+            self.add_error('password', "Password too simple - it must contain more than just numeric characters.")
+        elif password.lower() == username.lower():
+            self.add_error('password', "Username and password too similar - try something different.")
+        elif password != confirm_password:
+            self.add_error('confirm_password', "Passwords don't match - please try again.")
+        
         return cleaned_data
 
 class UserProfileForm(forms.ModelForm):
@@ -66,7 +73,7 @@ class RecipeForm(forms.ModelForm):
         exclude = ('stars', 'slug', 'ingredients', 'author', 'pub_date')
             
 class RecipeIngredientsForm(forms.ModelForm):
-    ingredients = forms.CharField(max_length=128, help_text="Please add some ingredients.", required=False)
+    ingredients = forms.CharField(max_length=20, help_text="Please add some ingredients.", required=False)
     class Meta:
         model = Recipe
         fields = ('ingredients',)

@@ -54,8 +54,8 @@ class Ingredient(models.Model):
             ("baking", "Sweet & Baking"),
             ("drinks", "Beverages"))
             
-    name = models.CharField(max_length=128,unique=True)
-    ingredient_type = models.CharField(max_length = 16, choices=TYPES)
+    name = models.CharField(max_length=20,unique=True)
+    ingredient_type = models.CharField(max_length=16, choices=TYPES)
     
 
     def __str__(self):

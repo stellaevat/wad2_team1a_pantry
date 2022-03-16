@@ -27,7 +27,7 @@
 				{{ user_form.password }}<br />
 				{{ user_form.confirm_password }}<br />
 				{% if error %}
-					<p class="error-message">{{ error }}</p>
+					<i id="error-message">{{ error }}</i><br />
 				{% endif %}
 				
 				<button class="btn-back" type="button" onclick="history.back()">Back</button>

@@ -93,7 +93,7 @@ Using a spatula, fold the omelet in half. Cook for another 30 seconds, then slid
          "difficulty" : "medium", "pub_date" : datetime(2022,3,14,20,9,26,423063,tzinfo=pytz.UTC), "stars" : 22, "filename" : "omelet.jpg"},
 
          {"name":"Grilled Chicken and Avocado Salad", "author" : "johndoe", "steps" : 
-        """Combine the chicken, arugula, cranberries, avocado, goat cheese, walnuts, vinaigrette, salt, and pepper in a large bowl, using your hands or 2 forks to fully incorporate the dressing.""", "ingredients" : {"Chicken":["12 Oz",False], "Arugula":["12 Cups",False], "Cranberry" : ["1/4 cup", True], "Avocado":["1",False], "Goat cheese":["1/4",False], "Walnut":["1/4 Cup",True], "Honey mustard vinaigrette":["1/4 Cup",False]}, "category" : ["Mains", "Easy Meals", "Vegan", "Vegetarian", "Lunch"], "prep_time" : 5, "cook_time" : 0, "servings" : 4,
+        """Combine the chicken, arugula, cranberries, avocado, goat cheese, walnuts, honey mustard vinaigrette, salt, and pepper in a large bowl, using your hands or 2 forks to fully incorporate the dressing.""", "ingredients" : {"Chicken":["12 Oz",False], "Arugula":["12 Cups",False], "Cranberry" : ["1/4 cup", True], "Avocado":["1",False], "Goat cheese":["1/4",False], "Walnut":["1/4 Cup",True], "Honey mustard":["1/4 Cup",False]}, "category" : ["Mains", "Easy Meals", "Vegan", "Vegetarian", "Lunch"], "prep_time" : 5, "cook_time" : 0, "servings" : 4,
          "difficulty" : "easy", "pub_date" : datetime(2022,2,14,20,9,26,423063,tzinfo=pytz.UTC), "stars" : 50, "filename" : "grilled-chicken-and-avocado-salad.jpg"},
 
          {"name":"Garlic Bread Toasts", "author" : "joebloggs", "steps" : 
