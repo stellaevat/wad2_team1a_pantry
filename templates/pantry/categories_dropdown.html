@@ -1,0 +1,16 @@
+{% load staticfiles %}
+{% load pantry_template_tags %}
+
+{% if categories %}
+<div class="dropdown-menu-cats" aria-labelledby="dropdown01">
+	<button class="dropdown-main-cats" style="">☰</button>
+	<div class="dropdown-items-cats">
+		{% for tab in tabs %}
+			<a class="dropdown-item-tab" href="{% url 'pantry:show_category' tab.slug %}">{{ tab.name }}</a>
+		{% endfor %}
+		{% for cat in categories %}
+			<a class="dropdown-item-cat" href="{% url 'pantry:show_category' cat.slug %}">{{ cat.name }}</a>
+		{% endfor %}
+	</div>
+</div>
+{% endif %}

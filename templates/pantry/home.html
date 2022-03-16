@@ -9,7 +9,7 @@
 {% block body_block %}
 	<div class="logo">
 		<img class="logo-welcome" src="{% static 'img/welcome.png' %}" alt="Welcome to the Pantry">
-		<p class="welcome-message">where you can find recipes with ingredients already in your pantry!</p>
+		<p class="welcome-message">where you can find recipes with ingredients already in your pantry! <br /> Click the orange button to begin!</p>
 	</div>
 	
 	<div class="verticals-two">
@@ -18,10 +18,11 @@
 			{% if popular_list %}
 			<div class="recipes-small-two">
 				{% for recipe in popular_list %}
-					{% recipe_display_grid recipe small=True %}
+					{% recipe_grid_display recipe small=True %}
 				{% endfor %}
 			</div>
 			{% else %}
+			<br />
 			<p class="info-message">No popular recipes to display.</p>
 			<p class="info-message">Try browsing categories, or search by ingredient!</p>
 			<div class="gap-small"></div>
@@ -33,10 +34,11 @@
 			{% if recent_list %}
 			<div class="recipes-small-two">
 				{% for recipe in recent_list %}
-					{% recipe_display_grid recipe True %}
+					{% recipe_grid_display recipe True %}
 				{% endfor %}
 			</div>
 			{% else %}
+			<br />
 			<p class="info-message">No recent recipes to display.</p>
 			<p class="info-message">Try browsing categories, or search by ingredient!</p>
 			<div class="gap-small"></div>

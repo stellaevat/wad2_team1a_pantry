@@ -41,52 +41,51 @@ class Category(models.Model):
         verbose_name_plural = "Categories"
 
 class Ingredient(models.Model):
-    types = (("meats", "Meat, Seafood & Substitutes"),
+    TYPES = (("meats", "Meat, Seafood & Substitutes"),
             ("dairy", "Eggs, Dairy & Substitutes"),
             ("veg", "Vegetables & Funghi"),
             ("pulses", "Pulses"),
             ("grains", "Grains, Seeds & Nuts"),
             ("carbs", "Bread, Pasta & Rice"),
             ("fats", "Fats & Oils"),
-            ("herbs", "Herbs & Spices"),
+            ("herbs", "Herbs, Spices & Seasonings"),
             ("condiments", "Condiments & Sauces"),
             ("fruit", "Fruit"),
-            ("sweets", "Sweet & Baking"),
+            ("baking", "Sweet & Baking"),
             ("drinks", "Beverages"))
             
-    name = models.CharField(max_length=128,unique=True)
-    ingredient_type = models.CharField(max_length = 128, choices=types)
+    name = models.CharField(max_length=20,unique=True)
+    ingredient_type = models.CharField(max_length=16, choices=TYPES)
     
 
     def __str__(self):
         return self.name
-    
-    @classmethod
-    def get_types(cls):
-        return cls.types
 
     def get_plural(self):
+        if self.name[-1] == "y":
+            return self.name[:-1] + "ies"
         return p.plural(self.name)
+        
+    @classmethod
+    def get_types(cls):
+        return cls.TYPES
 
 class Recipe(models.Model):
-    title = models.CharField(max_length=128,unique = True)
-    author = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
-    steps = models.CharField(max_length=2048)
-    ingredients = models.ManyToManyField(Ingredient, through='IngredientList')
+    DIFFICULTIES = (("easy", "Easy"),
+                    ("medium", "Medium"),
+                    ("advanced", "Advanced")) 
+                    
+    title = models.CharField(max_length=128, unique=True)
+    picture = models.ImageField(upload_to=FileRenamed('recipe_pictures'), blank=True, default='recipe_pictures/banner-default.png')
     prep_time = models.IntegerField()
-    category = models.ManyToManyField(Category)
     cook_time = models.IntegerField()
     servings = models.IntegerField()
-    difficulty = models.CharField(
-        max_length = 16,
-        choices = (
-            ("easy", "Easy"),
-            ("medium", "Medium"),
-            ("advanced", "Advanced")
-        ) 
-    )
-    picture = models.ImageField(upload_to=FileRenamed('recipe_pictures'), blank=True)
-    pub_date = models.DateField()
+    difficulty = models.CharField(max_length = 16, choices = DIFFICULTIES)
+    steps = models.CharField(max_length=2048)
+    category = models.ManyToManyField(Category)
+    ingredients = models.ManyToManyField(Ingredient, through='IngredientList')
+    author = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+    pub_date = models.DateTimeField(auto_now_add=True)
     stars = models.IntegerField()
     slug = models.SlugField(unique=True)
     
@@ -96,6 +95,10 @@ class Recipe(models.Model):
 
     def __str__(self):
         return self.title
+        
+    @classmethod
+    def get_difficulties(cls):
+        return cls.DIFFICULTIES
         
 class IngredientList(models.Model):
     recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
@@ -108,8 +111,8 @@ class IngredientList(models.Model):
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    profile_picture = models.ImageField(upload_to=FileRenamed('profile_pictures'), blank=True)
-    starred = models.ManyToManyField(Recipe)
+    profile_picture = models.ImageField(upload_to=FileRenamed('profile_pictures'), blank=True, default='profile_pictures/profile-picture-default.png')
+    starred = models.ManyToManyField(Recipe, related_name="users")
 
     def __str__(self):
         return self.user.username

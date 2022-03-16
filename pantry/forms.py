@@ -1,7 +1,9 @@
 from django import forms
-from django.forms import TextInput, EmailInput
+from django.forms import TextInput, EmailInput, NumberInput, ClearableFileInput
 from django.contrib.auth.models import User
-from pantry.models import UserProfile, Recipe
+from pantry.models import UserProfile, Recipe, Category, IngredientList
+from pantry.custom_widgets import ColumnCheckboxSelectMultiple
+
 
 class UserForm(forms.ModelForm):
     username = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'Enter username', 'class': 'login-input'}))
@@ -16,10 +18,17 @@ class UserForm(forms.ModelForm):
         cleaned_data = super(UserForm, self).clean()
         password = cleaned_data.get("password")
         confirm_password = cleaned_data.get("confirm_password")
+        username = cleaned_data.get("username")
 
-        if password != confirm_password:
-            self.add_error('confirm_password', "Passwords don't match.")
-            
+        if len(password) < 8:
+            self.add_error('password', "Password too short - it must contain at least 8 characters.")
+        elif password.isnumeric():
+            self.add_error('password', "Password too simple - it must contain more than just numeric characters.")
+        elif password.lower() == username.lower():
+            self.add_error('password', "Username and password too similar - try something different.")
+        elif password != confirm_password:
+            self.add_error('confirm_password', "Passwords don't match - please try again.")
+        
         return cleaned_data
 
 class UserProfileForm(forms.ModelForm):
@@ -37,36 +46,44 @@ class EmailForm(forms.ModelForm):
         fields = ('email',)
 
 class RecipeForm(forms.ModelForm):
-	name = forms.CharField(max_length=128, help_text="Please enter the recipe name.")
-	ingredients = forms.CharField(max_length=128, help_text="Please add some ingredients.")
-	stars = forms.IntegerField(widget=forms.HiddenInput(), initial=0)
-	slug = forms.CharField(widget=forms.HiddenInput(), required=False)
-	
-	class Meta:
-		model = Recipe
-		fields = ('name', 'ingredients')
-        
-class RecipeIngredientsForm(forms.ModelForm):
-    # Ignore this field, required for compilation until actual implementation is done
-    name = forms.CharField(max_length=128, help_text="Please enter the recipe name.")
-    ingredients = forms.CharField(max_length=128, help_text="Please add some ingredients.")
+    # Add blank default for difficulty
+    DIFFICULTIES = [('', '--------')]
+    DIFFICULTIES.extend(list(Recipe.get_difficulties()))
+    DIFFICULTIES = tuple(DIFFICULTIES)
+    
+    title = forms.CharField(max_length=128, help_text="Recipe title: ",
+            widget=TextInput(attrs={"class":"long-info"}))
+    picture = forms.ImageField(help_text="Recipe photo: ",
+              widget=ClearableFileInput(attrs={"class":"picture-upload"}))
+    prep_time = forms.IntegerField(help_text="Preparation time (mins): ",
+                widget=NumberInput(attrs={"class":"short-info"}))
+    cook_time = forms.IntegerField(help_text="Cooking time (mins): ",
+                widget=NumberInput(attrs={"class":"short-info"}))
+    difficulty = forms.ChoiceField(help_text="Difficulty: ", choices=DIFFICULTIES)
+    servings = forms.IntegerField(help_text="Servings: ",
+               widget=NumberInput(attrs={"class":"short-info"}))
+    steps = forms.CharField(max_length=2048, help_text="Method: ", widget=forms.Textarea(attrs={"id":"method-input"}), required=True)
+    # Custom widget to display checkboxes in columns
+    category = forms.ModelMultipleChoiceField(help_text="Categories: ", queryset=Category.objects.all(), required=False,
+               widget=ColumnCheckboxSelectMultiple(columns=3, class_whole="checkbox-area",
+               class_column="checkbox-column", separator="gap", attrs={"class":"checkbox"}))
+    
     class Meta:
         model = Recipe
-        fields = ('name', 'ingredients')
+        exclude = ('stars', 'slug', 'ingredients', 'author', 'pub_date')
+            
+class RecipeIngredientsForm(forms.ModelForm):
+    ingredients = forms.CharField(max_length=20, help_text="Please add some ingredients.", required=False)
+    class Meta:
+        model = Recipe
+        fields = ('ingredients',)
 
 class RecipeQuantitesForm(forms.ModelForm):
-    pass
-
-
-class EditUserForm(forms.ModelForm):
-    password = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder': 'Enter new password', 'class': 'login-input'}))
-    confirm_password = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder': 'Confirm new password', 'class': 'login-input'}))
-    profile_picture = forms.ImageField()
-
+    quantity = forms.CharField(max_length=20,required=False)
+    plural = forms.BooleanField(required=False)
     class Meta:
-        model = User
-        fields = ('password','confirm_password')
-
+        model = IngredientList
+        fields = ('quantity', 'plural',)
 
 class EditUserProfileForm(forms.ModelForm):
     class Meta:
