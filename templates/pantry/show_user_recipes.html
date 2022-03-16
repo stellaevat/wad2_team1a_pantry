@@ -9,7 +9,7 @@
 {% block body_block %}
 {% if user_accessed %}
 	<div class="cat-header">
-		<h1 class="cat-heading">Recipes by {{ user_accessed }}</h1>
+		<h1 class="cat-heading">Recipes by<span>{{ user_accessed }}</span></h1>
 		{% get_recipe_sorter sort_type %}
 	</div>
 	<div class="gap-small"></div>
