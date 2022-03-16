@@ -113,16 +113,18 @@ def sort_redirect(sort, sort_new, link, param=None, by_ingredient=False):
     return False, None
     
 # Helper method for ingredient display
-def all_ingredients():
+def all_ingredients(used=False):
     types = Ingredient.get_types()
     type_names = []
     ingredients = {}
     
     for t in types:
-        i = Ingredient.objects.filter(ingredient_type=t[0])
-        if i.count() > 0:
+        ings = Ingredient.objects.filter(ingredient_type=t[0])
+        if used:
+            ings = [i for i in ings if IngredientList.objects.filter(ingredient=i)]
+        if ings:
             type_names.append(t[1])
-            ingredients[t[1]] = i
+            ingredients[t[1]] = ings
             
     return type_names, ingredients
 
@@ -229,6 +231,7 @@ def show_recipe(request, recipe_name_slug):
         context_dict["method"] = recipe.steps.splitlines()
         context_dict["ingredients"] = IngredientList.objects.filter(recipe=recipe)
         context_dict["categories"] = recipe.category.all()
+        print(recipe.pub_date)
         return render(request, 'pantry/show_recipe.html', context=context_dict)
     except Recipe.DoesNotExist:
         return render(request, 'pantry/show_recipe.html', {})
@@ -369,6 +372,8 @@ def show_user_recipes(request, username, sort=None, sort_new=None):
         if recipes:
             recipes, sort_type = sort_by(list(recipes), sort)
             context_dict["user_accessed"] = username
+            context_dict["profile_picture"] = user_profile.profile_picture
+            context_dict["user_joined"] = user.date_joined
             context_dict["recipes"] = recipes
             context_dict["sort_type"] = sort_type
     except Exception as e:
@@ -379,7 +384,7 @@ def show_user_recipes(request, username, sort=None, sort_new=None):
 def search_by_ingredient(request):
     request = reset_session(request)
     
-    type_names, ingredients = all_ingredients()
+    type_names, ingredients = all_ingredients(used=True)
     context_dict = {"types": type_names, "ingredients": ingredients}
     return render(request, 'pantry/search_by_ingredient.html', context=context_dict)
 

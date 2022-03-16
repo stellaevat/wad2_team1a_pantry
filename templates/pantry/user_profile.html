@@ -16,7 +16,8 @@
 			{% else %}
 			<img class="profile-picture-big" src="{% static 'img/profile-picture-default.png' %}" alt="User profile">
 			{% endif %}
-			<h1 class="central-heading" id="username">{{ user.username }}</h1><br />
+			<h1 class="central-heading" id="username">{{ user.username }}</h1>
+			<p class="info-message">Joined {{ user.date_joined|date:'M Y' }}</p><br />
 			<div class="profile-buttons">
 				<form action="{% url 'pantry:add_recipe_ingredients' %}">
 					<button class="btn-inverted" type="submit" value="Add Recipe">

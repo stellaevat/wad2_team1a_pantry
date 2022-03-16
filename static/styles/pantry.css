@@ -44,12 +44,14 @@ a {
 .header-featured {
 	height: 420px;
 	position: relative;
+	verflow: hidden;
 }
 
 .cat-heading, .cat-heading span {
 	font-size: 35px;
 	text-align: left;
 	padding-left: 10px;
+	position: relative;
 }
 
 .cat-heading span {
@@ -80,9 +82,10 @@ a {
 	line-height: 22px;
 }
 
-.info-message#perecnt-explain {
+.info-message#explain {
 	text-align: left;
-	padding-left: calc(35vw - 225px);
+	padding-left: calc(35vw - 230px);
+	margin-left: 10px;
 	font-size: 18px;
 }
 
@@ -592,8 +595,8 @@ button {
 	padding-top: 10px;
 	min-width:100px;
 	box-shadow: 0px 8px 10px -15px var(--dark);
-	transition: opacity 0.1s;
-	pointer-events: none;
+	visibility: hidden;
+	transition: visibility 0s, opacity 0.1s;
 	
 }
 
@@ -604,10 +607,13 @@ button {
 	padding: 12px 35px 12px 10px;
 	text-align: left;
 	display: block;
+	width: 78px;
 	font-size: 14px;
+	white-space: nowrap;
 }
 
-.dropdown-main-sorter:hover + .dropdown-items-sorter {
+.dropdown-menu-sorter:hover .dropdown-items-sorter {
+	visibility: visible;
 	opacity: 0.9;
 }
 
@@ -637,8 +643,8 @@ button {
 	top: 45px;
 	min-width:100px;
 	box-shadow: 15px 2px 15px -15px var(--dark);
-	transition: opacity 0.1s;
-	pointer-events: none;
+	visibility: hidden;
+	transition: visibility 0s, opacity 0.1s;
 }
 
 .dropdown-items-cats a {
@@ -659,6 +665,7 @@ button {
 }
 
 .dropdown-menu-cats:hover .dropdown-items-cats {
+	visibility: visible;
 	opacity: 0.98;
 }
 
@@ -673,7 +680,7 @@ button {
 
 .profile-picture-area {
 	position: relative;
-	bottom: 350px;
+	bottom: 360px;
 }
 
 .profile-picture-big {
@@ -681,6 +688,10 @@ button {
 	width: 200px;
 	height: 200px;
 	border-radius: 100px;
+}
+
+.central-heading#username {
+	margin-bottom: -10px;
 }
 
 .profile-buttons {
@@ -703,6 +714,41 @@ button {
 #view-prof-btn {
 	width: 180px;
 	z-index: 1;
+}
+
+/* USER RECIPES PAGE */
+.cat-heading#with-picture {
+	position: relative;
+	bottom: 40px;
+	margin-bottom: -10px;
+	font-size: 40px;
+}
+
+.cat-heading#with-picture span {
+	font-size: 40px;
+}
+
+.cat-heading p {
+	font-weight: normal;
+	position: absolute;
+	top: 45px;
+}
+
+.cat-heading#with-picture p {
+	top: 110px;
+	left: 117px;
+}
+
+
+
+.profile-picture-big#user-recipe-pic {
+	max-width: 100px;
+	max-height: 100px;
+	opacity: 0.85;
+	position: relative;
+	top: 45px;
+	right: 10px;
+	margin-right: -5px;
 }
 
 
@@ -755,7 +801,7 @@ button {
 	width: 130px;
 	height: 60px;
 	position: fixed;
-	top: 140px;
+	top: 120px;
 	right: 5vw;
 	z-index: 1;
 	text-align:left;
@@ -763,7 +809,7 @@ button {
 }
 
 #del-btn, #del-btn-ext {
-	top: 210px;
+	top: 190px;
 }
 
 #del-btn-ext, #del-btn-ext span {
@@ -846,8 +892,9 @@ button {
     position: relative;
 }
 
-.vertical-featured#ingredients {
-	width: 300px;
+.verticals-left-narrow .vertical-featured {
+	width: calc(15vw + 100px);
+	max-width: 300px;
 	overflow: hidden;
 }
 
@@ -873,17 +920,36 @@ ol li::marker {
 	font-weight: bold;
 }
 
+.pub-data {
+	padding: 10px calc(25vw - 180px);
+}
+
+.pub-data *{
+	float: right;
+}
+
+.pub-data .profile-thumbnail * {
+	top: 0px;
+	width: 35px;
+	height: 35px;
+	border-radius: 90px;
+	padding: 5px;
+	margin-left: -7px;
+}
+
 #author {
 	text-align: right;
 	color: var(--orange);
-	position: absolute;
-	bottom: 0px;
-	right: 20px;
+	position: relative;
+	top: 6px;
+	padding-right: 7px;
 }
 
 #author a {
 	color: var(--orange);
 	font-weight: bold;
+	text-decoration: underline;
+	text-decoration-style:dotted;
 }
 
 
@@ -1051,9 +1117,44 @@ ol li::marker {
 		margin-right: -10px;
 	}
 	
+	.long-text {
+		text-align: left;
+		margin: 0px 5px 0px 20px;
+	}
+	
+	.verticals-left-narrow {
+		grid-template-columns: 1fr;
+		row-gap: 10px;
+	}
+	
+	.verticals-left-narrow .vertical-featured {
+		width: 95%;
+		margin: 0px 10px;
+	}
+	
 	#column3 label {
-	display: none;
-}
+		display: none;
+	}
+	
+	#star-btn, #del-btn {
+		width: 60px;
+	}
+	
+	#star-text, #del-text {
+		display: none;
+	}
+	
+	#recipe-title {
+		font-size: 15vw;
+	}
+	
+	.banner-text .gap-small {
+		display: none;
+	}
+	
+	.tag * {
+		font-size: 16px;
+	}
 }
 
 @media only screen and (max-width: 1100px) {
