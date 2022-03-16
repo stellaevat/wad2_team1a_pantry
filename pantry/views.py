@@ -7,6 +7,8 @@ from pantry.models import Recipe, Category, Ingredient, IngredientList, UserProf
 from pantry.forms import UserForm, UserProfileForm, EmailForm, RecipeForm, EditUserForm, EditUserProfileForm
 from django.contrib.auth.models import User
 from django.db.models import Q
+from django.contrib.auth import update_session_auth_hash
+from django.contrib.auth.forms import PasswordChangeForm
 
 # Helper method for sorted recipe display
 def sort_by(recipes, sort):
@@ -63,29 +65,15 @@ def all_ingredients():
 @login_required
 def edit_profile(request, username):
     if request.method == 'POST':
-        user_form = EditUserForm(request.POST, request.FILES, instance = request.user)
-        profile_form = EditUserProfileForm(request.POST)
-        if user_form.is_valid() and profile_form.is_valid():
-            user = user_form.save()
-            user.set_password(user.password)
-            user.save()
-
-            profile = profile_form.save(commit = False)
-            profile.user = user
-            profile.save()
-        
-        else:
-            context_dict = {}
-            context_dict['edit_profile_form'] = user_form
-            context_dict['profile_form'] = profile_form
-            return render(request, 'pantry/edit_profile.html', context=context_dict)
+        form = PasswordChangeForm(request.user,request.POST)
+        if form.is_valid():
+            user = form.save()
+            update_session_auth_hash(request,user)
+            return redirect(reverse("pantry:home"))
     else:
-        user_form = EditUserForm(instance = request.user)
-        profile_form = EditUserProfileForm(instance = request.user)
-        context_dict = {}
-        context_dict["edit_profile_form"] = user_form
-        context_dict['profile_form'] = profile_form
-        return render(request, 'pantry/edit_profile.html', context=context_dict)
+        form = PasswordChangeForm(request.user)
+    return render(request, 'pantry/edit_profile.html', context={'form': form})
+
 
 # Renders the user profile page and passes a context dictionary with the recipes starred and written by the user
 #NOTE: Not fully tested as you cannot currently create recipes
