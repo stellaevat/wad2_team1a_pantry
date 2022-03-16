@@ -232,7 +232,15 @@ def show_recipe(request, recipe_name_slug):
         return render(request, 'pantry/show_recipe.html', context=context_dict)
     except Recipe.DoesNotExist:
         return render(request, 'pantry/show_recipe.html', {})
-    
+ 
+@login_required 
+def recipe_deleted(request):
+    request = reset_session(request)
+    if not request.META.get('HTTP_REFERER'):
+        return redirect(reverse('pantry:home'))
+    return render(request, 'pantry/recipe_deleted.html', {})
+
+
 @login_required
 def add_recipe_ingredients(request):
     request = reset_session(request)
@@ -266,9 +274,9 @@ def add_recipe_method(request):
     recipe_form = RecipeForm()
     quantities_form = RecipeQuantitesForm()
     ingredients = request.session.get('ingredients')
-    ingredients = [Ingredient.objects.get(name=name) for name in ingredients]
-    
-    if not ingredients:
+    if ingredients:
+        ingredients = [Ingredient.objects.get(name=name) for name in ingredients]
+    else:
         return redirect(reverse('pantry:add_recipe_ingredients'))
     
     if request.method == 'POST':

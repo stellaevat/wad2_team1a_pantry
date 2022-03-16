@@ -35,6 +35,7 @@ urlpatterns = [
     path('recipes_by_<str:username>/', views.show_user_recipes, name="user_recipes"),
     path('recipes_by_<str:username>/<slug:sort>/', views.show_user_recipes, name="user_recipes"),
     path('recipes_by_<str:username>/<slug:sort>/<slug:sort_new>/', views.show_user_recipes, name="user_recipes"),
+    path('recipe_deleted/', views.recipe_deleted, name="recipe"),
   
     path('search_by_ingredient/', views.search_by_ingredient, name="search_by_ingredient"),
     path('search_by_ingredient/results/', views.search_by_ingredient_results, name="search_by_ingredient_results"),

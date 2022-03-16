@@ -593,6 +593,8 @@ button {
 	min-width:100px;
 	box-shadow: 0px 8px 10px -15px var(--dark);
 	transition: opacity 0.1s;
+	pointer-events: none;
+	
 }
 
 .dropdown-items-sorter a {
@@ -605,7 +607,7 @@ button {
 	font-size: 14px;
 }
 
-.dropdown-menu-sorter:hover .dropdown-items-sorter {
+.dropdown-main-sorter:hover + .dropdown-items-sorter {
 	opacity: 0.9;
 }
 
@@ -636,6 +638,7 @@ button {
 	min-width:100px;
 	box-shadow: 15px 2px 15px -15px var(--dark);
 	transition: opacity 0.1s;
+	pointer-events: none;
 }
 
 .dropdown-items-cats a {
