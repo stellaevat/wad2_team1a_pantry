@@ -64,15 +64,32 @@ def all_ingredients():
 
 @login_required
 def edit_profile(request, username):
+    try:
+        user_profile = UserProfile.objects.get(user=request.user)
+    except UserProfile.DoesNotExist:
+        return HttpResponse("invalid user_profile!")
+
+
     if request.method == 'POST':
-        form = PasswordChangeForm(request.user,request.POST)
-        if form.is_valid():
-            user = form.save()
+        pass_form = PasswordChangeForm(request.user,request.POST)
+        img_form = EditUserProfileForm(request.POST, instance = user_profile)
+        if pass_form.is_valid():
+            user = pass_form.save()
             update_session_auth_hash(request,user)
             return redirect(reverse("pantry:home"))
+        if img_form.is_valid():
+            user = request.user
+            profile = img_form.save(commit = False)
+            profile.user = user
+
+            if 'profile_picture' in request.FILES:
+                profile.profile_picture = request.FILES["profile_picture"]
+
+            profile.save()
     else:
-        form = PasswordChangeForm(request.user)
-    return render(request, 'pantry/edit_profile.html', context={'form': form})
+        pass_form = PasswordChangeForm(request.user)
+        img_form = EditUserProfileForm(instance = user_profile)
+    return render(request, 'pantry/edit_profile.html', context={'form': pass_form, 'img_form': img_form})
 
 
 # Renders the user profile page and passes a context dictionary with the recipes starred and written by the user

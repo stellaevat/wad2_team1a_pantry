@@ -11,6 +11,7 @@
 		<form id="form-edit-profile" method="post" action="{% url 'pantry:edit_profile' user.username %}" enctype="multipart/form-data">
 			{% csrf_token %}
 			{{ form }}
+			{{ img_form	}}
 			{% if error %}
 				<p class="login-error">{{ error }}</p>
 			{% endif %}
