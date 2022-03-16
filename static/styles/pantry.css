@@ -717,29 +717,28 @@ button {
 }
 
 /* USER RECIPES PAGE */
-.cat-heading#with-picture {
-	position: relative;
-	bottom: 40px;
-	margin-bottom: -10px;
-	font-size: 40px;
-}
-
-.cat-heading#with-picture span {
-	font-size: 40px;
-}
-
 .cat-heading p {
 	font-weight: normal;
 	position: absolute;
 	top: 45px;
 }
 
+.cat-heading#with-picture {
+	position: relative;
+	bottom: 55px;
+	margin-bottom: -25px;
+	font-size: 40px;
+	white-space: nowrap;
+}
+
+.cat-heading#with-picture span {
+	font-size: 40px;
+}
+
 .cat-heading#with-picture p {
 	top: 110px;
 	left: 117px;
 }
-
-
 
 .profile-picture-big#user-recipe-pic {
 	max-width: 100px;
@@ -1132,7 +1131,7 @@ ol li::marker {
 		margin: 0px 10px;
 	}
 	
-	#column3 label {
+	#column3 label, #star-text, #del-text {
 		display: none;
 	}
 	
@@ -1140,12 +1139,12 @@ ol li::marker {
 		width: 60px;
 	}
 	
-	#star-text, #del-text {
-		display: none;
-	}
-	
 	#recipe-title {
 		font-size: 15vw;
+	}
+	
+	.cat-heading#with-picture, .cat-heading#with-picture span {
+		font-size: 7vw;
 	}
 	
 	.banner-text .gap-small {
@@ -1154,6 +1153,12 @@ ol li::marker {
 	
 	.tag * {
 		font-size: 16px;
+	}
+	
+	.dropdown-menu-sorter {
+		position: absolute;
+		right: 10px;
+		top: 175px;
 	}
 }
 
