@@ -89,11 +89,12 @@ a {
 	font-size: 18px;
 }
 
-.error-message, #error-message {
+.error-message {
 	font-style: italic;
 	color: var(--orange);
-	line-height: 22px;
+	line-height: 22px
 }
+
 
 .gap {
 	height: calc(5vw + 100px);
@@ -216,10 +217,6 @@ button {
 
 .line-break {
 	width: 100%;
-}
-
-.login-area {
-	margin-top: -20px;
 }
 
 /* NAVBAR & TABS */
@@ -386,10 +383,6 @@ button {
 	font-size: 20px;
 }
 
-.secondary-info-small * {
-	overflow: hidden;
-	white-space: nowrap;
-}
 
 /* Big grid */
 .recipes-big-three {
@@ -429,6 +422,11 @@ button {
 	overflow: hidden;
 	white-space: nowrap;
 	font-size: 20px;
+}
+
+.secondary-info-small * {
+	overflow: hidden;
+	white-space: nowrap;
 }
 
 /* All grids */
@@ -1076,6 +1074,11 @@ ol li::marker {
 	
 	.recipe-grid-small * {
 		max-width: calc(5vw + 80px);
+		left: -7px;
+	}
+	
+	.recipe-thumbnail-small {
+		max-width: 100%;
 	}
 	
 	.recipe-grid-big * {
@@ -1175,6 +1178,10 @@ ol li::marker {
 	}
 }
 
+<<<<<<< HEAD
 .welcome-message span {
+=======
+.error-message {
+>>>>>>> eee2985361dcd4042a9e68f0a38858b1390dee2f
 	color: var(--orange);
 }

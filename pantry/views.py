@@ -1,16 +1,15 @@
+import datetime
+from django.contrib.auth import update_session_auth_hash
+from django.contrib.auth.forms import PasswordChangeForm
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.urls import reverse
 from pantry.models import Recipe, Category, Ingredient, IngredientList, UserProfile
-
-from pantry.forms import UserForm, UserProfileForm, EmailForm, RecipeForm, RecipeIngredientsForm, RecipeQuantitesForm
+from pantry.forms import UserForm, UserProfileForm, EmailForm, RecipeForm, RecipeIngredientsForm, RecipeQuantitesForm, EditUserProfileForm, EditProfilePicture, EditUsername, EditEmail
 from django.contrib.auth.models import User
 from django.db.models import Q
-import datetime
-from django.contrib.auth import update_session_auth_hash
-from django.contrib.auth.forms import PasswordChangeForm
 
 # Stores any fields added to request.session to pass info from one view to the other
 session_modifications = set()
@@ -71,8 +70,7 @@ def unstar(request, recipe_name_slug, username):
     u.save()
 
     data = {}
-
-
+    
     return JsonResponse('data', safe=False)
 
 # Helper method for sorted recipe display
@@ -133,7 +131,7 @@ def all_ingredients(used=False):
 
 @login_required
 def edit_profile(request, username):
-
+    request = reset_session(request)
     try:
         user_profile = UserProfile.objects.get(user=request.user)
     except UserProfile.DoesNotExist:
@@ -141,12 +139,21 @@ def edit_profile(request, username):
 
 
     if request.method == 'POST':
+        username_form = EditUsername(request.POST, instance = request.user)
+        email_form = EditEmail(request.POST, instance = request.user)
         pass_form = PasswordChangeForm(request.user,request.POST)
-        img_form = EditUserProfileForm(request.POST, instance = user_profile)
+        img_form = EditProfilePicture(request.POST, instance = user_profile)
+
+        if username_form.is_valid():
+            username_form.save()
+
+        if email_form.is_valid():
+            email_form.save()
+
         if pass_form.is_valid():
             user = pass_form.save()
             update_session_auth_hash(request,user)
-            return redirect(reverse("pantry:home"))
+            
         if img_form.is_valid():
             user = request.user
             profile = img_form.save(commit = False)
@@ -156,15 +163,17 @@ def edit_profile(request, username):
                 profile.profile_picture = request.FILES["profile_picture"]
 
             profile.save()
+
     else:
+        username_form = EditUsername(instance = request.user)
+        email_form = EditEmail(instance = request.user)
         pass_form = PasswordChangeForm(request.user)
-        img_form = EditUserProfileForm(instance = user_profile)
-    return render(request, 'pantry/edit_profile.html', context={'form': pass_form, 'img_form': img_form})
+        img_form = EditProfilePicture(instance = user_profile)
+    return render(request, 'pantry/edit_profile.html', context={'pass_form': pass_form, 'img_form': img_form, 'username_form': username_form,'email_form': email_form })
 
 
 
 # Renders the user profile page and passes a context dictionary with the recipes starred and written by the user
-#NOTE: Not fully tested as you cannot currently create recipes
 @login_required
 def user_profile(request, username):
     request = reset_session(request)
@@ -230,6 +239,9 @@ def show_starred_recipes(request, username, sort=None, sort_new=None):
     context_dict = {"user_accessed": None}
     try:
         user = User.objects.get(username=username)
+        if user != request.user:
+            return redirect(reverse('pantry:starred_recipes', args=('request.user.username',)))
+        
         user_profile = UserProfile.objects.get(user=user)
         recipes = user_profile.starred.all()
         recipes, sort_type = sort_by(list(recipes), sort)

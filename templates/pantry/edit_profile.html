@@ -7,18 +7,57 @@
 {% endblock %}
 
 {% block body_block %}
-	<p class="edit-prompt">Edit your profile here:</p>
-		<form id="form-edit-profile" method="post" action="{% url 'pantry:edit_profile' user.username %}" enctype="multipart/form-data">
+<p class="edit-prompt">Change Username:</p>
+		<form id="form-edit-pfp" method="post" action="{% url 'pantry:edit_profile' user.username %}" enctype="multipart/form-data">
 			{% csrf_token %}
-			{{ form }}
+			
+			{{ username_form }}
+			{% if error %}
+				<p class="login-error">{{ error }}</p>
+			{% endif %}
+			
+			<input class="btn-continue" type="submit" value="Submit" />
+		</form>
+
+		<p class="edit-prompt">Change Email:</p>
+		<form id="form-edit-pfp" method="post" action="{% url 'pantry:edit_profile' user.username %}" enctype="multipart/form-data">
+			{% csrf_token %}
+			
+			{{ email_form }}
+			{% if error %}
+				<p class="login-error">{{ error }}</p>
+			{% endif %}
+			
+			<input class="btn-continue" type="submit" value="Submit" />
+		</form>
+
+	<p class="edit-prompt">Change Profile Picture:</p>
+		<form id="form-edit-pfp" method="post" action="{% url 'pantry:edit_profile' user.username %}" enctype="multipart/form-data">
+			{% csrf_token %}
+			
 			{{ img_form	}}
 			{% if error %}
 				<p class="login-error">{{ error }}</p>
 			{% endif %}
 			
-			<button class="btn-back" type="button" onclick="history.back()">Back</button>
 			<input class="btn-continue" type="submit" value="Submit" />
 		</form>
+		<p class="edit-prompt">Change Password:</p>
+		<form id="form-edit-password" method="post" action="{% url 'pantry:edit_profile' user.username %}" enctype="multipart/form-data">
+			{% csrf_token %}
+			{{ pass_form }}
+
+			{% if error %}
+				<p class="login-error">{{ error }}</p>
+			{% endif %}
+			
+			<input class="btn-continue" type="submit" value="Submit" />
+		</form>
+		<form method="post" action = "{% url 'pantry:user_profile' user.username %}">
+			{% csrf_token %}
+			<button class="btn-back" type="submit" ">Finish</button>
+		</form>
+	
 	
 
 {% endblock %}
