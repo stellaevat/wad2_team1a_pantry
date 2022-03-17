@@ -1174,3 +1174,7 @@ ol li::marker {
 		left: calc(3vw);
 	}
 }
+
+.welcome-message span {
+	color: var(--orange);
+}

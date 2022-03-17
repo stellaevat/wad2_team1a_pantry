@@ -231,7 +231,6 @@ def show_recipe(request, recipe_name_slug):
         context_dict["method"] = recipe.steps.splitlines()
         context_dict["ingredients"] = IngredientList.objects.filter(recipe=recipe)
         context_dict["categories"] = recipe.category.all()
-        print(recipe.pub_date)
         return render(request, 'pantry/show_recipe.html', context=context_dict)
     except Recipe.DoesNotExist:
         return render(request, 'pantry/show_recipe.html', {})
