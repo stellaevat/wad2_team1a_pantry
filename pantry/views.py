@@ -5,7 +5,7 @@ from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.urls import reverse
 from pantry.models import Recipe, Category, Ingredient, IngredientList, UserProfile
 
-from pantry.forms import UserForm, UserProfileForm, EmailForm, RecipeForm, RecipeIngredientsForm, RecipeQuantitesForm
+from pantry.forms import UserForm, UserProfileForm, EmailForm, RecipeForm, RecipeIngredientsForm, RecipeQuantitesForm, EditUserProfileForm
 from django.contrib.auth.models import User
 from django.db.models import Q
 import datetime
@@ -146,7 +146,6 @@ def edit_profile(request, username):
         if pass_form.is_valid():
             user = pass_form.save()
             update_session_auth_hash(request,user)
-            return redirect(reverse("pantry:home"))
         if img_form.is_valid():
             user = request.user
             profile = img_form.save(commit = False)
@@ -156,6 +155,7 @@ def edit_profile(request, username):
                 profile.profile_picture = request.FILES["profile_picture"]
 
             profile.save()
+            return redirect(reverse("pantry:home"))
     else:
         pass_form = PasswordChangeForm(request.user)
         img_form = EditUserProfileForm(instance = user_profile)
