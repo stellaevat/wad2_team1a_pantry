@@ -6,11 +6,10 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.urls import reverse
+from pantry.models import Recipe, Category, Ingredient, IngredientList, UserProfile
+from pantry.forms import UserForm, UserProfileForm, EmailForm, RecipeForm, RecipeIngredientsForm, RecipeQuantitesForm, EditUserProfileForm, EditProfilePicture, EditUsername, EditEmail
 from django.contrib.auth.models import User
 from django.db.models import Q
-from pantry.models import Recipe, Category, Ingredient, IngredientList, UserProfile
-from pantry.forms import UserForm, UserProfileForm, EmailForm, RecipeForm, RecipeIngredientsForm, RecipeQuantitesForm, EditUserProfileForm
-
 
 # Stores any fields added to request.session to pass info from one view to the other
 session_modifications = set()
@@ -140,12 +139,21 @@ def edit_profile(request, username):
 
 
     if request.method == 'POST':
+        username_form = EditUsername(request.POST, instance = request.user)
+        email_form = EditEmail(request.POST, instance = request.user)
         pass_form = PasswordChangeForm(request.user,request.POST)
-        img_form = EditUserProfileForm(request.POST, instance = user_profile)
+        img_form = EditProfilePicture(request.POST, instance = user_profile)
+
+        if username_form.is_valid():
+            username_form.save()
+
+        if email_form.is_valid():
+            email_form.save()
+
         if pass_form.is_valid():
             user = pass_form.save()
             update_session_auth_hash(request,user)
-            return redirect(reverse("pantry:home"))
+            
         if img_form.is_valid():
             user = request.user
             profile = img_form.save(commit = False)
@@ -155,10 +163,13 @@ def edit_profile(request, username):
                 profile.profile_picture = request.FILES["profile_picture"]
 
             profile.save()
+
     else:
+        username_form = EditUsername(instance = request.user)
+        email_form = EditEmail(instance = request.user)
         pass_form = PasswordChangeForm(request.user)
-        img_form = EditUserProfileForm(instance = user_profile)
-    return render(request, 'pantry/edit_profile.html', context={'form': pass_form, 'img_form': img_form})
+        img_form = EditProfilePicture(instance = user_profile)
+    return render(request, 'pantry/edit_profile.html', context={'pass_form': pass_form, 'img_form': img_form, 'username_form': username_form,'email_form': email_form })
 
 
 
