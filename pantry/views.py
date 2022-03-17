@@ -141,8 +141,8 @@ def edit_profile(request, username):
 
 
     if request.method == 'POST':
-        username_form = EditUsername(request.user, request.POST)
-        email_form = EditEmail(request.user, request.POST)
+        username_form = EditUsername(request.POST, instance = request.user)
+        email_form = EditEmail(request.POST, instance = request.user)
         pass_form = PasswordChangeForm(request.user,request.POST)
         img_form = EditProfilePicture(request.POST, instance = user_profile)
 
@@ -152,10 +152,10 @@ def edit_profile(request, username):
         if email_form.is_valid():
             email_form.save()
 
-
         if pass_form.is_valid():
             user = pass_form.save()
             update_session_auth_hash(request,user)
+            
         if img_form.is_valid():
             user = request.user
             profile = img_form.save(commit = False)
@@ -167,8 +167,8 @@ def edit_profile(request, username):
             profile.save()
 
     else:
-        username_form = EditUsername(request.user)
-        email_form = EditEmail(request.user)
+        username_form = EditUsername(instance = request.user)
+        email_form = EditEmail(instance = request.user)
         pass_form = PasswordChangeForm(request.user)
         img_form = EditProfilePicture(instance = user_profile)
     return render(request, 'pantry/edit_profile.html', context={'pass_form': pass_form, 'img_form': img_form, 'username_form': username_form,'email_form': email_form })

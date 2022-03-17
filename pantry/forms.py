@@ -92,27 +92,12 @@ class EditProfilePicture(forms.ModelForm):
 
 
 class EditUsername(forms.ModelForm):
-    username = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'Enter new username'}))
-
     class Meta:
         model = User
         fields = ('username',)
     
 
 class EditEmail(forms.ModelForm):
-    new_email = forms.EmailField(label=("New email address"),widget=forms.EmailInput,)
-
-    def __init__(self, user, *args, **kwargs):
-        self.user = user
-        super(EditEmail, self).__init__(*args, **kwargs)
-
-    def save(self, commit=True):
-        email = self.cleaned_data["new_email"]
-        self.user.email = email
-        if commit:
-            self.user.save()
-        return self.user
-
     class Meta:
         model = User
         fields = ('email',)
