@@ -85,7 +85,19 @@ class RecipeQuantitesForm(forms.ModelForm):
         model = IngredientList
         fields = ('quantity', 'plural',)
 
-class EditUserProfileForm(forms.ModelForm):
+class EditProfilePicture(forms.ModelForm):
     class Meta:
         model = UserProfile
         fields = ('profile_picture',)
+
+
+class EditUsername(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ('username',)
+    
+
+class EditEmail(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ('email',)
