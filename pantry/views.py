@@ -5,7 +5,7 @@ from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.urls import reverse
 from pantry.models import Recipe, Category, Ingredient, IngredientList, UserProfile
 
-from pantry.forms import UserForm, UserProfileForm, EmailForm, RecipeForm, RecipeIngredientsForm, RecipeQuantitesForm, EditUserProfileForm
+from pantry.forms import UserForm, UserProfileForm, EmailForm, RecipeForm, RecipeIngredientsForm, RecipeQuantitesForm, EditProfilePicture, EditUsername, EditEmail
 from django.contrib.auth.models import User
 from django.db.models import Q
 import datetime
@@ -141,8 +141,18 @@ def edit_profile(request, username):
 
 
     if request.method == 'POST':
+        username_form = EditUsername(request.user, request.POST)
+        email_form = EditEmail(request.user, request.POST)
         pass_form = PasswordChangeForm(request.user,request.POST)
-        img_form = EditUserProfileForm(request.POST, instance = user_profile)
+        img_form = EditProfilePicture(request.POST, instance = user_profile)
+
+        if username_form.is_valid():
+            username_form.save()
+
+        if email_form.is_valid():
+            email_form.save()
+
+
         if pass_form.is_valid():
             user = pass_form.save()
             update_session_auth_hash(request,user)
@@ -155,11 +165,13 @@ def edit_profile(request, username):
                 profile.profile_picture = request.FILES["profile_picture"]
 
             profile.save()
-            return redirect(reverse("pantry:home"))
+
     else:
+        username_form = EditUsername(request.user)
+        email_form = EditEmail(request.user)
         pass_form = PasswordChangeForm(request.user)
-        img_form = EditUserProfileForm(instance = user_profile)
-    return render(request, 'pantry/edit_profile.html', context={'form': pass_form, 'img_form': img_form})
+        img_form = EditProfilePicture(instance = user_profile)
+    return render(request, 'pantry/edit_profile.html', context={'pass_form': pass_form, 'img_form': img_form, 'username_form': username_form,'email_form': email_form })
 
 
 
