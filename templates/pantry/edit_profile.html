@@ -7,18 +7,28 @@
 {% endblock %}
 
 {% block body_block %}
-	<p class="edit-prompt">Edit your profile here:</p>
-		<form id="form-edit-profile" method="post" action="{% url 'pantry:edit_profile' user.username %}" enctype="multipart/form-data">
+	<p class="edit-prompt">Change your password here :</p>
+		<form id="form-edit-pfp" method="post" action="{% url 'pantry:edit_profile' user.username %}" enctype="multipart/form-data">
 			{% csrf_token %}
-			{{ form }}
+			
 			{{ img_form	}}
 			{% if error %}
 				<p class="login-error">{{ error }}</p>
 			{% endif %}
 			
-			<button class="btn-back" type="button" onclick="history.back()">Back</button>
 			<input class="btn-continue" type="submit" value="Submit" />
 		</form>
+		<form id="form-edit-password" method="post" action="{% url 'pantry:edit_profile' user.username %}" enctype="multipart/form-data">
+			{% csrf_token %}
+			{{ form }}
+
+			{% if error %}
+				<p class="login-error">{{ error }}</p>
+			{% endif %}
+			
+			<input class="btn-continue" type="submit" value="Submit" />
+		</form>
+		<button class="btn-back" type="button" onclick="history.back()">Back</button>
 	
 
 {% endblock %}
