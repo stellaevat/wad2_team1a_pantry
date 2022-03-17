@@ -1,16 +1,15 @@
+import datetime
+from django.contrib.auth import update_session_auth_hash
+from django.contrib.auth.forms import PasswordChangeForm
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.urls import reverse
 from pantry.models import Recipe, Category, Ingredient, IngredientList, UserProfile
-
-from pantry.forms import UserForm, UserProfileForm, EmailForm, RecipeForm, RecipeIngredientsForm, RecipeQuantitesForm, EditProfilePicture, EditUsername, EditEmail
+from pantry.forms import UserForm, UserProfileForm, EmailForm, RecipeForm, RecipeIngredientsForm, RecipeQuantitesForm, EditUserProfileForm, EditProfilePicture, EditUsername, EditEmail
 from django.contrib.auth.models import User
 from django.db.models import Q
-import datetime
-from django.contrib.auth import update_session_auth_hash
-from django.contrib.auth.forms import PasswordChangeForm
 
 # Stores any fields added to request.session to pass info from one view to the other
 session_modifications = set()
@@ -71,8 +70,7 @@ def unstar(request, recipe_name_slug, username):
     u.save()
 
     data = {}
-
-
+    
     return JsonResponse('data', safe=False)
 
 # Helper method for sorted recipe display
@@ -133,7 +131,7 @@ def all_ingredients(used=False):
 
 @login_required
 def edit_profile(request, username):
-
+    request = reset_session(request)
     try:
         user_profile = UserProfile.objects.get(user=request.user)
     except UserProfile.DoesNotExist:
@@ -176,7 +174,6 @@ def edit_profile(request, username):
 
 
 # Renders the user profile page and passes a context dictionary with the recipes starred and written by the user
-#NOTE: Not fully tested as you cannot currently create recipes
 @login_required
 def user_profile(request, username):
     request = reset_session(request)
@@ -242,6 +239,9 @@ def show_starred_recipes(request, username, sort=None, sort_new=None):
     context_dict = {"user_accessed": None}
     try:
         user = User.objects.get(username=username)
+        if user != request.user:
+            return redirect(reverse('pantry:starred_recipes', args=('request.user.username',)))
+        
         user_profile = UserProfile.objects.get(user=user)
         recipes = user_profile.starred.all()
         recipes, sort_type = sort_by(list(recipes), sort)
