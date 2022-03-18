@@ -34,7 +34,7 @@ class UserForm(forms.ModelForm):
 class UserProfileForm(forms.ModelForm):
     class Meta:
         model = UserProfile
-        # No fields need to be set at sign up
+        # Email already submitted at check_email stage, nothing new to submit
         fields = ()
 
 class EmailForm(forms.ModelForm):
@@ -42,7 +42,7 @@ class EmailForm(forms.ModelForm):
                              widget=forms.EmailInput(attrs={'placeholder': 'Enter email', 'class': 'login-input'}))
     
     class Meta:
-        model = User
+        model = UserProfile
         fields = ('email',)
 
 class RecipeForm(forms.ModelForm):
@@ -86,6 +86,7 @@ class RecipeQuantitesForm(forms.ModelForm):
         fields = ('quantity', 'plural',)
 
 class EditProfilePicture(forms.ModelForm):
+    profile_picture = forms.ImageField(widget=ClearableFileInput(attrs={"class":"picture-upload"}))
     class Meta:
         model = UserProfile
         fields = ('profile_picture',)
@@ -98,6 +99,7 @@ class EditUsername(forms.ModelForm):
     
 
 class EditEmail(forms.ModelForm):
+    email = forms.EmailField(max_length=254, required=True)
     class Meta:
-        model = User
+        model = UserProfile
         fields = ('email',)

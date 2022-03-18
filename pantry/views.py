@@ -7,7 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.urls import reverse
 from pantry.models import Recipe, Category, Ingredient, IngredientList, UserProfile
-from pantry.forms import UserForm, UserProfileForm, EmailForm, RecipeForm, RecipeIngredientsForm, RecipeQuantitesForm, EditUserProfileForm, EditProfilePicture, EditUsername, EditEmail
+from pantry.forms import UserForm, UserProfileForm, EmailForm, RecipeForm, RecipeIngredientsForm, RecipeQuantitesForm, EditProfilePicture, EditUsername, EditEmail
 from django.contrib.auth.models import User
 from django.db.models import Q
 
@@ -129,47 +129,79 @@ def all_ingredients(used=False):
             
     return type_names, ingredients
 
+def edit_profile_forms(request, user_profile):
+    username_form = EditUsername(instance = request.user)
+    email_form = EditEmail(instance = user_profile)
+    pass_form = PasswordChangeForm(request.user)
+    img_form = EditProfilePicture(instance = user_profile)
+    return username_form, email_form, pass_form, img_form
+
+
 @login_required
 def edit_profile(request, username):
     request = reset_session(request)
+    user = request.user
+    # If wrong profile trying to be accessed, redirect to correct one
+    if user.username != username:
+        return redirect(reverse('pantry:edit_profile', args=(user.username,)))
+        
     try:
         user_profile = UserProfile.objects.get(user=request.user)
     except UserProfile.DoesNotExist:
-        return HttpResponse("invalid user_profile!")
+        return render(request, 'pantry/edit_profile.html', {})
 
-
+    context_dict = {}
+    success_msg = "Updated succesfully!"
     if request.method == 'POST':
-        username_form = EditUsername(request.POST, instance = request.user)
-        email_form = EditEmail(request.POST, instance = request.user)
-        pass_form = PasswordChangeForm(request.user,request.POST)
-        img_form = EditProfilePicture(request.POST, instance = user_profile)
-
-        if username_form.is_valid():
-            username_form.save()
-
-        if email_form.is_valid():
-            email_form.save()
-
-        if pass_form.is_valid():
-            user = pass_form.save()
-            update_session_auth_hash(request,user)
+        username_form = EditUsername(request.POST, instance=request.user)
+        email_form = EditEmail(request.POST, instance=user_profile)
+        pass_form = PasswordChangeForm(request.user, request.POST)
+        img_form = EditProfilePicture(request.POST, instance=user_profile)
+        
+        if "img-submit" in request.POST:
+            if img_form.is_valid():
+                if 'profile_picture' in request.FILES:
+                    # !!! DELETE PREVIOUS ONE FROM MEDIA FIRST!!!
+                    user_profile.profile_picture = request.FILES["profile_picture"]
+                user_profile.save()
+                context_dict['img_success'] = success_msg
+            else:
+                context_dict['img_error'] = list(img_form.errors.values())[-1]
             
-        if img_form.is_valid():
-            user = request.user
-            profile = img_form.save(commit = False)
-            profile.user = user
+        if "username-submit" in request.POST:
+            if username_form.is_valid():
+                user.username = request.POST.get("username")
+                user.save()
+                context_dict['username_success'] = success_msg
+            else:
+                context_dict['username_error'] = list(username_form.errors.values())[-1]
 
-            if 'profile_picture' in request.FILES:
-                profile.profile_picture = request.FILES["profile_picture"]
+        if "email-submit" in request.POST:
+            if email_form.is_valid():
+                user_profile.email = request.POST.get("email")
+                user_profile.save()
+                context_dict['email_success'] = success_msg
+            else:
+                context_dict['email_error'] = list(email_form.errors.values())[-1]
 
-            profile.save()
-
+        if "pass-submit" in request.POST:
+            if pass_form.is_valid():
+                pass_form.save()
+                update_session_auth_hash(request, pass_form.user)
+                context_dict['pass_success'] = success_msg
+            else:
+                context_dict['pass_error'] = list(pass_form.errors.values())[-1]
+                
+        username_form, email_form, pass_form, img_form = edit_profile_forms(request, user_profile)
     else:
-        username_form = EditUsername(instance = request.user)
-        email_form = EditEmail(instance = request.user)
-        pass_form = PasswordChangeForm(request.user)
-        img_form = EditProfilePicture(instance = user_profile)
-    return render(request, 'pantry/edit_profile.html', context={'pass_form': pass_form, 'img_form': img_form, 'username_form': username_form,'email_form': email_form })
+        username_form, email_form, pass_form, img_form = edit_profile_forms(request, user_profile)
+        context_dict = {'pass_form': pass_form, 'img_form': img_form, 'username_form': username_form,'email_form': email_form}
+     
+    context_dict['pass_form'] = pass_form
+    context_dict['img_form'] = img_form
+    context_dict['username_form'] = username_form
+    context_dict['email_form'] = email_form
+    return render(request, 'pantry/edit_profile.html', context=context_dict)
 
 
 
@@ -301,7 +333,7 @@ def add_recipe_ingredients(request):
             return redirect(reverse('pantry:add_recipe_method'))
         else:
             print(form.errors)
-            contect_dict['form'] = form
+            context_dict['form'] = form
             return render(request, 'pantry/add_recipe_ingredients.html', context=context_dict)
     else:
         return render(request, 'pantry/add_recipe_ingredients.html', context=context_dict)
@@ -534,20 +566,27 @@ def sign_up(request):
             profile_form = UserProfileForm(request.POST)
 
             if user_form.is_valid() and profile_form.is_valid():
-                user = user_form.save()
-                user.set_password(user.password)
-                user.email = email
-                user.save()
+                try: 
+                    user = user_form.save()
+                    user.set_password(user.password)
+                    user.save()
 
-                profile = profile_form.save(commit=False)
-                profile.user = user
-                profile.save()
-                registered = True
-                
-                user = authenticate(username=user_form.data["username"], password=user_form.data["password"])
-                login(request, user)
+                    profile = profile_form.save(commit=False)
+                    profile.user = user
+                    profile.email = email
+                    profile.save()
+                    registered = True
+                    
+                    user = authenticate(username=user_form.data["username"], password=user_form.data["password"])
+                    login(request, user)
+                except Exception as e:
+                    print(e)
+                    if user:
+                        user.delete()
+                    if profile:
+                        profile.delete()
             else:
-                context_dict = {'user_form': user_form, 'profile_form': profile_form, 'registered': registered, 'error': list(user_form.errors.values())[0]}
+                context_dict = {'user_form': user_form, 'profile_form': profile_form, 'registered': registered, 'error': list(user_form.errors.values())[-1]}
                 return render(request, 'pantry/sign_up.html', context=context_dict)
         else:
             user_form = UserForm()
@@ -571,11 +610,12 @@ def check_email(request):
             user_email = email_form.data["email"]
             
             # If email exists, should redirect to sign in page
-            if User.objects.filter(email=user_email).exists():
-                user = User.objects.get(email=user_email)
-                request.session['username'] = user.username
+            if UserProfile.objects.filter(email=user_email).exists():
+                profile = UserProfile.objects.get(email=user_email)
+                username = profile.user.username
+                request.session['username'] = username
                 session_modifications.add('username')
-                return render(request, 'pantry/sign_in.html', context = {'username': user.username})
+                return render(request, 'pantry/sign_in.html', context = {'username':username})
             else:
                 # If email does not exist redirect to signup page
                 request.session['email'] = user_email
@@ -584,7 +624,7 @@ def check_email(request):
                 profile_form = UserProfileForm()
                 return render(request, 'pantry/sign_up.html', {'user_form': user_form, 'profile_form': profile_form})
         else:
-            context_dict = {'email_form': email_form, 'error': list(email_form.errors.values())[0]}
+            context_dict = {'email_form': email_form, 'error': list(email_form.errors.values())[-1]}
             return render(request, 'pantry/check_email.html', context=context_dict)
     # No context variables to pass to template system, redirect to signup page
     else:

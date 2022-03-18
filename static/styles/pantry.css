@@ -1065,6 +1065,35 @@ ol li::marker {
 	overflow:hidden;
 }
 
+/* EDIT PROFILE PAGE */
+.edit-profile-area {
+	padding-left: calc(35vw - 235px);
+	padding-right: calc(35vw - 235px);
+}
+
+.change-field {
+	display: inline-block;
+}
+
+.prompt {
+	float: left;
+	width: 200px;
+	padding-right: 20px;
+	text-align: right;
+}
+
+.field {
+	text-align: center;
+	float: center;
+	width: calc(20vw + 50px);
+}
+
+.edit-profile-area .btn-continue {
+	float: right;
+}
+
+
+
 /* WINDOW RESIZE */
 
 @media only screen and (max-width: 610px) {
@@ -1178,10 +1207,7 @@ ol li::marker {
 	}
 }
 
-<<<<<<< HEAD
-.welcome-message span {
-=======
-.error-message {
->>>>>>> eee2985361dcd4042a9e68f0a38858b1390dee2f
-	color: var(--orange);
+.change-picture {
+	text-align: left;
+	color: red;
 }

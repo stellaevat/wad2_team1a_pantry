@@ -3,6 +3,7 @@ from os.path import exists
 from pathlib import Path
 from django import template
 from pantry.models import Category, Recipe, IngredientList, UserProfile
+from django.contrib.auth.models import User
 register = template.Library()
 
 @register.inclusion_tag('pantry/tabs.html')
@@ -84,3 +85,8 @@ def format_time(mins, short=False):
         return time
     else:
         return "0" + min_marker
+        
+@register.filter
+def get_correct_username(userpk):
+    user = User.objects.get(pk=userpk)
+    return user.username
