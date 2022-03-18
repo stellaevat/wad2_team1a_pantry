@@ -89,7 +89,7 @@ a {
 	font-size: 18px;
 }
 
-.error-message {
+.error-message, .error-message * {
 	font-style: italic;
 	color: var(--orange);
 	line-height: 22px
@@ -1113,6 +1113,13 @@ ol li::marker {
 	float: right;
 }
 
+#try-again-btn {
+	background-color: var(--orange);
+}
+
+#try-again-btn:hover {
+	background-color: var(--medium);
+}
 
 
 /* WINDOW RESIZE */

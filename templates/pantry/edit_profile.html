@@ -34,7 +34,7 @@
 		</div>
 	</form>
 	<div class="edit-profile-area">
-		<form id="form-edit-username" method="post" action="{% url 'pantry:edit_profile' user.username %}" enctype="multipart/form-data">
+		<form id="form-edit-username" method="post" action="{% url 'pantry:edit_profile' user.pk|get_correct_username %}" enctype="multipart/form-data">
 			{% csrf_token %}
 			<div class="change-field">
 				<span class="prompt">Username: </span>
@@ -43,16 +43,11 @@
 			
 			{% if username_error %}
 				<span class="error-message">{{ username_error }}</span><br />
-				<input class="btn-continue" type="submit" name="username-submit" value="Try again" />
 			{% elif username_success %}
 				<span class="success-message">{{ username_success }}<span><br />
-				<input class="btn-continue" type="submit" name="username-submit" value="Update" />
-			{% else %}
-				<input class="btn-continue" type="submit" name="username-submit" value="Update" />
 			{% endif %}
-		
 			
-			
+			<input class="btn-continue" type="submit" name="username-submit" value="Update" />
 		</form>
 		<div class="gap-small"></div>
 		
