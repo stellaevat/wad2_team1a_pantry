@@ -19,7 +19,7 @@ session_modifications = set()
 def reset_session(request, exception=None):
     removed_modifications = set()
     for mod in session_modifications:
-        if request.session[mod]:
+        if request.session.get(mod):
             if not exception or mod not in exception:
                 del request.session[mod]
                 removed_modifications.add(mod)
@@ -32,12 +32,10 @@ def delete_recipe(request, recipe_name_slug, username):
     username = request.GET['username']
     if Recipe.objects.filter(slug=recipe_name_slug).exists():
         Recipe.objects.get(slug=recipe_name_slug).delete()
-    
-    
+
     data = {"username" : username}
 
     return JsonResponse('data', safe=False)
-
 
 #Starring Functionality
 @login_required
@@ -160,13 +158,9 @@ def edit_profile(request, username):
         img_form = EditProfilePicture(request.POST, instance=user_profile)
         
         if "img-submit" in request.POST:
-            print("img")
             if img_form.is_valid():
-                print("changing img")
                 # Update picture if new one provided, delete previous one
                 if 'profile_picture' in request.FILES:
-                    print(request.FILES)
-                    print(request.FILES["profile_picture"])
                     if user_profile.profile_picture != 'profile-picture-default.png':
                         user_profile.profile_picture.delete(save = False)
                     user_profile.profile_picture = request.FILES["profile_picture"]
@@ -220,25 +214,7 @@ def edit_profile(request, username):
     context_dict['email_form'] = email_form
     return render(request, 'pantry/edit_profile.html', context=context_dict)
 
-@login_required
-def user_deleted(request, username):
-    context_dict = {}
-    try:
-        user_profile = UserProfile.objects.get(user=request.user)
-        user_profile.profile_picture.delete(save = False)
-        u = User.objects.get(username = username)
-        u.delete()
-        request = reset_session(request)
-        logout(request)
-        context_dict["message"] = "The user is deleted"           
 
-    except User.DoesNotExist:
-        context_dict["message"] = "User doesnot exist"
-        
-    except Exception as e: 
-        context_dict["message"] = e 
-
-    return render(request, 'pantry/user_deleted.html', context = context_dict) 
 
 
 # Renders the user profile page and passes a context dictionary with the recipes starred and written by the user
@@ -350,6 +326,25 @@ def recipe_deleted(request):
     if not request.META.get('HTTP_REFERER'):
         return redirect(reverse('pantry:home'))
     return render(request, 'pantry/recipe_deleted.html', {})
+    
+def account_deleted(request, username):
+    request = reset_session(request)
+    if not request.META.get('HTTP_REFERER'):
+        return redirect(reverse('pantry:home'))
+        
+    if User.objects.filter(username=username):
+        user = User.objects.get(username=username)
+        
+        if UserProfile.objects.filter(user=user):
+            user_profile = UserProfile.objects.get(user=user)
+            if user_profile.profile_picture != 'profile-picture-default.png':
+                user_profile.profile_picture.delete(save = False)
+            
+        user.delete()
+    else:
+        return redirect(request, 'errors/404.html', {})
+        
+    return render(request, 'pantry/account_deleted.html', {})
 
 
 @login_required
@@ -636,7 +631,7 @@ def sign_up(request):
 # Check email view before logging in / signing up
 def check_email(request):
     request = reset_session(request)
-    
+
     # If HTTP POST we want to process data
     if request.method == 'POST':
         # Gather email provided by the user

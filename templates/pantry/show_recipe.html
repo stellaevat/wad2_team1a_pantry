@@ -179,25 +179,23 @@
 		var button = document.getElementById("del-btn");
 		var text = document.getElementById("del-text");
 		var icon = document.getElementById("del-icon");
-		var text = document.getElementById("del-text");
 		
 		text.innerHTML = 'Are you sure?';
 		button.id = "del-btn-ext";
 		icon.id = "del-icon-ext";
 		text.id = "del-text-ext";
 		button.setAttribute("onclick", "del()");
-		button.setAttribute("focusout", "returnnormal()");
+		button.setAttribute("focusout", "returnNormal()");
 
 		button.addEventListener("focusout", (event) => {
-			returnnormal();
+			returnNormal();
 		});
     };
 
-	function returnnormal() {
+	function returnNormal() {
 		var button = document.getElementById("del-btn-ext");
 		var text = document.getElementById("del-text-ext");
 		var icon = document.getElementById("del-icon-ext");
-		var text = document.getElementById("del-text-ext");
 		
 		text.innerHTML = ' Delete';
 		button.id = "del-btn";
@@ -211,7 +209,7 @@
 		var recipe_name_slug = "{{ recipe.slug }}"
 
 		$.ajax({
-			url: 'delete_recipe/' + username,
+			url: 'delete_recipe/' + username + '/',
 			data: {
           		'recipe_name_slug': recipe_name_slug,
 				'username' : username

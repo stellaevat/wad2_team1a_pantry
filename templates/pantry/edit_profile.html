@@ -95,7 +95,11 @@
 			
 		</form>
 
-		<a href="{% url 'pantry:user_deleted' user.username %}">Delete User/a>
+		
+		<button class="btn-inverted" id="del-account-btn" type="button" onclick="confirmAccountDelete()">
+			<span id="del-account-text">Delete account</span>
+		</button>
+		<p class="error-message" id="del-account-warning"></p>
 
 		
 		<div class="gap-small"></div>
@@ -108,5 +112,43 @@
 	<h1 class="central-heading">Invalid user</h1>
 	<p class="info-message">Make sure you have the right spelling, and that you're signed in to the correct account!</p>
 {% endif %}
+
+
+<script>
+	function confirmAccountDelete() {
+		var button = document.getElementById("del-account-btn");
+		var label = document.getElementById("del-account-text");
+		var warning = document.getElementById("del-account-warning");
+		
+		label.innerHTML = "Are you sure?";
+		warning.innerHTML = "Deleting your account is permanent and cannot be undone. <br /> All of your data and recipes will be deleted."
+		button.id = "del-account-btn-ext";
+		label.id = "del-account-text-ext";
+		button.setAttribute("onclick", "delAccount()");
+		button.setAttribute("focusout", "returnAccountNormal()");
+
+		button.addEventListener("focusout", (event) => {
+			returnAccountNormal();
+		});
+    };
+
+	function returnAccountNormal() {
+		var button = document.getElementById("del-account-btn-ext");
+		var label = document.getElementById("del-account-text-ext");
+		var warning = document.getElementById("del-account-warning");
+		
+		label.innerHTML = "Delete";
+		warning.innerHTML = "";
+		button.id = "del-account-btn";
+		label.id = "del-account-text";
+		button.setAttribute("onclick", "confirmAccountDelete()");
+    };
+
+	function delAccount(){
+		var username = "{{ user.username }}"
+		window.location = "/pantry/user/" + username + "/account_deleted/";
+	}
+	
+</script>
 
 {% endblock %}
