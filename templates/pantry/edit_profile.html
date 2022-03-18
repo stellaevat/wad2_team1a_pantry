@@ -99,6 +99,9 @@
 			<br />
 			
 		</form>
+
+		<a href="{% url 'pantry:user_deleted' user.username %}">Delete User/a>
+
 		
 		<div class="gap-small"></div>
 		<form method="post" action = "{% url 'pantry:user_profile' user.username %}">

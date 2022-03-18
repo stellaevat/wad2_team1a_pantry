@@ -161,7 +161,7 @@ def edit_profile(request, username):
         if "img-submit" in request.POST:
             if img_form.is_valid():
                 if 'profile_picture' in request.FILES:
-                    # !!! DELETE PREVIOUS ONE FROM MEDIA FIRST!!!
+                    user_profile.profile_picture.delete(save = False)
                     user_profile.profile_picture = request.FILES["profile_picture"]
                 user_profile.save()
                 context_dict['img_success'] = success_msg
@@ -203,6 +203,25 @@ def edit_profile(request, username):
     context_dict['email_form'] = email_form
     return render(request, 'pantry/edit_profile.html', context=context_dict)
 
+@login_required
+def user_deleted(request, username):
+    context_dict = {}
+    try:
+        user_profile = UserProfile.objects.get(user=request.user)
+        user_profile.profile_picture.delete(save = False)
+        u = User.objects.get(username = username)
+        u.delete()
+        request = reset_session(request)
+        logout(request)
+        context_dict["message"] = "The user is deleted"           
+
+    except User.DoesNotExist:
+        context_dict["message"] = "User doesnot exist"
+        
+    except Exception as e: 
+        context_dict["message"] = e 
+
+    return render(request, 'pantry/user_deleted.html', context = context_dict) 
 
 
 # Renders the user profile page and passes a context dictionary with the recipes starred and written by the user
