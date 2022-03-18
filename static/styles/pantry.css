@@ -852,7 +852,7 @@ button {
 }
 
 .category-tags {
-	padding: 0px calc(35vw - 300px) 20px calc(35vw - 300px);
+	padding: 0px calc(35vw - 300px) 5px calc(35vw - 300px);
 	display: flex;
 	justify-content:flex-start;
 	flex-wrap: wrap;
@@ -878,10 +878,30 @@ button {
 	padding-right: 10px;
 }
 
+.share-buttons {
+	margin: 10px 5px 0px 0px;
+	line-height: 30px;
+}
+
+.share-buttons *{
+	float: left;
+	padding-right: 7px;
+	padding-bottom: 5px;
+	height: 30px;
+	width: 30px;
+}
+
+i#share {
+	text-align:right;
+	font-weight: bold;
+	position: relative;
+	margin-right: 15px;
+	top: 9px;
+}
+
 .verticals-left-narrow {
     position: relative;
-	padding-left: calc(35vw - 300px);
-	padding-right: calc(35vw - 250px);
+	padding: 15px calc(35vw - 250px) 15px calc(35vw - 300px);
 	display:grid;
 	grid-template-columns: 1fr 2fr;
 	column-gap: 15px;
@@ -895,6 +915,7 @@ button {
 	width: calc(15vw + 100px);
 	max-width: 300px;
 	overflow: hidden;
+	margin: 15px 0px 20px 0px;
 }
 
 .ingredient {
@@ -1158,6 +1179,14 @@ ol li::marker {
 	.verticals-left-narrow .vertical-featured {
 		width: 95%;
 		margin: 0px 10px;
+		float: left;
+	}
+	
+	.share-buttons {
+		display: grid;
+		float: right;
+		grid-template-columns: 1fr;
+		grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
 	}
 	
 	#column3 label, #star-text, #del-text {

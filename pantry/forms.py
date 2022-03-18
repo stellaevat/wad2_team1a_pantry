@@ -42,7 +42,7 @@ class EmailForm(forms.ModelForm):
                              widget=forms.EmailInput(attrs={'placeholder': 'Enter email', 'class': 'login-input'}))
     
     class Meta:
-        model = UserProfile
+        model = User
         fields = ('email',)
 
 class RecipeForm(forms.ModelForm):
