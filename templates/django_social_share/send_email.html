@@ -1,0 +1,8 @@
+{% load staticfiles %}
+{% load pantry_template_tags %}
+
+<div class="mail-this">
+    <a href="{{ mailto_url|safe }}" class="{{ link_class }}">
+		<img class="icon-xl" src="{% static 'img/share-email.png' %}" alt="Send via email">
+	</a>
+</div>
