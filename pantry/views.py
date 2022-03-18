@@ -204,22 +204,24 @@ def edit_profile(request, username):
     return render(request, 'pantry/edit_profile.html', context=context_dict)
 
 @login_required
-def delete_user(request, username):
+def user_deleted(request, username):
+    context_dict = {}
     try:
+        user_profile = UserProfile.objects.get(user=request.user)
+        user_profile.profile_picture.delete(save = False)
         u = User.objects.get(username = username)
         u.delete()
-        messages.success(request, "The user is deleted")            
+        request = reset_session(request)
+        logout(request)
+        context_dict["message"] = "The user is deleted"           
 
     except User.DoesNotExist:
-        messages.error(request, "User does not exist")    
-        return render(request, 'front.html')
-        return redirect(reverse("pantry:home"))
-
+        context_dict["message"] = "User doesnot exist"
+        
     except Exception as e: 
-        messages.error(request, e.message)  
-        return redirect(reverse("pantry:home"))
+        context_dict["message"] = e 
 
-    return redirect(reverse("pantry:home"))
+    return render(request, 'pantry/user_deleted.html', context = context_dict) 
 
 
 # Renders the user profile page and passes a context dictionary with the recipes starred and written by the user
