@@ -113,7 +113,7 @@ class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     # Recorded in UserProfile to make it a unique field
     email = models.EmailField(max_length=254, unique=True)
-    profile_picture = models.ImageField(upload_to=FileRenamed('profile_pictures'), blank=True, default='profile_pictures/profile-picture-default.png')
+    profile_picture = models.ImageField(upload_to=FileRenamed('profile_pictures'), blank=True, default='profile-picture-default.png')
     starred = models.ManyToManyField(Recipe, related_name="users")
 
     def __str__(self):

@@ -1,6 +1,7 @@
 from django import forms
 from django.forms import TextInput, EmailInput, NumberInput, ClearableFileInput
 from django.contrib.auth.models import User
+from django.core import validators
 from pantry.models import UserProfile, Recipe, Category, IngredientList
 from pantry.custom_widgets import ColumnCheckboxSelectMultiple
 

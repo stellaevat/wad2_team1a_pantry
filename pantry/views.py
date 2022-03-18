@@ -129,6 +129,7 @@ def all_ingredients(used=False):
             
     return type_names, ingredients
 
+# Helper method for initialising the edit profile forms with user details
 def edit_profile_forms(request, user_profile):
     username_form = EditUsername(instance = request.user)
     email_form = EditEmail(instance = user_profile)
@@ -138,7 +139,7 @@ def edit_profile_forms(request, user_profile):
 
 
 @login_required
-def edit_profile(request, username):
+def edit_profile(request, username):  
     request = reset_session(request)
     user = request.user
     # If wrong profile trying to be accessed, redirect to correct one
@@ -159,10 +160,23 @@ def edit_profile(request, username):
         img_form = EditProfilePicture(request.POST, instance=user_profile)
         
         if "img-submit" in request.POST:
+            print("img")
             if img_form.is_valid():
+                print("changing img")
+                # Update picture if new one provided, delete previous one
                 if 'profile_picture' in request.FILES:
-                    user_profile.profile_picture.delete(save = False)
+                    print(request.FILES)
+                    print(request.FILES["profile_picture"])
+                    if user_profile.profile_picture != 'profile-picture-default.png':
+                        user_profile.profile_picture.delete(save = False)
                     user_profile.profile_picture = request.FILES["profile_picture"]
+                
+                # Clear picture if requested, return to default
+                elif request.POST.get('profile_picture-clear'):
+                    if user_profile.profile_picture != 'profile-picture-default.png':
+                        user_profile.profile_picture.delete(save = False)
+                        user_profile.profile_picture = 'profile-picture-default.png'
+                
                 user_profile.save()
                 context_dict['img_success'] = success_msg
             else:
@@ -175,7 +189,10 @@ def edit_profile(request, username):
                 context_dict['username_success'] = success_msg
             else:
                 context_dict['username_error'] = list(username_form.errors.values())[-1]
-
+                # Reset request.user so url dispatcher can use the correct username
+                request.user = User.objects.get(username=username)
+            
+            
         if "email-submit" in request.POST:
             if email_form.is_valid():
                 user_profile.email = request.POST.get("email")
