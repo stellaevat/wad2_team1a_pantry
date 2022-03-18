@@ -16,7 +16,7 @@ urlpatterns = [
   
     path('user/<str:username>/', views.user_profile, name="user_profile"),
     path('user/<str:username>/edit_profile/', views.edit_profile, name="edit_profile"),
-    path('user/<str:username>/deleted', views.user_deleted, name="user_deleted"),
+    path('user/<str:username>/account_deleted/', views.account_deleted, name="account_deleted"),
     path('user/<str:username>/my_recipes/', views.show_my_recipes, name="my_recipes"),
     path('user/<str:username>/my_recipes/<slug:sort>/', views.show_my_recipes, name="my_recipes"),
     path('user/<str:username>/my_recipes/<slug:sort>/<slug:sort_new>/', views.show_my_recipes, name="my_recipes"),
