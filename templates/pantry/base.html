@@ -32,7 +32,7 @@
 			
 			<div class="navbar-right-align">
 				{% if user.is_authenticated %}
-					<a class="profile-thumbnail" id="navbarh-right-2" href="{% url 'pantry:user_profile' user.username %}" id="nohovernavbar">
+					<a class="profile-thumbnail" id="navbarh-right-2" href="{% url 'pantry:user_profile' user.pk|get_correct_username %}" id="nohovernavbar">
 						{% if user|get_profile_picture %}
 							<img src="/media/{{ user|get_profile_picture }}" alt="Profile">
 						{% else %}
