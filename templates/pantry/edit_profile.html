@@ -8,80 +8,88 @@
 
 {% block body_block %}
 {% if img_form %}
-	<span class="prompt">Profile picture: </span><br/>
-	<form class="cat-header" id="form-edit-img" method="post" action="{% url 'pantry:edit_profile' user.username %}" enctype="multipart/form-data">
-		{% csrf_token %}
-		
-		{% if user|get_profile_picture %}
-			<img class="profile-picture-big" src="/media/{{ user|get_profile_picture }}" alt="User {{ user.username }}">
-		{% else %}
-			<img class="profile-picture-big" src="{% static 'img/profile-picture-default.png' %}" alt="User {{ user.username }}">
-		{% endif %}
-		
-		<div>
-			<input class="checkbox" type="checkbox" name="profile_picture-clear" id="profile_picture-clear_id">
-			<label for="profile_picture-clear_id">Clear</label><br>
-		or<br />
-		Change:	<input type="file" name="profile_picture" accept="image/*" id="id_profile_picture"><br />
-		
-		{% if img_error %}
-			<span class="error-message">{{ img_error }}<span><br />
-		{% elif img_success %}
-			<span class="success-message">{{ img_success }}<span><br />
-		{% endif %}
-		
-		<input class="btn-continue" type="submit" name="img-submit" value="Update" />
+	<div class="header-featured" id="edit-profile">
+		<img class="banner" id="edit-profile-banner" src="{% static 'img/banner-default.png' %}" alt="User profile">
+		<div class="profile-picture-area">
+			<h1 class="central-heading">Edit Profile</h1><br />
+			<form id="form-edit-img" method="post" action="{% url 'pantry:edit_profile' user.username %}" enctype="multipart/form-data">
+				{% csrf_token %}
+				{% if user|get_profile_picture %}
+				<img class="profile-picture-big" src="/media/{{ user|get_profile_picture }}" alt="User {{ user.username }}">
+				{% else %}
+				<img class="profile-picture-big" src="{% static 'img/profile-picture-default.png' %}" alt="User profile">
+				{% endif %}<br />
+				
+				<div id="change-or-clear">
+					</label>Profile picture:&nbsp;
+					<div class="central-field">
+						<input class="picture-upload" type="file" name="profile_picture" accept="image/*" id="id_profile_picture">
+						|&nbsp;&nbsp;&nbsp;&nbsp;
+						<input class="checkbox" id="clear-profile" type="checkbox" name="profile_picture-clear" id="profile_picture-clear_id">
+						<label for="profile_picture-clear_id" id="clear-profile-label">Clear&nbsp;&nbsp;
+					</div>
+					<input class="btn-back medium-btn" type="submit" name="img-submit" value="Update" />
+				</div>
+				
+				{% if img_error %}
+					<span class="error-message">{{ img_error }}<span><br />
+				{% elif img_success %}
+					<span class="success-message">{{ img_success }}<span><br />
+				{% endif %}
+			</form>	
 		</div>
-	</form>
+	</div>
+	
 	<div class="edit-profile-area">
-		<form id="form-edit-username" method="post" action="{% url 'pantry:edit_profile' user.pk|get_correct_username %}" enctype="multipart/form-data">
-			{% csrf_token %}
-			<div class="change-field">
-				<span class="prompt">Username: </span>
-				<span class="field">{{ username_form.username }}</span>
-			</div><br />
-			
-			{% if username_error %}
-				<span class="error-message">{{ username_error }}</span><br />
-			{% elif username_success %}
-				<span class="success-message">{{ username_success }}<span><br />
-			{% endif %}
-			
-			<input class="btn-continue" type="submit" name="username-submit" value="Update" />
-		</form>
-		<div class="gap-small"></div>
-		
-		<form id="form-edit-email" method="post" action="{% url 'pantry:edit_profile' user.username %}" enctype="multipart/form-data">
-			{% csrf_token %}
-			<div class="change-field">
-				<span class="prompt">Email: </span>
-				<span class="field">{{ email_form.email }}</span>
-			</div><br />
-			
-			{% if email_error %}
-				<span class="error-message">{{ email_error }}</span><br />
-			{% elif email_success %}
-				<span class="success-message">{{ email_success }}<span><br />
-			{% endif %}
-			
-			<input class="btn-continue" type="submit" name="email-submit" value="Update" />
-		</form>
-		<div class="gap-small"></div>
+		<div>
+			<form id="form-edit-username" method="post" action="{% url 'pantry:edit_profile' user.pk|get_correct_username %}" enctype="multipart/form-data">
+				{% csrf_token %}
+				
+				<div class="change-field only-field">
+					<div class="prompt">Username:</div>
+					<span class="field">{{ username_form.username }}</span>
+					<input class="btn-back medium-btn" type="submit" name="username-submit" value="Update" />
+				</div><br/>
+				
+				{% if username_error %}
+					<span class="error-message">{{ username_error }}</span><br />
+				{% elif username_success %}
+					<span class="success-message">{{ username_success }}<span><br />
+				{% endif %}
+			</form>
+			<form id="form-edit-email" method="post" action="{% url 'pantry:edit_profile' user.username %}" enctype="multipart/form-data">
+				{% csrf_token %}
+				<div class="change-field">
+					<div class="prompt">Email: </div>
+					<span class="field">{{ email_form.email }}</span>
+					<input class="btn-back medium-btn" type="submit" name="email-submit" value="Update" />
+				</div><br />
+				
+				{% if email_error %}
+					<span class="error-message">{{ email_error }}</span><br />
+				{% elif email_success %}
+					<span class="success-message">{{ email_success }}<span><br />
+				{% endif %}
+			</form>
+		</div>
 		
 		<form id="form-edit-password" method="post" action="{% url 'pantry:edit_profile' user.username %}" enctype="multipart/form-data">
 			{% csrf_token %}
 			
 			<div class="change-field">
-				<span class="prompt">Old password: </span>
-				<span class="field">{{ pass_form.old_password }}</span><br />
+				<div class="prompt">Password:</div>
+				<span class="field">{{ pass_form.old_password }}</span>
+				<input class="btn-back medium-btn" type="submit" name="pass-submit" value="Update" />
 			</div>
-			<div class="change-field">
-				<span class="prompt">New password: </span>
-				<span class="field">{{ pass_form.new_password1 }}</span><br />
+			<div class="change-field only-field">
+				<div class="prompt"></div>
+				<span class="field">{{ pass_form.new_password1 }}</span>
+				<span class="medium-btn"></span>
 			</div>
-			<div class="change-field">
-				<span class="prompt">Confirm new password: </span>
+			<div class="change-field only-field">
+				<div class="prompt"></div>
 				<span class="field">{{ pass_form.new_password2 }}</span>
+				<span class="medium-btn"></span>
 			</div><br />
 			
 			{% if pass_error %}
@@ -89,25 +97,22 @@
 			{% elif pass_success %}
 				<span class="success-message">{{ pass_success }}<span><br />
 			{% endif %}
-			
-			<input class="btn-continue" type="submit" name="pass-submit" value="Update" />
-			<br />
-			
-		</form>
-
-		
-		<button class="btn-inverted" id="del-account-btn" type="button" onclick="confirmAccountDelete()">
-			<span id="del-account-text">Delete account</span>
-		</button>
-		<p class="error-message" id="del-account-warning"></p>
-
-		
-		<div class="gap-small"></div>
-		<form method="post" action = "{% url 'pantry:user_profile' user.username %}">
-			{% csrf_token %}
-			<button class="btn-back" type="submit">Done</button>
 		</form>
 	</div>
+
+	<p class="error-message" id="del-warning"></p>
+	<div class="edit-profile-btns">
+		<div id="delete-account">
+			<button class="btn-inverted" id="del-account-btn" type="button" onclick="confirmAccountDelete()">
+				<span id="del-account-text">Delete account</span>
+			</button>
+		</div>
+		<form id="done-editing" method="post" action = "{% url 'pantry:user_profile' user.username %}">
+			{% csrf_token %}
+			<button class="btn-continue" type="submit">Done</button>
+		</form>
+	</div>
+
 {% else %}
 	<h1 class="central-heading">Invalid user</h1>
 	<p class="info-message">Make sure you have the right spelling, and that you're signed in to the correct account!</p>
@@ -118,12 +123,18 @@
 	function confirmAccountDelete() {
 		var button = document.getElementById("del-account-btn");
 		var label = document.getElementById("del-account-text");
-		var warning = document.getElementById("del-account-warning");
+		var warning = document.getElementById("del-warning");
+		var errors = document.getElementsByClassName("error-message");
+		var successes = document.getElementsByClassName("success-message");
 		
+		for (var i = 0; i < errors.length; i++) {
+			errors[i].innerHTML = "";
+		}
+		for (var i = 0; i < successes.length; i++) {
+			successes[i].innerHTML = "";
+		}
 		label.innerHTML = "Are you sure?";
 		warning.innerHTML = "Deleting your account is permanent and cannot be undone. <br /> All of your data and recipes will be deleted."
-		button.id = "del-account-btn-ext";
-		label.id = "del-account-text-ext";
 		button.setAttribute("onclick", "delAccount()");
 		button.setAttribute("focusout", "returnAccountNormal()");
 
@@ -133,14 +144,12 @@
     };
 
 	function returnAccountNormal() {
-		var button = document.getElementById("del-account-btn-ext");
-		var label = document.getElementById("del-account-text-ext");
-		var warning = document.getElementById("del-account-warning");
+		var button = document.getElementById("del-account-btn");
+		var label = document.getElementById("del-account-text");
+		var warning = document.getElementById("del-warning");
 		
-		label.innerHTML = "Delete";
+		label.innerHTML = "Delete account";
 		warning.innerHTML = "";
-		button.id = "del-account-btn";
-		label.id = "del-account-text";
 		button.setAttribute("onclick", "confirmAccountDelete()");
     };
 

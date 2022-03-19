@@ -1,5 +1,6 @@
 from django import forms
-from django.forms import TextInput, EmailInput, NumberInput, ClearableFileInput
+from django.forms import TextInput, EmailInput, NumberInput, PasswordInput, ClearableFileInput
+from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth.models import User
 from django.core import validators
 from pantry.models import UserProfile, Recipe, Category, IngredientList
@@ -55,7 +56,7 @@ class RecipeForm(forms.ModelForm):
     title = forms.CharField(max_length=128, help_text="Recipe title: ",
             widget=TextInput(attrs={"class":"long-info"}))
     picture = forms.ImageField(help_text="Recipe photo: ",
-              widget=ClearableFileInput(attrs={"class":"picture-upload"}))
+              widget=ClearableFileInput(attrs={"class":"picture-upload","id":"recipe-pic-upload"}))
     prep_time = forms.IntegerField(help_text="Preparation time (mins): ",
                 widget=NumberInput(attrs={"class":"short-info"}))
     cook_time = forms.IntegerField(help_text="Cooking time (mins): ",
@@ -94,13 +95,21 @@ class EditProfilePicture(forms.ModelForm):
 
 
 class EditUsername(forms.ModelForm):
+    username = forms.CharField(max_length=128, help_text="Username: ", widget=TextInput(attrs={"placeholder":"New username", }))
     class Meta:
         model = User
         fields = ('username',)
-    
 
 class EditEmail(forms.ModelForm):
-    email = forms.EmailField(max_length=254, required=True)
+    email = forms.EmailField(max_length=254, help_text="Email: ", widget=TextInput(attrs={"placeholder":"New email",}), required=True)
     class Meta:
         model = UserProfile
         fields = ('email',)
+
+class EditPassword(PasswordChangeForm):
+    old_password = forms.CharField(max_length=128, widget=PasswordInput(attrs={'placeholder':'Old password'}))
+    new_password1 = forms.CharField(max_length=128, widget=PasswordInput(attrs={'placeholder':'New password'}))
+    new_password2 = forms.CharField(max_length=128, widget=PasswordInput(attrs={'placeholder':'Confirm password'}))
+    class Meta:
+        model = User
+        fields = ('old_password', 'new_password1', 'new_password2',)
