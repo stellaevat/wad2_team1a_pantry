@@ -32,9 +32,9 @@
 				</div>
 				
 				{% if img_error %}
-					<span class="error-message">{{ img_error }}<span><br />
+					<br /><span class="error-message">{{ img_error }}</span><br />
 				{% elif img_success %}
-					<span class="success-message">{{ img_success }}<span><br />
+					<br /><span class="success-message">{{ img_success }}</span><br />
 				{% endif %}
 			</form>	
 		</div>
@@ -52,9 +52,9 @@
 				</div><br/>
 				
 				{% if username_error %}
-					<span class="error-message">{{ username_error }}</span><br />
+					<span class="error-message">{{ username_error }}</span>
 				{% elif username_success %}
-					<span class="success-message">{{ username_success }}<span><br />
+					<span class="success-message">{{ username_success }}</span>
 				{% endif %}
 			</form>
 			<form id="form-edit-email" method="post" action="{% url 'pantry:edit_profile' user.username %}" enctype="multipart/form-data">
@@ -66,9 +66,9 @@
 				</div><br />
 				
 				{% if email_error %}
-					<span class="error-message">{{ email_error }}</span><br />
+					<span class="error-message">{{ email_error }}</span>
 				{% elif email_success %}
-					<span class="success-message">{{ email_success }}<span><br />
+					<span class="success-message">{{ email_success }}</span>
 				{% endif %}
 			</form>
 		</div>
@@ -93,9 +93,9 @@
 			</div><br />
 			
 			{% if pass_error %}
-				<span class="error-message">{{ pass_error }}</span><br/>
+				<span class="error-message">{{ pass_error }}</span>
 			{% elif pass_success %}
-				<span class="success-message">{{ pass_success }}<span><br />
+				<span class="success-message">{{ pass_success }}</span>
 			{% endif %}
 		</form>
 	</div>
