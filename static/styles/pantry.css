@@ -96,6 +96,10 @@ a {
 	list-style-type: none;
 }
 
+.success-message, .success-message * {
+	font-style: italic;
+	color: var(--green);
+}
 
 .gap {
 	height: calc(5vw + 100px);
@@ -339,7 +343,7 @@ button {
 	color: var(--orange);
 }
 
-.search-bar * {
+.search-bar {
 	background-color: var(--medium);
 	color: var(--dark);
 	width: calc(20vw + 100px);
@@ -347,6 +351,20 @@ button {
 	font-size: 14px;
 	border-radius: 30px;
 	opacity: 0.7;
+}
+
+.search-btn {
+	z-index: 4;
+	margin-left: -30px;
+}
+
+.search-btn img {
+	background-color: transparent;
+	width: 14px;
+	height: 14px;
+	opacity: 0.5;
+	position: relative;
+	top: 2px;
 }
 
 .tab-secondary-open {
@@ -1222,9 +1240,7 @@ ol li::marker {
 	background-color: var(--orange);
 }
 
-.success-message {
-	font-style: italic;
-	color: var(--green);
+#form-edit-img .error-message, #form-edit-img .success-message {
 	position: relative;
 	bottom: 10px;
 }

@@ -26,18 +26,19 @@
 				{% endif %}
 			</div>
 
-			<form class="search-bar" method="post" action="{% url 'pantry:search_results' %}" >
+			<form class="search-bar-area" method="post" action="{% url 'pantry:search_results' %}" >
 				{% csrf_token %}
-				<input id="search-bar-id" type="search" placeholder="Search recipes" aria-label="Search" name="searched" required>
+				<input class="search-bar" id="search-bar-id" type="search" placeholder="Search recipes" aria-label="Search" name="searched" required/>
+				<button class="search-btn" type="submit" name="search-submit"><img src="{% static 'img/magnifying-glass-light.png' %}" alt="Search"/></button>
 			</form>
 			
 			<div class="navbar-right-align">
 				{% if user.is_authenticated %}
 					<a class="profile-thumbnail" id="navbarh-right-2" href="{% url 'pantry:user_profile' user.pk|get_correct_username %}" id="nohovernavbar">
 						{% if user|get_profile_picture %}
-							<img src="/media/{{ user|get_profile_picture }}" alt="Profile">
+							<img src="/media/{{ user|get_profile_picture }}" alt="Profile"/>
 						{% else %}
-							<img src="{% static 'img/profile-picture-default.png' %}" alt="Profile">
+							<img src="{% static 'img/profile-picture-default.png' %}" alt="Profile"/>
 						{% endif %}
 					</a>
 					<a href="{% url 'pantry:sign_out' %}" id="navbarh-right">Sign out</a>

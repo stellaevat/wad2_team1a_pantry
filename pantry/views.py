@@ -173,7 +173,7 @@ def edit_profile(request, username):
                 user_profile.save()
                 context_dict['img_success'] = success_msg
             else:
-                context_dict['img_error'] = "Invalid File Format"
+                context_dict['img_error'] = list(img_form.errors.values())[-1]
             
         if "username-submit" in request.POST:
             if username_form.is_valid():
