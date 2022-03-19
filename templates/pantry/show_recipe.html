@@ -60,9 +60,9 @@
 		
 		<div class="pub-data">
 			{% if recipe.author|get_profile_picture %}
-				<a class="profile-thumbnail" href="{% url 'pantry:user_recipes' recipe.author.username %}">
-					<img src="/media/{{ recipe.author|get_profile_picture }}" alt="Profile">
-				</a>
+			<a class="profile-thumbnail" href="{% url 'pantry:user_recipes' recipe.author.username %}">
+				<img src="/media/{{ recipe.author|get_profile_picture }}" alt="Profile">
+			</a>
 			{% endif %}
 			<i id="author">By&nbsp;<a href="{% url 'pantry:user_recipes' recipe.author.username %}">{{ recipe.author.username }}</a>
 				<br />{{ recipe.pub_date|date:'M Y' }}
@@ -81,10 +81,11 @@
 	<div class="verticals-left-narrow">
 		<div class="vertical-plus">
 			<div class="share-buttons">
+				<div class="info-message">Share:</div>
 				{% post_to_facebook object_or_url "Share on Facebook" "share-button" %}
-				{% post_to_twitter "Check out this recipe on Pantry..." object_or_url "Share on Twitter" "share-button" %}
+				{% post_to_twitter "Check out this recipe on Pantry!" object_or_url "Share on Twitter" "share-button" %}
 				{% post_to_whatsapp object_or_url "Share on WhatsApp" %}
-				{% send_email "Check out this recipe on Pantry..." object_or_url "share-button"%}
+				{% send_email "Check out this recipe on Pantry!" object_or_url "share-button"%}
 				{% save_to_pinterest object_or_url  "share-button" %}
 			</div>
 			

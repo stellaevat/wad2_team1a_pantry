@@ -4,7 +4,7 @@
 	--light: #f8f8f8;
 	--burgundy: #64101F;
 	--orange: #F48D14;
-	--green: #6DD140;
+	--green: #58a834;
 	--red: #CD0000;
 }
 
@@ -893,9 +893,14 @@ button {
 .share-buttons *{
 	float: left;
 	padding-right: 7px;
-	padding-bottom: 5px;
-	height: 30px;
-	width: 30px;
+	height: 27px;
+	width: 27px;
+}
+
+.share-buttons .info-message {
+	color: #cbc9c9;
+	padding-right: 20px;
+	text-align: right;
 }
 
 i#share {
@@ -919,10 +924,14 @@ i#share {
 }
 
 .verticals-left-narrow .vertical-featured {
-	width: calc(15vw + 100px);
+	width: calc(15vw + 130px);
 	max-width: 300px;
 	overflow: hidden;
 	margin: 15px 0px 20px 0px;
+}
+
+.vertical-plus {
+	margin-bottom: -10px;
 }
 
 .ingredient {
@@ -1095,20 +1104,19 @@ ol li::marker {
 
 /* EDIT PROFILE PAGE */
 #edit-profile {
-	height: 350px;
 	position: relative;
 }
 #edit-profile-banner {
-	height: 350px;
 	opacity: 0.2;
 }
 
 #edit-profile .profile-picture-area {
-	margin-top: 25px;
+	margin-top: -20px;
 }
 
 .edit-profile-area {
-	padding: 25px calc(35vw - 235px);
+	margin-top: -45px;
+	padding: 0px calc(35vw - 235px) 25px calc(35vw - 235px);
 	display: grid;
 	columns: 1fr 1fr;
 }
@@ -1214,6 +1222,18 @@ ol li::marker {
 	background-color: var(--orange);
 }
 
+.success-message {
+	font-style: italic;
+	color: var(--green);
+	position: relative;
+	bottom: 10px;
+}
+
+.edit-profile-area .error-message, .edit-profile-area .success-message  {
+	position: relative;
+	bottom: 15px;
+}
+
 /* WINDOW RESIZE */
 
 @media only screen and (max-width: 610px) {
@@ -1286,6 +1306,17 @@ ol li::marker {
 		float: right;
 		grid-template-columns: 1fr;
 		grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
+		position: realtive;
+		bottom: 25px;
+		margin-bottom: -25px;
+	}
+	
+	.share-buttons * {
+		padding-bottom: 5px;
+	}
+	
+	.share-buttons .info-message {
+		margin-left: -10px;
 	}
 	
 	#column3 label, #star-text, #del-text {
@@ -1315,7 +1346,7 @@ ol li::marker {
 	.dropdown-menu-sorter {
 		position: absolute;
 		right: 10px;
-		top: 175px;
+		top: 195px;
 	}
 	
 	.edit-profile-area {
@@ -1336,6 +1367,34 @@ ol li::marker {
 	#back-left-btn {
 		top: 95px;
 		left: calc(3vw);
+	}
+}
+
+@media only screen and (max-width: 400px) {
+	.share-buttons {
+		margin: 10px 5px 0px 0px;
+		line-height: 30px;
+		float: left;
+		display: contents;
+	}
+
+	.share-buttons *{
+		float: left;
+		padding-right: 7px;
+		padding-bottom: 10px;
+		height: 27px;
+		width: 27px;
+	}
+
+	.share-buttons .info-message {
+		color: #cbc9c9;
+		padding-right: 20px;
+		text-align: right;
+		margin-left: 10px;
+	}
+	
+	.pub-data i {
+		display: none;
 	}
 }
 
