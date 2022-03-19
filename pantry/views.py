@@ -157,7 +157,7 @@ def edit_profile(request, username):
         img_form = EditProfilePicture(request.POST, instance=user_profile)
         
         if "img-submit" in request.POST:
-            if img_form.is_valid():
+            if img_form.is_valid(request):
                 # Update picture if new one provided, delete previous one
                 if 'profile_picture' in request.FILES:
                     if user_profile.profile_picture != 'profile-picture-default.png':
@@ -173,7 +173,7 @@ def edit_profile(request, username):
                 user_profile.save()
                 context_dict['img_success'] = success_msg
             else:
-                context_dict['img_error'] = list(img_form.errors.values())[-1]
+                context_dict['img_error'] = "Invalid File Format"
             
         if "username-submit" in request.POST:
             if username_form.is_valid():

@@ -1,10 +1,13 @@
+import this
 from django import forms
 from django.forms import TextInput, EmailInput, NumberInput, PasswordInput, ClearableFileInput
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth.models import User
 from django.core import validators
+from django.core.exceptions import ValidationError
 from pantry.models import UserProfile, Recipe, Category, IngredientList
 from pantry.custom_widgets import ColumnCheckboxSelectMultiple
+from django.forms.utils import ErrorList
 
 
 class UserForm(forms.ModelForm):
@@ -88,7 +91,18 @@ class RecipeQuantitesForm(forms.ModelForm):
         fields = ('quantity', 'plural',)
 
 class EditProfilePicture(forms.ModelForm):
+    default_validators = [validators.validate_image_file_extension]
     profile_picture = forms.ImageField(widget=ClearableFileInput(attrs={"class":"picture-upload"}))
+
+    def is_valid(self,request):
+        accepted_exts = validators.get_available_image_extensions()
+        if 'profile_picture' in request.FILES:
+            print(request.FILES)
+            ext = request.FILES["profile_picture"].name.split(".")[-1]
+            if ext in accepted_exts:
+                return True
+        return False
+
     class Meta:
         model = UserProfile
         fields = ('profile_picture',)
