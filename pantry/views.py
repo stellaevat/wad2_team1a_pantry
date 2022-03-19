@@ -1,13 +1,12 @@
 import datetime
 from django.contrib.auth import update_session_auth_hash
-from django.contrib.auth.forms import PasswordChangeForm
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.urls import reverse
 from pantry.models import Recipe, Category, Ingredient, IngredientList, UserProfile
-from pantry.forms import UserForm, UserProfileForm, EmailForm, RecipeForm, RecipeIngredientsForm, RecipeQuantitesForm, EditProfilePicture, EditUsername, EditEmail
+from pantry.forms import UserForm, UserProfileForm, EmailForm, RecipeForm, RecipeIngredientsForm, RecipeQuantitesForm, EditProfilePicture, EditUsername, EditEmail, EditPassword
 from django.contrib.auth.models import User
 from django.db.models import Q
 
@@ -131,7 +130,7 @@ def all_ingredients(used=False):
 def edit_profile_forms(request, user_profile):
     username_form = EditUsername(instance = request.user)
     email_form = EditEmail(instance = user_profile)
-    pass_form = PasswordChangeForm(request.user)
+    pass_form = EditPassword(request.user)
     img_form = EditProfilePicture(instance = user_profile)
     return username_form, email_form, pass_form, img_form
 
@@ -154,7 +153,7 @@ def edit_profile(request, username):
     if request.method == 'POST':
         username_form = EditUsername(request.POST, instance=request.user)
         email_form = EditEmail(request.POST, instance=user_profile)
-        pass_form = PasswordChangeForm(request.user, request.POST)
+        pass_form = EditPassword(request.user, request.POST)
         img_form = EditProfilePicture(request.POST, instance=user_profile)
         
         if "img-submit" in request.POST:

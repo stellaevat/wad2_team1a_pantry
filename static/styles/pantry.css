@@ -92,7 +92,8 @@ a {
 .error-message, .error-message * {
 	font-style: italic;
 	color: var(--orange);
-	line-height: 22px
+	line-height: 22px;
+	list-style-type: none;
 }
 
 
@@ -126,6 +127,11 @@ button {
 	border-radius: 30px;
 	cursor: pointer;
 	box-shadow: 0px 8px 10px -15px var(--dark)
+}
+
+.picture-upload {
+	width: 210px;
+	background-color: transparent;
 }
 
 .btn-continue, .btn-back {
@@ -681,6 +687,8 @@ button {
 .profile-picture-area {
 	position: relative;
 	bottom: 360px;
+	padding: 0px calc(50vw - 350px) 0px calc(50vw - 350px);
+	
 }
 
 .profile-picture-big {
@@ -696,7 +704,6 @@ button {
 
 .profile-buttons {
 	columns: 2;
-	padding: 0px calc(50vw - 220px) 0px calc(50vw - 220px)
 }
 
 .profile-buttons form button {
@@ -817,7 +824,7 @@ button {
 	background-color: var(--orange);
 }
 
-#del-btn-ext:hover, #del-btn-ext:hover span {
+#del-btn-ext:hover, #del-btn-ext:hover span, #del-account-btn:hover, #del-account-btn:hover span {
 	background-color: var(--red);
 }
 
@@ -1065,7 +1072,7 @@ ol li::marker {
 	max-width: calc(5vw + 50px);
 }
 
-.picture-upload {
+.picture-upload#recipe-pic-upload {
 	width: 256px;
 	background-color: white;
 }
@@ -1087,40 +1094,125 @@ ol li::marker {
 }
 
 /* EDIT PROFILE PAGE */
-.edit-profile-area {
-	padding-left: calc(35vw - 235px);
-	padding-right: calc(35vw - 235px);
+#edit-profile {
+	height: 350px;
+	position: relative;
+}
+#edit-profile-banner {
+	height: 350px;
+	opacity: 0.2;
 }
 
-.change-field {
+#edit-profile .profile-picture-area {
+	margin-top: 25px;
+}
+
+.edit-profile-area {
+	padding: 25px calc(35vw - 235px);
+	display: grid;
+	columns: 1fr 1fr;
+}
+
+.change-field * {
 	display: inline-block;
 }
 
-.prompt {
-	float: left;
-	width: 200px;
-	padding-right: 20px;
-	text-align: right;
+.change-field {
+	white-space: nowrap;
+	margin: 0px;
+	padding: 0px;
 }
 
-.field {
+.only-field {
+	margin-top: -10px;
+}
+
+.field * {
 	text-align: center;
 	float: center;
-	width: calc(20vw + 50px);
+	width: calc(25vw);
 }
 
-.edit-profile-area .btn-continue {
-	float: right;
+.central-field {
+	padding: 0px calc(3vw - 5px) 0px calc(3vw - 5px);
 }
 
-#try-again-btn {
+#change-or-clear, #change-or-clear * {
+	display: inline-block;
+}
+
+#change-or-clear {
+	padding-top: 18px;
+}
+
+#clear-profile {
+	position: relative;
+	top:3.5px;
+}
+
+#clear-profile-label {
+	position: relative;
+	top:2px;
+}
+
+.medium-btn {
+	height: 40px;
+	width: 80px;
+	padding-top: 12px;
+	margin: 0px 15px;
+	position: relative;
+	font-size: 16px;
+}
+
+.prompt {
+	width: 105px;
+	text-align: right;
+	padding-right: 5px;
+	white-space: wrap;
+}
+
+.edit-profile-btns {
+	display: grid;
+	grid-template-columns: 1.4fr 1fr;
+	padding-left: calc(49vw - 162.5px);
+	width: 325px;
+	line-height: 100px;
+	margin-top: -40px;
+	margin-right: -5px;
+}
+
+#del-warning {
+	margin-top: -30px;
+	padding-bottom: 30px;
+	color: var(--red);
+}
+
+
+#delete-account {
+	width: 200px;
+}
+
+#done-editing {
+	width: 125px;
+}
+
+#del-account-btn {
+	width: 180px;
+	height: 60px;
+	text-align: center;
+	color: var(--light);
 	background-color: var(--orange);
 }
 
-#try-again-btn:hover {
-	background-color: var(--medium);
+#del-account-text {
+	font-size: 20px;
+	position: relative;
+	top: -1px;
+	padding: 0px;
+	margin: 0px;
+	color: var(--light);
+	background-color: var(--orange);
 }
-
 
 /* WINDOW RESIZE */
 
@@ -1224,6 +1316,10 @@ ol li::marker {
 		position: absolute;
 		right: 10px;
 		top: 175px;
+	}
+	
+	.edit-profile-area {
+		margin-top: 20px;
 	}
 }
 

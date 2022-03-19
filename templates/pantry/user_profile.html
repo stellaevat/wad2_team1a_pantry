@@ -9,7 +9,7 @@
 {% block body_block %}
 {% if user == user_accessed %}
 	<div class="header-featured">
-		<img class="banner" id="profile-banner" src="{% static 'img/banner-default.png' %}" alt="User profile">
+		<img class="banner" id="profile-banner" src="{% static 'img/banner-default.png' %}" alt="User profile"><br />
 		<div class="profile-picture-area">
 			{% if profile_picture %}
 			<img class="profile-picture-big" src="/media/{{ user_profile.profile_picture }}" alt="User {{ user.username }}">
