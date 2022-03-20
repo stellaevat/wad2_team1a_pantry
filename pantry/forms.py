@@ -1,4 +1,3 @@
-import this
 from django import forms
 from django.forms import TextInput, EmailInput, NumberInput, PasswordInput, ClearableFileInput
 from django.contrib.auth.forms import PasswordChangeForm
