@@ -2,7 +2,7 @@
 {% load pantry_template_tags %}
 
 <div class="dropdown-menu-sorter" aria-labelledby="dropdown01">
-	<button class="dropdown-main-sorter" style="">Sort : &nbsp; {{ sort_type }}  &#9660;</button>
+	<button class="dropdown-main-sorter">Sort : &nbsp; {{ sort_type }}  &#9660;</button>
 	<div class="dropdown-items-sorter">
 		{% if by_ingredient and sort_type != "Best Match" %}
 		<a class="dropdown-item-sorter" href="best_match">Best Match</a>
