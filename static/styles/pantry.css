@@ -75,6 +75,10 @@ a {
 	font-size: 17px;
 }
 
+.welcome-message a {
+	color: var(--orange);
+}
+
 .info-message {
 	position: relative;
 	top: 10px;
