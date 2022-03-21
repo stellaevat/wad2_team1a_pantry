@@ -409,9 +409,9 @@ def sign_up(request):
                     login(request, user)
                 except Exception as e:
                     print(e)
-                    if user:
+                    if user and user.id != None:
                         user.delete()
-                    if profile:
+                    if profile and profile.id != None:
                         profile.delete()
             else:
                 context_dict = {'user_form': user_form, 'profile_form': profile_form, 'registered': registered, 'error': list(user_form.errors.values())[-1]}
@@ -582,7 +582,7 @@ def add_recipe_method(request):
                 return render(request, 'pantry/add_recipe_method.html', context=context_dict)
             except Exception as e:
                 print(e)
-                if recipe:
+                if recipe and recipe.id != None:
                     recipe.delete()
                 context_dict['error'] = True
                 return render(request, 'pantry/add_recipe_method.html', context=context_dict)
