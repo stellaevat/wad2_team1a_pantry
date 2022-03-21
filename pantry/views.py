@@ -379,10 +379,15 @@ def add_recipe_method(request):
     recipe_form = RecipeForm()
     quantities_form = RecipeQuantitesForm()
     ingredients = request.session.get('ingredients')
+
     if ingredients:
         ingredients = [Ingredient.objects.get(name=name) for name in ingredients]
     else:
         return redirect(reverse('pantry:add_recipe_ingredients'))
+    
+    context_dict['categories'] = True if Category.objects.all() else False
+    context_dict['ingredients'] = ingredients
+    context_dict['ing_count'] = len(ingredients)
     
     if request.method == 'POST':
         recipe_form = RecipeForm(request.POST, request.FILES)
@@ -419,15 +424,10 @@ def add_recipe_method(request):
             print(recipe_form.errors, quantities_form.errors)
             context_dict['recipe_form'] = recipe_form
             context_dict['quantities_form'] = quantities_form
-            context_dict['ingredients'] = ingredients
         return render(request, 'pantry/add_recipe_method.html', context=context_dict)
-     
     
     context_dict['recipe_form'] = recipe_form
     context_dict['quantities_form'] = quantities_form
-    context_dict['ingredients'] = ingredients
-    context_dict['ing_count'] = len(ingredients)
-    context_dict['categories'] = True if Category.objects.all() else False
     return render(request, 'pantry/add_recipe_method.html', context=context_dict)
 
 def show_category(request, category_title_slug, sort=None, sort_new=None):

@@ -21,16 +21,17 @@
 		<br />
 		<button class="btn-back" type="button" onclick="history.back()">Back</button>
 	{% else %}
-		<form id="RecipeForm" method="post" action="{% url 'pantry:add_recipe_method' %}" enctype="multipart/form-data">
+		<form id="RecipeForm" method="post" action="{% url 'pantry:add_recipe_method' %}" enctype="multipart/form-data" onsubmit="return validateRecipePicture()">
 			{% csrf_token %}
 			
 			<div class="general-info-area">
+				<span class="error-message" id="picture-error"></span>
 				{% for field in recipe_form.visible_fields %}
 					{% if field != recipe_form.steps %}
 						{% if field != recipe_form.category %}
 							{{ field.help_text }}
 							{{ field }}
-							<span class="error-message">{{ field.errors|get_item:0 }}</span>
+							<span class="error-message"><br />{{ field.errors|get_item:0 }}</span>
 						{% elif categories %}
 							{{ field.help_text }}
 							{{ field }}
@@ -93,4 +94,24 @@
 			<input class="btn-continue" id="add-btn" type="submit" value="Submit">
 		</form>
 	{% endif %}
+	
+<script>
+	function validateRecipePicture() {
+		const accepted_exts = ['bmp', 'cur', 'gif', 'png', 'apng', 'ico',
+							   'jfif', 'jpe', 'jpg', 'jpeg', 'webp'];
+		var picture = document.getElementById("recipe-pic-upload").value;
+		var parts = picture.split(".");
+		var ext = parts[parts.length - 1];
+		var error = document.getElementById("picture-error");
+		var errorRemove = document.getElementsByClassName("error-message");
+			
+		if (!accepted_exts.includes(ext)) {
+			for (i = 0; i < errorRemove.length; i++) { errorRemove[i].innerHTML = ""; }
+			error.innerHTML = "Invalid recipe picture - please select an image file.<br />";
+			return false;
+		} else {
+			return true;
+		}
+	}
+</script>
 {% endblock %}
