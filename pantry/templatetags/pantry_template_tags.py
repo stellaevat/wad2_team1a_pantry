@@ -39,6 +39,14 @@ def get_profile_picture(user):
         return user_profile.profile_picture
     except:
         return None
+        
+@register.filter
+def get_profile_picture_source(user):
+    try:
+        user_profile = UserProfile.objects.get(user=user)
+        return user_profile.profile_picture.url
+    except:
+        return None
 
 @register.filter
 def check_if_starred(user,recipe):

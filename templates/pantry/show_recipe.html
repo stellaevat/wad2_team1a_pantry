@@ -57,7 +57,7 @@
 			{% endif %}
 		{% endif %}
 		{% if user == recipe.author or user.is_staff %}
-			<button class="btn-inverted" id="del-btn" type="button" onclick="confirmDelete()">
+			<button class="btn-inverted" id="del-btn" type="button" onclick="confirmRecipeDelete()">
 				<span id="del-icon"><i class="fa-solid fa-trash-can"></i></span><span id="del-text"> Delete</span>
 			</button>
 		{% endif %}
