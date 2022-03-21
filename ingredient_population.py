@@ -115,7 +115,7 @@ ingredients = [
         {"name" : "Grits", "ingredient_type" : "grains"},
         {"name" : "Pine nut", "ingredient_type" : "grains"},
         {"name" : "Walnut", "ingredient_type" : "grains"},
-        {"name" : "Cereal", "ingredient_type" : "grains"},
+        {"name" : "Breakfast cereal", "ingredient_type" : "grains"},
         {"name" : "Pistachio", "ingredient_type" : "grains"},
         {"name" : "Pecan", "ingredient_type" : "grains"},
         {"name" : "Pumpkin seed", "ingredient_type" : "grains"},
