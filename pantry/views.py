@@ -108,8 +108,13 @@ def edit_profile_forms(request, user_profile):
 def delete_recipe(request, recipe_name_slug, username):
     recipe_name_slug = request.GET['recipe_name_slug']
     username = request.GET['username']
-    if Recipe.objects.filter(slug=recipe_name_slug).exists():
-        Recipe.objects.get(slug=recipe_name_slug).delete()
+    recipe = Recipe.objects.filter(slug=recipe_name_slug)
+    
+    if recipe:
+        recipe = recipe[0]
+        if recipe.picture:
+                recipe.picture.delete(save = False)
+        recipe.delete()
 
     data = {"username" : username}
 
@@ -740,6 +745,7 @@ def show_starred_recipes(request, username, sort=None, sort_new=None):
     except Exception as e:
         print(e)
     return render(request, 'pantry/show_starred_recipes.html', context=context_dict)
+
 
 # Renders page notifying user that their recipe was deleted succesfully
 @login_required 

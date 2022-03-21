@@ -15,7 +15,8 @@ function validateProfilePicture() {
 		if (!accepted_exts.includes(ext)) {
 			for (i = 0; i < errorRemove.length; i++) { errorRemove[i].innerHTML = ""; }
 			for (i = 0; i < successRemove.length; i++) { successRemove[i].innerHTML = ""; }
-			error.innerHTML = "<br />Invalid file format - please select an image.";
+			error.innerHTML = "Invalid file format - please select an image.";
+			document.getElementById("id_profile_picture").value = null;
 			return false;
 		} else {
 			return true;
@@ -23,7 +24,7 @@ function validateProfilePicture() {
 	} else if (!clear.checked){
 		for (i = 0; i < errorRemove.length; i++) { errorRemove[i].innerHTML = ""; }
 		for (i = 0; i < successRemove.length; i++) { successRemove[i].innerHTML = ""; }
-		error.innerHTML = "<br />No file chosen. To clear your profile picture please choose Clear.";
+		error.innerHTML = "No file chosen. To clear your profile picture please choose Clear.";
 		return false;
 	} else {
 		return true;
@@ -128,6 +129,7 @@ function validateRecipePicture() {
 	if (!accepted_exts.includes(ext)) {
 		for (i = 0; i < errorRemove.length; i++) { errorRemove[i].innerHTML = ""; }
 		error.innerHTML = "Invalid recipe picture - please select an image file.<br />";
+		document.getElementById("recipe-pic-upload").value = null;
 		return false;
 	} else {
 		return true;

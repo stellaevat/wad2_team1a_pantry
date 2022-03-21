@@ -72,7 +72,7 @@ def get_number(ingredient, plural):
 @register.filter
 def format_time(mins, short=False):
     time = ""
-    min_marker = " '" if short else " min"
+    min_marker = "'" if short else " min"
     hour_marker = "h " if short else " h "
  
     hours = int(mins / 60)
