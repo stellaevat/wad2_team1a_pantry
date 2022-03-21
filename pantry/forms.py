@@ -65,7 +65,7 @@ class RecipeForm(forms.ModelForm):
                widget=NumberInput(attrs={"class":"short-info"}))
     steps = forms.CharField(max_length=2048, help_text="Method: ", widget=forms.Textarea(attrs={"id":"method-input"}), required=True)
     # Custom widget to display checkboxes in columns
-    category = forms.ModelMultipleChoiceField(help_text="Categories: ", queryset=Category.objects.all(), required=False,
+    category = forms.ModelMultipleChoiceField(help_text="Categories: ", queryset=Category.objects.filter(selectable=True), required=False,
                widget=ColumnCheckboxSelectMultiple(columns=3, class_whole="checkbox-area",
                class_column="checkbox-column", separator="gap", attrs={"class":"checkbox"}))
     

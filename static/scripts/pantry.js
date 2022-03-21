@@ -204,7 +204,7 @@ function unstar() {
 			var text = document.getElementById("star-text");
 			var counter = document.getElementById("starinfo");
 
-			icon.innerHTML = '<i class="fa-solid fa-star-half-stroke fa-xs"></i>';
+			icon.innerHTML = '<i class="fa-regular fa-star fa-xs"></i>';
 			text.innerHTML = '&nbsp; Star';
 			button.setAttribute('onclick','star()');
 			counter.innerHTML--;
