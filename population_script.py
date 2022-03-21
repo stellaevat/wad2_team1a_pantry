@@ -23,19 +23,19 @@ def populate():
     ]
 
     categories = [
-        {"name" : "Mains", "tab" : True},
-        {"name" : "Appetizers", "tab" : True},
-        {"name" : "Desserts", "tab" : True},
-        {"name" : "Easy Meals", "tab" : True},
-        {"name" : "Under 30'", "tab" : True},
-        {"name" : "Vegan", "tab" : False},
-        {"name" : "Healthy", "tab" : False},
-        {"name" : "GlutenFree", "tab" : False},
-        {"name" : "Vegetarian", "tab" : False},
-        {"name" : "Breakfast", "tab" : False},
-        {"name" : "Lunch", "tab" : False},
-        {"name" : "Dinner", "tab" : False},
-        {"name" : "Snacks", "tab" : False},
+        {"name" : "Mains", "tab" : True, "selectable" : True},
+        {"name" : "Appetizers", "tab" : True, "selectable" : True},
+        {"name" : "Desserts", "tab" : True, "selectable" : True},
+        {"name" : "Easy Meals", "tab" : True, "selectable" : False},
+        {"name" : "Under 30'", "tab" : True, "selectable" : False},
+        {"name" : "Vegan", "tab" : False, "selectable" : True},
+        {"name" : "Healthy", "tab" : False, "selectable" : True},
+        {"name" : "GlutenFree", "tab" : False, "selectable" : True},
+        {"name" : "Vegetarian", "tab" : False, "selectable" : True},
+        {"name" : "Breakfast", "tab" : False, "selectable" : True},
+        {"name" : "Lunch", "tab" : False, "selectable" : True},
+        {"name" : "Dinner", "tab" : False, "selectable" : True},
+        {"name" : "Snacks", "tab" : False, "selectable" : True},
     ]
 
     ingredients = get_all_ingredients()
@@ -148,7 +148,7 @@ def add_user(user):
     return u
 
 def add_cat(cat):
-    c = Category.objects.get_or_create(name=cat["name"], tab=cat["tab"])[0]
+    c = Category.objects.get_or_create(name=cat["name"], tab=cat["tab"], selectable=cat["selectable"])[0]
     c.save()
     return c
 

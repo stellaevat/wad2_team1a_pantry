@@ -34,7 +34,7 @@
 					<p class="recipe-tag-info">{{ recipe.servings }}</p>
 				</div>
 				<div class="tag">
-					<i class="fa-solid fa-star-half-stroke"></i>
+					<i class="fa-solid fa-star"></i>
 					<p class="recipe-tag-info" id="starinfo">{{ recipe.stars }}</p>
 				</div>
 			</div>
@@ -44,7 +44,7 @@
 		{% if user.is_authenticated and not user.is_staff %}
 			{% if not user|check_if_starred:recipe %}
 			<button class="btn-inverted" id="star-btn" type="button" onclick="star()">
-				<span id="star-icon"><i class="fa-solid fa-star-half-stroke fa-xs"></i></span><span id="star-text">&nbsp; Star</span>
+				<span id="star-icon"><i class="fa-regular fa-star fa-xs"></i></span><span id="star-text">&nbsp; Star</span>
 			</button>
 			{% else %}
 			<button class="btn-inverted" id="star-btn" type="button" onclick="unstar()">
