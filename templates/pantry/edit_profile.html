@@ -123,19 +123,17 @@
 	<p class="info-message">Make sure you have the right spelling, and that you're signed in to the correct account!</p>
 {% endif %}
 <script>
-var pfp;
+var pfp = document.getElementById("pfp-edit-profile").src;
 function changePicture(){
 	document.getElementById('pfp-edit-profile').setAttribute("src",URL.createObjectURL(event.target.files[0]));
-	pfp = document.getElementById('pfp-edit-profile').src;
 }
 
 function clearPicture(){
 	var check = document.getElementById("clear-profile");
 	if (check.checked){
-		pfp = document.getElementById("pfp-edit-profile").src;
 		document.getElementById('pfp-edit-profile').setAttribute("src","{% static 'img/profile-picture-default.png' %}");
 		document.getElementById("id_profile_picture").value = "";
-	}else if (document.getElementById("id_profile_picture").value != ""){
+	}else if (document.getElementById("id_profile_picture").value == ""){
 		document.getElementById('pfp-edit-profile').setAttribute("src",pfp);
 	}else{
 		document.getElementById('pfp-edit-profile').setAttribute("src","{% static 'img/profile-picture-default.png' %}");
