@@ -165,7 +165,7 @@ button {
 	border-radius: 30px;
 }
 
-.btn-inverted {
+.btn-inverted, .btn-inverted-special {
 	width: 200px;
 	height: 50px;
 	background-color: var(--medium);
@@ -175,7 +175,7 @@ button {
 	font-style: bold;
 }
 
-.btn-inverted span {
+.btn-inverted span, .btn-inverted-special span {
 	position: relative;
 	bottom: 3px;
 }
@@ -185,7 +185,7 @@ button {
 	color: var(--dark);
 }
 
-.btn-inverted:hover, .btn-inverted:hover span {
+.btn-inverted:hover, .btn-inverted:hover span, .btn-inverted:hover i {
 	background-color: var(--burgundy);
 	color: var(--light);
 }
@@ -358,13 +358,12 @@ button {
 	margin-left: -30px;
 }
 
-.search-btn img {
+.search-btn i {
 	background-color: transparent;
-	width: 14px;
-	height: 14px;
+	color: var(--dark);
 	opacity: 0.5;
 	position: relative;
-	top: 2px;
+	top: 1px;
 }
 
 .tab-secondary-open {
@@ -407,6 +406,15 @@ button {
 	font-size: 20px;
 }
 
+.secondary-info-small * {
+	overflow: hidden;
+	white-space: nowrap;
+}
+
+.secondary-info-small i {
+	font-size: 13px;
+}
+
 
 /* Big grid */
 .recipes-big-three {
@@ -445,12 +453,10 @@ button {
 .secondary-info-big * {
 	overflow: hidden;
 	white-space: nowrap;
-	font-size: 20px;
 }
 
-.secondary-info-small * {
-	overflow: hidden;
-	white-space: nowrap;
+.secondary-info-big div {
+	font-size: 20px;
 }
 
 /* All grids */
@@ -472,7 +478,7 @@ button {
 .thumbnail-info * {
 	background-color: var(--dark);
 	color: var(--light);
-	padding-left: 5px;
+	padding-left: 3px;
 }
 
 .secondary-info-small, .secondary-info-big {
@@ -809,6 +815,13 @@ button {
 	padding: 5px;
 }
 
+.tag i {
+	color: var(--orange);
+	font-size: 19.5px;
+	position: relative;
+	top: 1.5px;
+}
+
 .recipe-tag-head {
 	position: relative;
 	top: 2pt;
@@ -825,7 +838,7 @@ button {
 	width: 130px;
 	height: 60px;
 	position: fixed;
-	top: 120px;
+	top: 130px;
 	right: 5vw;
 	z-index: 1;
 	text-align:left;
@@ -833,7 +846,7 @@ button {
 }
 
 #del-btn, #del-btn-ext {
-	top: 190px;
+	top: 200px;
 }
 
 #del-btn-ext, #del-btn-ext span {
@@ -842,7 +855,7 @@ button {
 	background-color: var(--orange);
 }
 
-#del-btn-ext:hover, #del-btn-ext:hover span, #del-account-btn:hover, #del-account-btn:hover span {
+#del-btn-ext:hover, #del-btn-ext:hover span, #del-btn-ext:hover span i, #del-account-btn:hover, #del-account-btn:hover span {
 	background-color: var(--red);
 }
 
@@ -853,27 +866,40 @@ button {
 	font-size: 23px;
 }
 
+#del-text, #del-text-ext {
+	bottom: 0px;
+	left: 20px;
+}
+
 #star-text {
 	position: relative;
-	bottom: 7.5px;
-	left: 15px;
+	top: 1px;
+	left: 17px;
 	font-size: 23px;
 }
 
-#star-icon, #del-icon, #del-icon-ext {
+#star-icon i {
 	position: relative;
-	font-size: 38px;
+	top: 8px;
 	left: 13px;
+	font-size: 28px;
+}
+
+#del-icon i, #del-icon-ext i {
+	font-size: 24px;
+	position: relative;
+	top: 3px;
+}
+
+#del-icon-ext i {
+	top: 4.5px;
+	right: 4px;
 }
 
 #del-icon, #del-icon-ext {
-	font-size: 32px;
-	bottom: 1.5px;
-	font-style: bold;
-}
-
-#del-icon {
+	position: relative;
 	left: 17px;
+	font-style: bold;
 }
 
 .category-tags {

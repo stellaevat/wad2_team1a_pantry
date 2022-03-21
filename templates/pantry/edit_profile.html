@@ -9,24 +9,24 @@
 {% block body_block %}
 {% if img_form %}
 	<div class="header-featured" id="edit-profile">
-		<img class="banner" id="edit-profile-banner" src="{% static 'img/banner-default.png' %}" alt="User profile">
+		<img class="banner" id="edit-profile-banner" src="{% static 'img/banner-default.png' %}" alt="User profile" />
 		<div class="profile-picture-area">
 			<h1 class="central-heading">Edit Profile</h1><br />
 			<form id="form-edit-img" method="post" action="{% url 'pantry:edit_profile' user.username %}" enctype="multipart/form-data" onsubmit="return validateProfilePicture()">
 				{% csrf_token %}
 				{% if user|get_profile_picture %}
-				<img class="profile-picture-big" src="/media/{{ user|get_profile_picture }}" alt="User {{ user.username }}">
+				<img class="profile-picture-big" src="/media/{{ user|get_profile_picture }}" alt="User {{ user.username }}" />
 				{% else %}
-				<img class="profile-picture-big" src="{% static 'img/profile-picture-default.png' %}" alt="User profile">
+				<img class="profile-picture-big" src="{% static 'img/profile-picture-default.png' %}" alt="User profile" />
 				{% endif %}<br />
 				
 				<div id="change-or-clear">
-					</label>Profile picture:&nbsp;
+					Profile picture:&nbsp;
 					<div class="central-field">
-						<input class="picture-upload" type="file" name="profile_picture" accept="image/*" id="id_profile_picture">
+						<input class="picture-upload" type="file" name="profile_picture" accept="image/*" id="id_profile_picture" />
 						|&nbsp;&nbsp;&nbsp;&nbsp;
-						<input class="checkbox" id="clear-profile" type="checkbox" name="profile_picture-clear" id="profile_picture-clear_id">
-						<label for="profile_picture-clear_id" id="clear-profile-label">Clear&nbsp;&nbsp;
+						<input class="checkbox" id="clear-profile" type="checkbox" name="profile_picture-clear" id="profile_picture-clear_id" />
+						<label for="profile_picture-clear_id" id="clear-profile-label">Clear&nbsp;&nbsp;</label>
 					</div>
 					<input class="btn-back medium-btn" type="submit" name="img-submit" value="Update" />
 				</div>
@@ -122,127 +122,5 @@
 	<h1 class="central-heading">Invalid user</h1>
 	<p class="info-message">Make sure you have the right spelling, and that you're signed in to the correct account!</p>
 {% endif %}
-
-
-<script>
-	function validateProfilePicture() {
-		const accepted_exts = ['bmp', 'cur', 'gif', 'png', 'apng', 'ico',
-							   'jfif', 'jpe', 'jpg', 'jpeg', 'webp'];
-		var picture = document.getElementById("id_profile_picture").value;
-		var clear = document.getElementById("clear-profile");
-		var error = document.getElementById("picture-error");
-		var errorRemove = document.getElementsByClassName("error-message");
-		var successRemove = document.getElementsByClassName("success-message");
-
-		if (picture != "") {
-			var parts = picture.split(".");
-			var ext = parts[parts.length - 1];
-			
-			if (!accepted_exts.includes(ext)) {
-				for (i = 0; i < errorRemove.length; i++) { errorRemove[i].innerHTML = ""; }
-				for (i = 0; i < successRemove.length; i++) { successRemove[i].innerHTML = ""; }
-				error.innerHTML = "<br />Invalid file format - please select an image.";
-				return false;
-			} else {
-				return true;
-			}
-		} else if (!clear.checked){
-			for (i = 0; i < errorRemove.length; i++) { errorRemove[i].innerHTML = ""; }
-			for (i = 0; i < successRemove.length; i++) { successRemove[i].innerHTML = ""; }
-			error.innerHTML = "<br />No file chosen. To clear your profile picture please choose Clear.";
-			return false;
-		} else {
-			return true;
-		}
-	}
-
-	function validateUsername() {
-		const usernamePattern = /^[\w.@+-]+$/;
-		var username = document.getElementById("id_username").value;
-		var error = document.getElementById('username-error');
-		var errorRemove = document.getElementsByClassName("error-message");
-		var successRemove = document.getElementsByClassName("success-message");
-		
-		if (!usernamePattern.test(username)) {
-			for (i = 0; i < errorRemove.length; i++) { errorRemove[i].innerHTML = ""; }
-			for (i = 0; i < successRemove.length; i++) { successRemove[i].innerHTML = ""; }
-			error.innerHTML = "Username may only contain letters, numbers, and @ . + - _ characters.";
-			return false;
-		} else {
-			return true;
-		}
-	}
-	
-	function validatePassword() {
-		var password = document.getElementById("id_new_password1").value;
-		var confirmPassword = document.getElementById("id_new_password2").value;
-		var error = document.getElementById('password-error');
-		var errorRemove = document.getElementsByClassName("error-message");
-		var successRemove = document.getElementsByClassName("success-message");
-		
-		if (password.length < 8) {
-			for (i = 0; i < errorRemove.length; i++) { errorRemove[i].innerHTML = ""; }
-			for (i = 0; i < successRemove.length; i++) { successRemove[i].innerHTML = ""; }
-			error.innerHTML = "New password too short - it must contain at least 8 characters.";
-			return false;
-		} else if (!isNaN(password)) {
-			for (i = 0; i < errorRemove.length; i++) { errorRemove[i].innerHTML = ""; }
-			for (i = 0; i < successRemove.length; i++) { successRemove[i].innerHTML = ""; }
-			error.innerHTML = "New password too simple - it must contain more than just numeric characters.";
-			return false;
-		} else if (password.toLowerCase() == username.toLowerCase()) {
-			for (i = 0; i < errorRemove.length; i++) { errorRemove[i].innerHTML = ""; }
-			for (i = 0; i < successRemove.length; i++) { successRemove[i].innerHTML = ""; }
-			error.innerHTML = "Username and new password too similar - try something different.";
-			return false;
-		} else if (password != confirmPassword) {
-			for (i = 0; i < errorRemove.length; i++) { errorRemove[i].innerHTML = ""; }
-			for (i = 0; i < successRemove.length; i++) { successRemove[i].innerHTML = ""; }
-			error.innerHTML = "New passwords don't match - please try again.";
-			return false;
-		} else {
-			return true;
-		}
-	}
-
-	function confirmAccountDelete() {
-		var button = document.getElementById("del-account-btn");
-		var label = document.getElementById("del-account-text");
-		var warning = document.getElementById("del-warning");
-		var errors = document.getElementsByClassName("error-message");
-		var successes = document.getElementsByClassName("success-message");
-		
-		for (var i = 0; i < errors.length; i++) {
-			errors[i].innerHTML = "";
-		}
-		for (var i = 0; i < successes.length; i++) {
-			successes[i].innerHTML = "";
-		}
-		label.innerHTML = "Are you sure?";
-		warning.innerHTML = "Deleting your account is permanent and cannot be undone. <br /> All of your data and recipes will be deleted."
-		button.setAttribute("onclick", "delAccount()");
-		button.setAttribute("focusout", "returnAccountNormal()");
-
-		button.addEventListener("focusout", (event) => {
-			returnAccountNormal();
-		});
-    };
-
-	function returnAccountNormal() {
-		var button = document.getElementById("del-account-btn");
-		var label = document.getElementById("del-account-text");
-		var warning = document.getElementById("del-warning");
-		
-		label.innerHTML = "Delete account";
-		warning.innerHTML = "";
-		button.setAttribute("onclick", "confirmAccountDelete()");
-    };
-
-	function delAccount(){
-		var username = "{{ user.username }}"
-		window.location = "/pantry/user/" + username + "/account_deleted/";
-	}
-	
-</script>
 
 {% endblock %}

@@ -94,24 +94,4 @@
 			<input class="btn-continue" id="add-btn" type="submit" value="Submit">
 		</form>
 	{% endif %}
-	
-<script>
-	function validateRecipePicture() {
-		const accepted_exts = ['bmp', 'cur', 'gif', 'png', 'apng', 'ico',
-							   'jfif', 'jpe', 'jpg', 'jpeg', 'webp'];
-		var picture = document.getElementById("recipe-pic-upload").value;
-		var parts = picture.split(".");
-		var ext = parts[parts.length - 1];
-		var error = document.getElementById("picture-error");
-		var errorRemove = document.getElementsByClassName("error-message");
-			
-		if (!accepted_exts.includes(ext)) {
-			for (i = 0; i < errorRemove.length; i++) { errorRemove[i].innerHTML = ""; }
-			error.innerHTML = "Invalid recipe picture - please select an image file.<br />";
-			return false;
-		} else {
-			return true;
-		}
-	}
-</script>
 {% endblock %}

@@ -7,34 +7,25 @@
 {% endblock %}
 
 {% block body_block %}
-	{% if done %}
-		{% if recipes %}
-			<div class="cat-header">
-				<h1 class="cat-heading">Recipes with selected ingredients...</h1><br />
-				{% get_recipe_sorter sort_type True %}
-			</div>
-			<p class="info-message" id="explain">The &percnt; tag shows what percentage of the recipe's ingredients you've selected. <br /> The higher the percentage, the better the match!</p>
-			
-			<div class="gap-small"></div>
-			<div class="recipes-big-three">
-				{% for recipe in recipes %}
-					{% recipe_grid_display recipe percent=recipe_percents|get_item:recipe %}
-				{% endfor %}
-			</div>
-		{% else %}
-			<h1 class="central-heading">Recipes with selected ingredients...</h1><br />
-			<p class="info-message">We currently have no recipes with these ingredients. <br /> Try browsing our categories, or search using the search bar!</p>
-			<br /><br />
-			<button class="btn-back" type="button" onclick="history.back()">Back</button>
-		{% endif %}
-	{% else %}
-		<h1 class="central-heading">Recipes with selected ingredients...</h1>
-		<br /><br />
-		<p class="info-message">You haven't selected any ingredients!</p><br />
-		<form action="{% url 'pantry:search_by_ingredient' %}" method="POST">
-			{% csrf_token %}
-			<input class="btn-continue" id="btn-redir" type="button" onclick="history.back()">Select ingredients</button>
-			}
-		</form>
-	{% endif %}
+{% if recipes %}
+	<div class="cat-header">
+		<h1 class="cat-heading">Recipes with selected ingredients...</h1><br />
+		{% get_recipe_sorter sort_type True %}
+	</div>
+	<p class="info-message" id="explain">
+		The &percnt; tag shows what percentage of the recipe's ingredients you've selected. <br /> The higher the percentage, the better the match!
+	</p>
+	
+	<div class="gap-small"></div>
+	<div class="recipes-big-three">
+		{% for recipe in recipes %}
+			{% recipe_grid_display recipe percent=recipe_percents|get_item:recipe %}
+		{% endfor %}
+	</div>
+{% else %}
+	<h1 class="central-heading">Recipes with selected ingredients...</h1><br />
+	<p class="info-message">We currently have no recipes with these ingredients. <br /> Try browsing our categories, or search using the search bar!</p>
+	<br /><br />
+	<button class="btn-back" type="button" onclick="history.back()">Back</button>
+{% endif %}
 {% endblock %}

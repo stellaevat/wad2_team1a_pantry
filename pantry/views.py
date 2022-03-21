@@ -530,7 +530,7 @@ def search_by_ingredient_results(request, sort=None, sort_new=None):
         recipes, sort_type = sort_by(recipe_percents, sort, True)
         request.session['ingredients'] = ingredients
         session_modifications.add('ingredients')
-        context_dict = {"recipes" : recipes, "recipe_percents": recipe_percents, "sort_type" : sort_type, "done": True}
+        context_dict = {"recipes" : recipes, "recipe_percents": recipe_percents, "sort_type" : sort_type}
         return render(request, 'pantry/search_by_ingredient_results.html', context=context_dict)
     else:
         return redirect(reverse('pantry:search_by_ingredient'))

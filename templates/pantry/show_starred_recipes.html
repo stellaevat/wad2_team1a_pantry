@@ -26,7 +26,7 @@
 	<p class="info-message">Start starring to save your favourite recipes here!</p>
 	{% endif %}
 	<form action="{% url 'pantry:user_profile' user.username %}">
-		<input class="btn-continue" id="back-prof-btn" type="submit" value="Back to profile">
+		<input class="btn-continue" id="back-prof-btn" type="submit" value="Back to profile" />
 	</form>
 {% else %}
 	<h1 class="central-heading">Invalid user</h1>

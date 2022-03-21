@@ -12,7 +12,7 @@
 
 	{% if recipe %}
 	<div class="header-featured">
-		<img class="banner" src="/media/{{ recipe.picture }}" alt="{{ recipe.title }}">
+		<img class="banner" src="/media/{{ recipe.picture }}" alt="{{ recipe.title }}" />
 		<div class="banner-text">
 			<h1 class="cat-heading" id="recipe-title">{{ recipe.title }}</h1>
 			<div class="gap-small"></div>
@@ -34,7 +34,7 @@
 					<p class="recipe-tag-info">{{ recipe.servings }}</p>
 				</div>
 				<div class="tag">
-					<img class="icon-big recipe-tag-head" src="{% static 'img/star-orange.png' %}" alt="Stars">
+					<i class="fa-solid fa-star-half-stroke"></i>
 					<p class="recipe-tag-info" id="starinfo">{{ recipe.stars }}</p>
 				</div>
 			</div>
@@ -44,24 +44,24 @@
 		{% if user.is_authenticated and not user.is_staff %}
 			{% if not user|check_if_starred:recipe %}
 			<button class="btn-inverted" id="star-btn" type="button" onclick="star()">
-				<span id="star-icon">&star;</span><span id="star-text">&nbsp; Star</span>
+				<span id="star-icon"><i class="fa-solid fa-star-half-stroke fa-xs"></i></span><span id="star-text">&nbsp; Star</span>
 			</button>
 			{% else %}
 			<button class="btn-inverted" id="star-btn" type="button" onclick="unstar()">
-				<span id="star-icon">&starf;</span><span id="star-text">Unstar</span>
+				<span id="star-icon"><i class="fa-solid fa-star fa-xs"></i></span><span id="star-text">Unstar</span>
 			</button>
 			{% endif %}
 		{% endif %}
 		{% if user == recipe.author or user.is_staff %}
 			<button class="btn-inverted" id="del-btn" type="button" onclick="confirmDelete()">
-				<span id="del-icon">&#128465;</span><span id="del-text"> Delete</span>
+				<span id="del-icon"><i class="fa-solid fa-trash-can"></i></span><span id="del-text"> Delete</span>
 			</button>
 		{% endif %}
 		
 		<div class="pub-data">
 			{% if recipe.author|get_profile_picture %}
 			<a class="profile-thumbnail" href="{% url 'pantry:user_recipes' recipe.author.username %}">
-				<img src="/media/{{ recipe.author|get_profile_picture }}" alt="Profile">
+				<img src="/media/{{ recipe.author|get_profile_picture }}" alt="Profile" />
 			</a>
 			{% endif %}
 			<i id="author">By&nbsp;<a href="{% url 'pantry:user_recipes' recipe.author.username %}">{{ recipe.author.username }}</a>
@@ -114,113 +114,10 @@
 			</ol>
 		</div>
 	</div>
-	
-	
 		
 	{% else %}
 	<h1 class="central-heading">We couldn't find this recipe...</h1>
 	<p class="info-message">Maybe the author deleted it, or something went wrong - make sure you have the right link!</p>
 	{% endif %}
-
 	
-<script>
-	function star() {
-		var username = "{{ user.username }}";
-		var recipe_name_slug = "{{ recipe.slug }}";
-
-		$.ajax({
-			url: 'star/' + username,
-			data: {
-          		'recipe_name_slug': recipe_name_slug,
-				'username' : username
-        	},
-			dataType: 'json',
-			success: function () {
-				var button = document.getElementById("star-btn");
-				var icon = document.getElementById("star-icon");
-				var text = document.getElementById("star-text");
-				var counter = document.getElementById("starinfo");
-		
-				icon.innerHTML = '&starf;';
-				text.innerHTML = 'Unstar';
-				button.setAttribute('onclick','unstar()');
-				counter.innerHTML++;
-			}
-		});
-
-    };
-
-	function unstar() {
-		var username = "{{ user.username }}"
-		var recipe_name_slug = "{{ recipe.slug }}"
-
-		$.ajax({
-			url: 'unstar/' + username,
-			data: {
-          		'recipe_name_slug': recipe_name_slug,
-				'username' : username
-        	},
-			dataType: 'json',
-			success: function () {
-				var button = document.getElementById("star-btn");
-				var icon = document.getElementById("star-icon");
-				var text = document.getElementById("star-text");
-				var counter = document.getElementById("starinfo");
-
-				icon.innerHTML = '&star;';
-				text.innerHTML = '&nbsp; Star';
-				button.setAttribute('onclick','star()');
-				counter.innerHTML--;
-			}
-		});
-
-    };
-
-	function confirmDelete() {
-		var button = document.getElementById("del-btn");
-		var text = document.getElementById("del-text");
-		var icon = document.getElementById("del-icon");
-		
-		text.innerHTML = 'Are you sure?';
-		button.id = "del-btn-ext";
-		icon.id = "del-icon-ext";
-		text.id = "del-text-ext";
-		button.setAttribute("onclick", "del()");
-		button.setAttribute("focusout", "returnNormal()");
-
-		button.addEventListener("focusout", (event) => {
-			returnNormal();
-		});
-    };
-
-	function returnNormal() {
-		var button = document.getElementById("del-btn-ext");
-		var text = document.getElementById("del-text-ext");
-		var icon = document.getElementById("del-icon-ext");
-		
-		text.innerHTML = ' Delete';
-		button.id = "del-btn";
-		icon.id = "del-icon";
-		text.id = "del-text";
-		button.setAttribute("onclick", "confirmDelete()");
-    };
-
-	function del(){
-		var username = "{{ user.username }}"
-		var recipe_name_slug = "{{ recipe.slug }}"
-
-		$.ajax({
-			url: 'delete_recipe/' + username + '/',
-			data: {
-          		'recipe_name_slug': recipe_name_slug,
-				'username' : username
-        	},
-			dataType: 'json',
-			success: function () {
-				window.location = "/pantry/recipe_deleted/";
-			}
-		});
-	}
-	
-</script>
 {% endblock %}
