@@ -12,7 +12,7 @@
 		<img class="banner" id="edit-profile-banner" src="{% static 'img/banner-default.png' %}" alt="User profile">
 		<div class="profile-picture-area">
 			<h1 class="central-heading">Edit Profile</h1><br />
-			<form id="form-edit-img" method="post" action="{% url 'pantry:edit_profile' user.username %}" enctype="multipart/form-data">
+			<form id="form-edit-img" method="post" action="{% url 'pantry:edit_profile' user.username %}" enctype="multipart/form-data" onsubmit="return validatePicture()">
 				{% csrf_token %}
 				{% if user|get_profile_picture %}
 				<img class="profile-picture-big" src="/media/{{ user|get_profile_picture }}" alt="User {{ user.username }}">
@@ -36,44 +36,47 @@
 				{% elif img_success %}
 					<br /><span class="success-message">{{ img_success }}</span>
 				{% endif %}
+				<span class="error-message" id="picture-error"></span>
+				
 			</form>	
 		</div>
 	</div>
 	
 	<div class="edit-profile-area">
-		<div>
-			<form id="form-edit-username" method="post" action="{% url 'pantry:edit_profile' user.pk|get_correct_username %}" enctype="multipart/form-data">
-				{% csrf_token %}
-				
-				<div class="change-field only-field">
-					<div class="prompt">Username:</div>
-					<span class="field">{{ username_form.username }}</span>
-					<input class="btn-back medium-btn" type="submit" name="username-submit" value="Update" />
-				</div><br/>
-				
-				{% if username_error %}
-					<span class="error-message">{{ username_error }}</span>
-				{% elif username_success %}
-					<span class="success-message">{{ username_success }}</span>
-				{% endif %}
-			</form>
-			<form id="form-edit-email" method="post" action="{% url 'pantry:edit_profile' user.username %}" enctype="multipart/form-data">
-				{% csrf_token %}
-				<div class="change-field">
-					<div class="prompt">Email: </div>
-					<span class="field">{{ email_form.email }}</span>
-					<input class="btn-back medium-btn" type="submit" name="email-submit" value="Update" />
-				</div><br />
-				
-				{% if email_error %}
-					<span class="error-message">{{ email_error }}</span>
-				{% elif email_success %}
-					<span class="success-message">{{ email_success }}</span>
-				{% endif %}
-			</form>
-		</div>
+		<form id="form-edit-username" method="post" action="{% url 'pantry:edit_profile' user.pk|get_correct_username %}" enctype="multipart/form-data" onsubmit="return validateUsername()">
+			{% csrf_token %}
+			
+			<div class="change-field only-field">
+				<div class="prompt">Username:</div>
+				<span class="field">{{ username_form.username }}</span>
+				<input class="btn-back medium-btn" type="submit" name="username-submit" value="Update" />
+			</div><br/>
+			
+			{% if username_error %}
+				<span class="error-message">{{ username_error }}</span>
+			{% elif username_success %}
+				<span class="success-message">{{ username_success }}</span>
+			{% endif %}
+			<span class="error-message" id="username-error"></span>
+
+		</form>
 		
-		<form id="form-edit-password" method="post" action="{% url 'pantry:edit_profile' user.username %}" enctype="multipart/form-data">
+		<form id="form-edit-email" method="post" action="{% url 'pantry:edit_profile' user.username %}" enctype="multipart/form-data">
+			{% csrf_token %}
+			<div class="change-field">
+				<div class="prompt">Email: </div>
+				<span class="field">{{ email_form.email }}</span>
+				<input class="btn-back medium-btn" type="submit" name="email-submit" value="Update" />
+			</div><br />
+			
+			{% if email_error %}
+				<span class="error-message">{{ email_error }}</span>
+			{% elif email_success %}
+				<span class="success-message">{{ email_success }}</span>
+			{% endif %}
+		</form>
+		
+		<form id="form-edit-password" method="post" action="{% url 'pantry:edit_profile' user.username %}" enctype="multipart/form-data" onsubmit="return validatePassword()">
 			{% csrf_token %}
 			
 			<div class="change-field">
@@ -97,6 +100,8 @@
 			{% elif pass_success %}
 				<span class="success-message">{{ pass_success }}</span>
 			{% endif %}
+			<span class="error-message" id="password-error"></span>
+				
 		</form>
 	</div>
 
@@ -120,6 +125,86 @@
 
 
 <script>
+	function validatePicture() {
+		const accepted_exts = ['bmp', 'cur', 'gif', 'png', 'apng', 'ico',
+							   'jfif', 'jpe', 'jpg', 'jpeg', 'webp'];
+		var picture = document.getElementById("id_profile_picture").value;
+		var clear = document.getElementById("clear-profile");
+		var error = document.getElementById("picture-error");
+		var errorRemove = document.getElementsByClassName("error-message");
+		var successRemove = document.getElementsByClassName("success-message");
+
+		if (picture != "") {
+			var parts = picture.split(".");
+			var ext = parts[parts.length - 1];
+			
+			if (!accepted_exts.includes(ext)) {
+				for (i = 0; i < errorRemove.length; i++) { errorRemove[i].innerHTML = ""; }
+				for (i = 0; i < successRemove.length; i++) { successRemove[i].innerHTML = ""; }
+				error.innerHTML = "<br />Invalid file format - please select an image.";
+				return false;
+			} else {
+				return true;
+			}
+		} else if (!clear.checked){
+			for (i = 0; i < errorRemove.length; i++) { errorRemove[i].innerHTML = ""; }
+			for (i = 0; i < successRemove.length; i++) { successRemove[i].innerHTML = ""; }
+			error.innerHTML = "<br />No file chosen. To clear your profile picture please choose Clear.";
+			return false;
+		} else {
+			return true;
+		}
+	}
+
+	function validateUsername() {
+		const usernamePattern = /^[\w.@+-]+$/;
+		var username = document.getElementById("id_username").value;
+		var error = document.getElementById('username-error');
+		var errorRemove = document.getElementsByClassName("error-message");
+		var successRemove = document.getElementsByClassName("success-message");
+		
+		if (!usernamePattern.test(username)) {
+			for (i = 0; i < errorRemove.length; i++) { errorRemove[i].innerHTML = ""; }
+			for (i = 0; i < successRemove.length; i++) { successRemove[i].innerHTML = ""; }
+			error.innerHTML = "Username may only contain letters, numbers, and @ . + - _ characters.";
+			return false;
+		} else {
+			return true;
+		}
+	}
+	
+	function validatePassword() {
+		var password = document.getElementById("id_new_password1").value;
+		var confirmPassword = document.getElementById("id_new_password2").value;
+		var error = document.getElementById('password-error');
+		var errorRemove = document.getElementsByClassName("error-message");
+		var successRemove = document.getElementsByClassName("success-message");
+		
+		if (password.length < 8) {
+			for (i = 0; i < errorRemove.length; i++) { errorRemove[i].innerHTML = ""; }
+			for (i = 0; i < successRemove.length; i++) { successRemove[i].innerHTML = ""; }
+			error.innerHTML = "New password too short - it must contain at least 8 characters.";
+			return false;
+		} else if (!isNaN(password)) {
+			for (i = 0; i < errorRemove.length; i++) { errorRemove[i].innerHTML = ""; }
+			for (i = 0; i < successRemove.length; i++) { successRemove[i].innerHTML = ""; }
+			error.innerHTML = "New password too simple - it must contain more than just numeric characters.";
+			return false;
+		} else if (password.toLowerCase() == username.toLowerCase()) {
+			for (i = 0; i < errorRemove.length; i++) { errorRemove[i].innerHTML = ""; }
+			for (i = 0; i < successRemove.length; i++) { successRemove[i].innerHTML = ""; }
+			error.innerHTML = "Username and new password too similar - try something different.";
+			return false;
+		} else if (password != confirmPassword) {
+			for (i = 0; i < errorRemove.length; i++) { errorRemove[i].innerHTML = ""; }
+			for (i = 0; i < successRemove.length; i++) { successRemove[i].innerHTML = ""; }
+			error.innerHTML = "New passwords don't match - please try again.";
+			return false;
+		} else {
+			return true;
+		}
+	}
+
 	function confirmAccountDelete() {
 		var button = document.getElementById("del-account-btn");
 		var label = document.getElementById("del-account-text");

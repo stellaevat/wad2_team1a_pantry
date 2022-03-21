@@ -1368,6 +1368,10 @@ ol li::marker {
 	.edit-profile-area {
 		margin-top: 20px;
 	}
+	
+	#form-edit-img .error-message, #form-edit-img .success-message {
+		bottom: -10px;
+	}
 }
 
 @media only screen and (max-width: 1100px) {

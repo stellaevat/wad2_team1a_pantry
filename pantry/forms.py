@@ -2,7 +2,6 @@ from django import forms
 from django.forms import TextInput, EmailInput, NumberInput, PasswordInput, ClearableFileInput
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth.models import User
-from django.core import validators
 from pantry.models import UserProfile, Recipe, Category, IngredientList
 from pantry.custom_widgets import ColumnCheckboxSelectMultiple
 
@@ -91,7 +90,9 @@ class EditProfilePicture(forms.ModelForm):
     profile_picture = forms.ImageField(widget=ClearableFileInput(attrs={"class":"picture-upload"}))
 
     def is_valid(self,request):
-        accepted_exts = validators.get_available_image_extensions()
+        # Image file types widely supported by web browsers
+        accepted_exts = ['bmp', 'cur', 'gif', 'png', 'apng', 'ico',
+                         'jfif', 'jpe', 'jpg', 'jpeg', 'webp']
         if 'profile_picture' in request.FILES:
             ext = request.FILES["profile_picture"].name.split(".")[-1]
             if ext in accepted_exts:
