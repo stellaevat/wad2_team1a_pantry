@@ -15,15 +15,15 @@
 			<form id="form-edit-img" method="post" action="{% url 'pantry:edit_profile' user.username %}" enctype="multipart/form-data" onsubmit="return validateProfilePicture()">
 				{% csrf_token %}
 				{% if user|get_profile_picture %}
-				<img class="profile-picture-big" src="/media/{{ user|get_profile_picture }}" alt="User {{ user.username }}" />
+				<img class="profile-picture-big" src="/media/{{ user|get_profile_picture }}" alt="User {{ user.username }}" id="pfp-edit-profile" />
 				{% else %}
-				<img class="profile-picture-big" src="{% static 'img/profile-picture-default.png' %}" alt="User profile" />
+				<img class="profile-picture-big" src="{% static 'img/profile-picture-default.png' %}" alt="User profile" id="pfp-edit-profile" />
 				{% endif %}<br />
 				
 				<div id="change-or-clear">
 					Profile picture:&nbsp;
 					<div class="central-field">
-						<input class="picture-upload" type="file" name="profile_picture" accept="image/*" id="id_profile_picture" />
+						<input class="picture-upload" type="file" name="profile_picture" accept="image/*" id="id_profile_picture" onchange="changePicture()"/>
 						|&nbsp;&nbsp;&nbsp;&nbsp;
 						<input class="checkbox" id="clear-profile" type="checkbox" name="profile_picture-clear" id="profile_picture-clear_id" />
 						<label for="profile_picture-clear_id" id="clear-profile-label">Clear&nbsp;&nbsp;</label>
@@ -122,5 +122,9 @@
 	<h1 class="central-heading">Invalid user</h1>
 	<p class="info-message">Make sure you have the right spelling, and that you're signed in to the correct account!</p>
 {% endif %}
-
+<script>
+function changePicture(){
+	document.getElementById('pfp-edit-profile').setAttribute("src",URL.createObjectURL(event.target.files[0]));
+}
+</script>
 {% endblock %}
