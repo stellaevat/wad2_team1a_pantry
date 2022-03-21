@@ -134,8 +134,11 @@ function clearPicture(){
 	if (check.checked){
 		pfp = document.getElementById("pfp-edit-profile").src;
 		document.getElementById('pfp-edit-profile').setAttribute("src","{% static 'img/profile-picture-default.png' %}");
-	}else{
+		document.getElementById("id_profile_picture").value = "";
+	}else if (document.getElementById("id_profile_picture").value != ""){
 		document.getElementById('pfp-edit-profile').setAttribute("src",pfp);
+	}else{
+		document.getElementById('pfp-edit-profile').setAttribute("src","{% static 'img/profile-picture-default.png' %}");
 	}
 	
 }
