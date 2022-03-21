@@ -139,7 +139,7 @@ def add_ingredient(ingredient):
     return i
 
 def add_user(user):
-    path = os.getcwd() + "\\media\\profile_pictures\\"
+    path = "profile_pictures/"
     u = User.objects.get_or_create(username=user["username"], password=user["password"])[0]
     u.set_password(user["password"])
     u.save()
@@ -153,7 +153,7 @@ def add_cat(cat):
     return c
 
 def add_recipe(recipe):
-    path = os.getcwd() + "\\media\\recipe_pictures\\"
+    path = "recipe_pictures/"
     r = Recipe.objects.get_or_create(title=recipe["name"], author=User.objects.get(username=recipe["author"]), steps=recipe["steps"], prep_time=recipe["prep_time"], cook_time=recipe["cook_time"], servings = recipe["servings"], difficulty=recipe["difficulty"], pub_date = recipe["pub_date"], stars = recipe["stars"], picture=path+recipe["filename"])[0]
     for category in recipe["category"]:
         r.category.add(Category.objects.get(name=category))
