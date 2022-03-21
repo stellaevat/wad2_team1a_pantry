@@ -260,10 +260,8 @@ function del(){
 
 // SEARCH RESULTS PAGE
 function searchPersist(){
-	document.getElementById("search-bar-id").setAttribute("value", searched)
+	document.getElementById("search-bar-id").setAttribute("value", searched);
 }
-
-window.onload = searchPersist;
 
 
 // SEARCH BY INGREDIENT & ADD RECIPE INGREDIENTS PAGES
@@ -305,4 +303,8 @@ function renderCollapsible() {
 	}
 }
 
-window.onload = renderCollapsible;
+
+window.onload = function () {
+	renderCollapsible();
+	searchPersist();
+}
