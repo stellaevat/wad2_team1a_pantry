@@ -1,41 +1,6 @@
 const accepted_exts = ['bmp', 'cur', 'gif', 'png', 'apng', 'ico', 'jfif', 'jpe', 'jpg', 'jpeg', 'webp'];
 
-function validateSelection() {
-	var checkboxes = document.getElementsByClassName("checkbox");
-	var selected = false;
-	var error = document.getElementsByClassName('error-message')[0];
-	
-	for (i = 0; i < checkboxes.length; i++) {
-		if (checkboxes[i].checked) {
-			selected = true;
-			break;
-		}
-	}
-	
-	if (!selected) {
-		error.innerHTML = "You need to select at least one ingredient!";
-		return false;
-	} else {
-		return true;
-	}
-}
-
-function validateRecipePicture() {
-	var picture = document.getElementById("recipe-pic-upload").value;
-	var parts = picture.split(".");
-	var ext = parts[parts.length - 1];
-	var error = document.getElementById("picture-error");
-	var errorRemove = document.getElementsByClassName("error-message");
-		
-	if (!accepted_exts.includes(ext)) {
-		for (i = 0; i < errorRemove.length; i++) { errorRemove[i].innerHTML = ""; }
-		error.innerHTML = "Invalid recipe picture - please select an image file.<br />";
-		return false;
-	} else {
-		return true;
-	}
-}
-
+// EDIT PROFILE PAGE
 function validateProfilePicture() {
 	var picture = document.getElementById("id_profile_picture").value;
 	var clear = document.getElementById("clear-profile");
@@ -151,6 +116,56 @@ function delAccount(){
 	window.location = "/pantry/user/" + username + "/account_deleted/";
 }
 
+
+// ADD RECIPE METHOD PAGE
+function validateRecipePicture() {
+	var picture = document.getElementById("recipe-pic-upload").value;
+	var parts = picture.split(".");
+	var ext = parts[parts.length - 1];
+	var error = document.getElementById("picture-error");
+	var errorRemove = document.getElementsByClassName("error-message");
+		
+	if (!accepted_exts.includes(ext)) {
+		for (i = 0; i < errorRemove.length; i++) { errorRemove[i].innerHTML = ""; }
+		error.innerHTML = "Invalid recipe picture - please select an image file.<br />";
+		return false;
+	} else {
+		return true;
+	}
+}
+
+
+// SIGN UP PAGE
+function validateCredentials() {
+	const usernamePattern = /^[\w.@+-]+$/;
+	
+	var username = document.getElementById("id_username").value;
+	var password = document.getElementById("id_password").value;
+	var confirmPassword = document.getElementById("id_confirm_password").value;
+	var error = document.getElementsByClassName('error-message')[0];
+	
+	if (!usernamePattern.test(username)) {
+		error.innerHTML = "Username may only contain letters, numbers, and @ . + - _ characters.";
+		return false;
+	} else if (password.length < 8) {
+		error.innerHTML = "Password too short - it must contain at least 8 characters.";
+		return false;
+	} else if (!isNaN(password)) {
+		error.innerHTML = "Password too simple - it must contain more than just numeric characters.";
+		return false;
+	} else if (password.toLowerCase() == username.toLowerCase()) {
+		error.innerHTML = "Username and password too similar - try something different.";
+		return false;
+	} else if (password != confirmPassword) {
+		error.innerHTML = "Passwords don't match - please try again.";
+		return false;
+	} else {
+		return true;
+	}
+}
+
+
+// RECIPE PAGE
 function star() {
 	$.ajax({
 		url: 'star/' + username,
@@ -240,36 +255,34 @@ function del(){
 	});
 }
 
-function validateCredentials() {
-	const usernamePattern = /^[\w.@+-]+$/;
-	
-	var username = document.getElementById("id_username").value;
-	var password = document.getElementById("id_password").value;
-	var confirmPassword = document.getElementById("id_confirm_password").value;
+
+// SEARCH RESULTS PAGE
+function searchPersist(){
+	document.getElementById("search-bar-id").setAttribute("value", searched)
+}
+
+window.onload = searchPersist;
+
+
+// SEARCH BY INGREDIENT & ADD RECIPE INGREDIENTS PAGES
+function validateSelection() {
+	var checkboxes = document.getElementsByClassName("checkbox");
+	var selected = false;
 	var error = document.getElementsByClassName('error-message')[0];
 	
-	if (!usernamePattern.test(username)) {
-		error.innerHTML = "Username may only contain letters, numbers, and @ . + - _ characters.";
-		return false;
-	} else if (password.length < 8) {
-		error.innerHTML = "Password too short - it must contain at least 8 characters.";
-		return false;
-	} else if (!isNaN(password)) {
-		error.innerHTML = "Password too simple - it must contain more than just numeric characters.";
-		return false;
-	} else if (password.toLowerCase() == username.toLowerCase()) {
-		error.innerHTML = "Username and password too similar - try something different.";
-		return false;
-	} else if (password != confirmPassword) {
-		error.innerHTML = "Passwords don't match - please try again.";
+	for (i = 0; i < checkboxes.length; i++) {
+		if (checkboxes[i].checked) {
+			selected = true;
+			break;
+		}
+	}
+	
+	if (!selected) {
+		error.innerHTML = "You need to select at least one ingredient!";
 		return false;
 	} else {
 		return true;
 	}
-}
-
-function searchPersist(){
-	document.getElementById("search-bar-id").setAttribute("value", searched)
 }
 
 //This has been slightly modified from w3schools.org
@@ -290,5 +303,4 @@ function renderCollapsible() {
 	}
 }
 
-window.onload = searchPersist;
 window.onload = renderCollapsible;

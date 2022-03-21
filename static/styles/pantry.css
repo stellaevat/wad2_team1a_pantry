@@ -229,6 +229,7 @@ button {
 	width: 100%;
 }
 
+
 /* NAVBAR & TABS */
 .navbar {
 	position: fixed;
@@ -371,6 +372,7 @@ button {
 	color: var(--burgundy);
 }
 
+
 /* RECIPE THUMBNAILS */
 /* Small grid */
 .recipes-small-two {
@@ -414,7 +416,6 @@ button {
 .secondary-info-small i {
 	font-size: 13px;
 }
-
 
 /* Big grid */
 .recipes-big-three {
@@ -488,7 +489,6 @@ button {
 	justify-content: space-between;
 	opacity: 0.8;
 }
-
 
 
 /* VERTICALS */
@@ -593,6 +593,7 @@ button {
 	z-index: 1;
 }
 
+
 /* DROPDOWN (SORTER)
 (Inspired by the w3schools dropdown menu section) */
 
@@ -646,6 +647,7 @@ button {
 	visibility: visible;
 	opacity: 0.9;
 }
+
 
 /* DROPDOWN (CATEGORIES)*/
 .dropdown-menu-cats {
@@ -703,6 +705,7 @@ button {
 	background-color: white;
 }
 
+
 /* USER PROFILE */
 #profile-banner {
 	opacity: 0.2;
@@ -747,6 +750,7 @@ button {
 	z-index: 1;
 }
 
+
 /* USER RECIPES PAGE */
 .cat-heading p {
 	font-weight: normal;
@@ -783,7 +787,7 @@ button {
 
 
 /* RECIPE PAGE */
-
+/* Header */
 .banner-text {
 	position: relative;
 	bottom: 200px;
@@ -834,6 +838,7 @@ button {
 	font-size: 20px;
 }
 
+/* Star/Delete buttons */
 #star-btn, #del-btn, #del-btn-ext {
 	width: 130px;
 	height: 60px;
@@ -885,23 +890,26 @@ button {
 	font-size: 28px;
 }
 
-#del-icon i, #del-icon-ext i {
-	font-size: 24px;
-	position: relative;
-	top: 3px;
-}
-
-#del-icon-ext i {
-	top: 4.5px;
-	right: 4px;
-}
-
 #del-icon, #del-icon-ext {
 	position: relative;
 	left: 17px;
 	font-style: bold;
 }
 
+#del-icon i {
+	position: relative;
+	top: 3px;
+	font-size: 24px;
+}
+
+#del-icon-ext i {
+	position: relative;
+	top: 4.5px;
+	right: 4px;
+	font-size: 24px;
+}
+
+/* Secondary info */
 .category-tags {
 	padding: 0px calc(35vw - 300px) 5px calc(35vw - 300px);
 	display: flex;
@@ -927,77 +935,6 @@ button {
 	position: relative;
 	top: 10px;
 	padding-right: 10px;
-}
-
-.share-buttons {
-	margin: 10px 5px 0px 0px;
-	line-height: 30px;
-}
-
-.share-buttons *{
-	float: left;
-	padding-right: 7px;
-	height: 27px;
-	width: 27px;
-}
-
-.share-buttons .info-message {
-	color: #cbc9c9;
-	padding-right: 20px;
-	text-align: right;
-}
-
-i#share {
-	text-align:right;
-	font-weight: bold;
-	position: relative;
-	margin-right: 15px;
-	top: 9px;
-}
-
-.verticals-left-narrow {
-    position: relative;
-	padding: 15px calc(35vw - 250px) 15px calc(35vw - 300px);
-	display:grid;
-	grid-template-columns: 1fr 2fr;
-	column-gap: 15px;
-}
-
-.verticals-left-narrow * {
-    position: relative;
-}
-
-.verticals-left-narrow .vertical-featured {
-	width: calc(15vw + 130px);
-	max-width: 300px;
-	overflow: hidden;
-	margin: 15px 0px 20px 0px;
-}
-
-.vertical-plus {
-	margin-bottom: -10px;
-}
-
-.ingredient {
-	padding: 5px 25px 5px 25px;
-	text-align: left;
-}
-
-.vertical {
-	margin-left: 15px;
-}
-
-.long-text {
-	text-align: justify;
-	line-height: 24pt;
-}
-
-ol li {
-	padding-left: 5px;
-}
-
-ol li::marker {
-	font-weight: bold;
 }
 
 .pub-data {
@@ -1031,6 +968,80 @@ ol li::marker {
 	text-decoration: underline;
 	text-decoration-style:dotted;
 }
+
+
+/* Main content */
+.verticals-left-narrow {
+    position: relative;
+	padding: 15px calc(35vw - 250px) 15px calc(35vw - 300px);
+	display:grid;
+	grid-template-columns: 1fr 2fr;
+	column-gap: 15px;
+}
+
+.verticals-left-narrow * {
+    position: relative;
+}
+
+.verticals-left-narrow .vertical-featured {
+	width: calc(15vw + 130px);
+	max-width: 300px;
+	overflow: hidden;
+	margin: 15px 0px 20px 0px;
+}
+
+.vertical-plus {
+	margin-bottom: -10px;
+}
+
+.share-buttons {
+	margin: 10px 5px 0px 0px;
+	line-height: 30px;
+}
+
+.share-buttons *{
+	float: left;
+	padding-right: 7px;
+	height: 27px;
+	width: 27px;
+}
+
+.share-buttons .info-message {
+	color: #cbc9c9;
+	padding-right: 20px;
+	text-align: right;
+}
+
+i#share {
+	text-align:right;
+	font-weight: bold;
+	position: relative;
+	margin-right: 15px;
+	top: 9px;
+}
+
+.ingredient {
+	padding: 5px 25px 5px 25px;
+	text-align: left;
+}
+
+.vertical {
+	margin-left: 15px;
+}
+
+.long-text {
+	text-align: justify;
+	line-height: 24pt;
+}
+
+ol li {
+	padding-left: 5px;
+}
+
+ol li::marker {
+	font-weight: bold;
+}
+
 
 
 /* ADD RECIPE METHOD PAGE */
@@ -1145,6 +1156,7 @@ ol li::marker {
 	white-space: nowrap;
 	overflow:hidden;
 }
+
 
 /* EDIT PROFILE PAGE */
 #edit-profile {
@@ -1276,8 +1288,8 @@ ol li::marker {
 	bottom: 15px;
 }
 
-/* WINDOW RESIZE */
 
+/* WINDOW RESIZE */
 @media only screen and (max-width: 610px) {
 	#navbarh-left-2, .tab-secondary-open, .tab-secondary {
 		display: none;
