@@ -3,7 +3,11 @@
 {% load pantry_template_tags %}
 
 {% block title_block %}
-	{{ category.name }}
+	{% if user_accessed %}
+		Recipes By {{ user_accessed }}
+	{% else %}
+		Recipes
+	{% endif %}
 {% endblock %}
 
 {% block body_block %}
