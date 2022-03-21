@@ -469,6 +469,11 @@ def account_deleted(request, username):
         
         if UserProfile.objects.filter(user=user):
             user_profile = UserProfile.objects.get(user=user)
+            # Delete all recipe pictures from server before recipes themselves deleted by cascade
+            for recipe in Recipe.objects.filter(author=user):
+                if recipe.picture:
+                    recipe.picture.delete()
+            # Delete user profile picture from server too
             if user_profile.profile_picture != 'profile-picture-default.png':
                 user_profile.profile_picture.delete(save = False)
             
@@ -559,6 +564,11 @@ def add_recipe_method(request):
                 recipe.save()
                 # Save categories now that recipe has id
                 recipe_form.save_m2m()
+                # Add categories that are based on recipe info, if they exist
+                if Category.objects.filter(name="Under 30'") and recipe.cook_time + recipe.prep_time <= 30:
+                    recipe.category.add(Category.objects.get(name="Under 30'"))
+                if Category.objects.filter(name="Easy Meals") and recipe.difficulty == "easy":
+                    recipe.category.add(Category.objects.get(name="Easy Meals"))
                 recipe.ingredients.add(*ingredients)
                 recipe.save()
                 # Add ingredients, quantities, plurals

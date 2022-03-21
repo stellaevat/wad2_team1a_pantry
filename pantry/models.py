@@ -29,6 +29,9 @@ class Category(models.Model):
     slug = models.SlugField(unique=True)
     # Whether the category will be used as a tab
     tab = models.BooleanField(default=False)
+    # Whether users adding recipes will be able to select this category as a tag
+    # Alternatively will be added automatically based on recipe info (e.g. time/difficulty)
+    selectable = models.BooleanField(default=True)
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)
