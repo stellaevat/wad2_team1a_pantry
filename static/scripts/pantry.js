@@ -15,7 +15,7 @@ function validateProfilePicture() {
 		if (!accepted_exts.includes(ext)) {
 			for (i = 0; i < errorRemove.length; i++) { errorRemove[i].innerHTML = ""; }
 			for (i = 0; i < successRemove.length; i++) { successRemove[i].innerHTML = ""; }
-			error.innerHTML = "Invalid file format - please select an image.";
+			error.innerHTML = "<br />Invalid file format - please select an image.";
 			document.getElementById("id_profile_picture").value = null;
 			return false;
 		} else {
