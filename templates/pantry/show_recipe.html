@@ -4,7 +4,11 @@
 {% load social_share_template_tags %}
 
 {% block title_block %}
-	{{ recipe.title }}
+	{% if recipe %}
+		{{ recipe.title }}
+	{% else %}
+		Recipe
+	{% endif %}
 {% endblock %}
 
 {% block body_block %}
