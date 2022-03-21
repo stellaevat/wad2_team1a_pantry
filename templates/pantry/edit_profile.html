@@ -12,7 +12,7 @@
 		<img class="banner" id="edit-profile-banner" src="{% static 'img/banner-default.png' %}" alt="User profile">
 		<div class="profile-picture-area">
 			<h1 class="central-heading">Edit Profile</h1><br />
-			<form id="form-edit-img" method="post" action="{% url 'pantry:edit_profile' user.username %}" enctype="multipart/form-data" onsubmit="return validatePicture()">
+			<form id="form-edit-img" method="post" action="{% url 'pantry:edit_profile' user.username %}" enctype="multipart/form-data" onsubmit="return validateProfilePicture()">
 				{% csrf_token %}
 				{% if user|get_profile_picture %}
 				<img class="profile-picture-big" src="/media/{{ user|get_profile_picture }}" alt="User {{ user.username }}">
@@ -125,7 +125,7 @@
 
 
 <script>
-	function validatePicture() {
+	function validateProfilePicture() {
 		const accepted_exts = ['bmp', 'cur', 'gif', 'png', 'apng', 'ico',
 							   'jfif', 'jpe', 'jpg', 'jpeg', 'webp'];
 		var picture = document.getElementById("id_profile_picture").value;
