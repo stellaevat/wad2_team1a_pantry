@@ -9,25 +9,25 @@
 {% block body_block %}
 {% if user == user_accessed %}
 	<div class="header-featured">
-		<img class="banner" id="profile-banner" src="{% static 'img/banner-default.png' %}" alt="User profile"><br />
+		<img class="banner" id="profile-banner" src="{% static 'img/banner-default.png' %}" alt="User profile" /><br />
 		<div class="profile-picture-area">
 			{% if profile_picture %}
-			<img class="profile-picture-big" src="/media/{{ user_profile.profile_picture }}" alt="User {{ user.username }}">
+			<img class="profile-picture-big" src="/media/{{ user_profile.profile_picture }}" alt="User {{ user.username }}" />
 			{% else %}
-			<img class="profile-picture-big" src="{% static 'img/profile-picture-default.png' %}" alt="User profile">
+			<img class="profile-picture-big" src="{% static 'img/profile-picture-default.png' %}" alt="User profile" />
 			{% endif %}
 			<h1 class="central-heading" id="username">{{ user.username }}</h1>
 			<p class="info-message">Joined {{ user.date_joined|date:'M Y' }}</p><br />
 			<div class="profile-buttons">
 				<form action="{% url 'pantry:add_recipe_ingredients' %}">
 					<button class="btn-inverted" type="submit" value="Add Recipe">
-						<img class="icon-big" id="add" src="{% static 'img/plus-dark.png' %}" alt="Add recipe">
+						<i class="fa-solid fa-plus fa-1x"></i>
 						Add recipe
 					</button>
 				</form>
 				<form action="{% url 'pantry:edit_profile' user.username %}">
 					<button class="btn-inverted" type="submit" value="Edit Profile">
-						<img class="icon-big" id="edit" src="{% static 'img/pencil-dark.png' %}" alt="Edit profile">
+						<i class="fa-solid fa-pencil fa-sm"></i>
 						Edit profile
 					</button>
 				</form>
@@ -74,26 +74,6 @@
 	<h1 class="central-heading">Invalid user</h1>
 	<p class="info-message">Make sure you have the right spelling, and that you're signed in to the correct account!</p>
 {% endif %}
-
-<script>
-	var buttons = document.getElementsByClassName("btn-inverted");
-	var add = document.getElementById("add");
-	var edit = document.getElementById("edit");
-
-	buttons[0].addEventListener("mouseover", function(event) {
-		add.src = "{% static 'img/plus-light.png' %}"
-	});
-	buttons[0].addEventListener("mouseleave", function(event) {
-		add.src = "{% static 'img/plus-dark.png' %}"
-	});
-	
-	buttons[1].addEventListener("mouseover", function(event) {
-		edit.src = "{% static 'img/pencil-light.png' %}"
-	});
-	buttons[1].addEventListener("mouseleave", function(event) {
-		edit.src = "{% static 'img/pencil-dark.png' %}"
-	});
-</script>
 
 {% endblock %}
 

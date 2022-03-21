@@ -73,11 +73,12 @@ def get_number(ingredient, plural):
 def format_time(mins, short=False):
     time = ""
     min_marker = " '" if short else " min"
+    hour_marker = "h " if short else " h "
  
     hours = int(mins / 60)
     mins = mins % 60
     if hours:
-        time += str(hours) + " h "
+        time += str(hours) + hour_marker
     if mins:
         time += str(mins) + min_marker
             

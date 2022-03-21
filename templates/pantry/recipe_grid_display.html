@@ -3,7 +3,7 @@
 
 <a class="recipe-grid-{{ size }}" href="{% url 'pantry:show_recipe' recipe.slug %}">
 	{% if recipe.picture %}
-	<img class="recipe-thumbnail-{{ size }}" src="/media/{{ recipe.picture }}" alt="{{ recipe.name }}"><br />
+	<img class="recipe-thumbnail-{{ size }}" src="/media/{{ recipe.picture }}" alt="{{ recipe.name }}" /><br />
 	{% endif %}
 	<div class="thumbnail-info">
 		<div class="main-info-{{ size }}">
@@ -11,11 +11,11 @@
 		</div>
 		<div class="secondary-info-{{ size }}">
 			<div class="star-info-{{ size }}">
-				<img class="icon-{{ size }}" src="{% static 'img/star-light.png' %}" alt="Stars">
+				<i class="fa-solid fa-star-half-stroke"></i>
 				{{ recipe.stars }}
 			</div>
 			<div class="time-info-{{ size }}">
-				<img class="icon-{{ size }}" src="{% static 'img/timer-light.png' %}" alt="Cooking time">
+				<i class="fa-solid fa-clock-rotate-left"></i>
 				{{ time|format_time:True }}
 			</div>
 			{% if percent %}

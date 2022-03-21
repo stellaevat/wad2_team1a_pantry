@@ -11,7 +11,7 @@
 	<div class="cat-header">
 		{% if profile_picture %}
 		<h1 class="cat-heading" id="with-picture">
-			<img class="profile-picture-big" id="user-recipe-pic" src="/media/{{ profile_picture }}" alt="Profile">
+			<img class="profile-picture-big" id="user-recipe-pic" src="/media/{{ profile_picture }}" alt="Profile" />
 			Recipes by<span>{{ user_accessed }}</span>
 			<p class="info-message">Joined in {{ user_joined|date:'F Y' }}</p>
 		</h1>

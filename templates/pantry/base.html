@@ -10,10 +10,12 @@
 			{% endblock %}
 			 - Pantry
 		</title>
-		<script type="text/javascript" src="{{ STATIC_URL }} /static/jquery-3.6.0.js"></script> 
-		<script type="text/javascript" src="{{ STATIC_URL }} /static/scripts.js"></script> 
-		<link rel="icon" type="image/x-icon" href="{% static 'img/favicon.ico' %}">
-		<link rel="stylesheet" href="{% static 'styles/pantry.css' %}" type="text/css">	
+		<script>var username = "{{ user.username }}"; var recipe_name_slug = "{{ recipe.slug }}"; var searched = "{{ searched }}";</script>
+		<script type="text/javascript" src="{% static 'scripts/jquery-3.6.0.js' %}"></script> 
+		<script type="text/javascript" src="{% static 'scripts/pantry.js' %}"></script> 
+		<script src="https://kit.fontawesome.com/61773ea177.js" crossorigin="anonymous"></script>
+		<link rel="icon" type="image/x-icon" href="{% static 'img/favicon.ico' %}" />
+		<link rel="stylesheet" href="{% static 'styles/pantry.css' %}" type="text/css" />
 		<meta content="width=device-width, initial-scale=1.0" name="viewport" />
 	</head>
 	
@@ -26,10 +28,12 @@
 				{% endif %}
 			</div>
 
-			<form class="search-bar-area" method="post" action="{% url 'pantry:search_results' %}" >
+			<form class="search-bar-area" method="post" action="{% url 'pantry:search_results' %}">
 				{% csrf_token %}
-				<input class="search-bar" id="search-bar-id" type="search" placeholder="Search recipes" aria-label="Search" name="searched" required/>
-				<button class="search-btn" type="submit" name="search-submit"><img src="{% static 'img/magnifying-glass-light.png' %}" alt="Search"/></button>
+				<input class="search-bar" id="search-bar-id" type="search" placeholder="Search recipes" aria-label="Search" name="searched" required />
+				<button class="search-btn" type="submit" name="search-submit">
+					<i class="fa-solid fa-magnifying-glass fa-sm"></i>
+				</button>
 			</form>
 			
 			<div class="navbar-right-align">
