@@ -1,0 +1,128 @@
+{% extends 'pantry/base.html' %}
+{% load staticfiles %}
+{% load pantry_template_tags %}
+
+{% block title_block %}
+	Edit Profile
+{% endblock %}
+
+{% block body_block %}
+{% if img_form %}
+	<div class="header-featured" id="edit-profile">
+		<img class="banner" id="edit-profile-banner" src="{% static 'img/banner-default.png' %}" alt="User profile" />
+		<div class="profile-picture-area">
+			<h1 class="central-heading">Edit Profile</h1><br />
+			<form id="form-edit-img" method="post" action="{% url 'pantry:edit_profile' user.username %}" enctype="multipart/form-data" onsubmit="return validateProfilePicture()">
+				{% csrf_token %}
+				{% if user|get_profile_picture %}
+				<img class="profile-picture-big" src="/media/{{ user|get_profile_picture }}" alt="User {{ user.username }}" id="pfp-edit-profile" />
+				{% else %}
+				<img class="profile-picture-big" src="{% static 'img/profile-picture-default.png' %}" alt="User profile" id="pfp-edit-profile" />
+				{% endif %}<br />
+				
+				<div id="change-or-clear">
+					Profile picture:&nbsp;
+					<div class="central-field">
+						<input class="picture-upload" type="file" name="profile_picture" accept="image/*" id="id_profile_picture" onchange="changePreview()"/>
+						|&nbsp;&nbsp;&nbsp;&nbsp;
+						<input class="checkbox" id="clear-profile" type="checkbox" name="profile_picture-clear" id="profile_picture-clear_id" onchange="clearPreview()" />
+						<label for="profile_picture-clear_id" id="clear-profile-label">Clear&nbsp;&nbsp;</label>
+					</div>
+					<input class="btn-continue medium-btn" type="submit" name="img-submit" value="Update" />
+				</div>
+				
+				{% if img_error %}
+					<span class="error-message"><br />{{ img_error }}</span>
+				{% elif img_success %}
+					<span class="success-message" id="picture-success"><br />{{ img_success }}</span>
+				{% endif %}
+				<span class="error-message" id="picture-error"></span>
+				
+			</form>	
+		</div>
+	</div>
+	
+	<div class="edit-profile-area">
+		<form id="form-edit-username" method="post" action="{% url 'pantry:edit_profile' user.pk|get_correct_username %}" enctype="multipart/form-data" onsubmit="return validateUsername()">
+			{% csrf_token %}
+			
+			<div class="change-field only-field">
+				<div class="prompt">Username:</div>
+				<span class="field">{{ username_form.username }}</span>
+				<input class="btn-continue medium-btn" type="submit" name="username-submit" value="Update" />
+			</div><br/>
+			
+			{% if username_error %}
+				<span class="error-message">{{ username_error }}</span>
+			{% elif username_success %}
+				<span class="success-message">{{ username_success }}</span>
+			{% endif %}
+			<span class="error-message" id="username-error"></span>
+
+		</form>
+		
+		<form id="form-edit-email" method="post" action="{% url 'pantry:edit_profile' user.username %}" enctype="multipart/form-data">
+			{% csrf_token %}
+			<div class="change-field">
+				<div class="prompt">Email: </div>
+				<span class="field">{{ email_form.email }}</span>
+				<input class="btn-continue medium-btn" type="submit" name="email-submit" value="Update" />
+			</div><br />
+			
+			{% if email_error %}
+				<span class="error-message">{{ email_error }}</span>
+			{% elif email_success %}
+				<span class="success-message">{{ email_success }}</span>
+			{% endif %}
+		</form>
+		
+		<form id="form-edit-password" method="post" action="{% url 'pantry:edit_profile' user.username %}" enctype="multipart/form-data" onsubmit="return validatePassword()">
+			{% csrf_token %}
+			
+			<div class="change-field">
+				<div class="prompt">Password:</div>
+				<span class="field">{{ pass_form.old_password }}</span>
+				<input class="btn-continue medium-btn" type="submit" name="pass-submit" value="Update" />
+			</div>
+			<div class="change-field only-field">
+				<div class="prompt"></div>
+				<span class="field">{{ pass_form.new_password1 }}</span>
+				<span class="medium-btn"></span>
+			</div>
+			<div class="change-field only-field">
+				<div class="prompt"></div>
+				<span class="field">{{ pass_form.new_password2 }}</span>
+				<span class="medium-btn"></span>
+			</div><br />
+			
+			{% if pass_error %}
+				<span class="error-message">{{ pass_error }}</span>
+			{% elif pass_success %}
+				<span class="success-message">{{ pass_success }}</span>
+			{% endif %}
+			<span class="error-message" id="password-error"></span>
+				
+		</form>
+	</div>
+
+	<p class="error-message" id="del-warning"></p>
+	<div class="edit-profile-btns">
+		<div id="delete-account">
+			<button class="btn-inverted" id="del-account-btn" type="button" onclick="confirmAccountDelete()">
+				<span id="del-account-text">Delete account</span>
+			</button>
+		</div>
+		<form id="done-editing" method="post" action = "{% url 'pantry:user_profile' user.username %}">
+			{% csrf_token %}
+			<button class="btn-back" type="submit">Back</button>
+		</form>
+	</div>
+
+{% else %}
+	<h1 class="central-heading">Invalid user</h1>
+	<p class="info-message">Make sure you have the right spelling, and that you're signed in to the correct account!</p>
+{% endif %}
+<script>
+
+</script>
+{% endblock %}

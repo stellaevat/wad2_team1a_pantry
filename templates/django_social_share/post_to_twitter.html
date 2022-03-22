@@ -1,0 +1,8 @@
+{% load staticfiles %}
+{% load pantry_template_tags %}
+
+<div class="tweet-this">
+    <a href="{{ tweet_url }}" class="meta-act-link meta-tweet {{link_class}}" target="_blank">
+		<img class="icon-xl" src="{% static 'img/share-twitter.png' %}" alt="Share on Twitter">
+	</a>
+</div>

@@ -1,5 +1,9 @@
+import os
+from os.path import exists
+from pathlib import Path
 from django import template
 from pantry.models import Category, Recipe, IngredientList, UserProfile
+from django.contrib.auth.models import User
 register = template.Library()
 
 @register.inclusion_tag('pantry/tabs.html')
@@ -35,16 +39,63 @@ def get_profile_picture(user):
         return user_profile.profile_picture
     except:
         return None
+        
+@register.filter
+def get_profile_picture_source(user):
+    try:
+        user_profile = UserProfile.objects.get(user=user)
+        return user_profile.profile_picture.url
+    except:
+        return None
+
+@register.filter
+def check_if_starred(user,recipe):
+    try:
+        user_profile = UserProfile.objects.get(user=user)
+        if recipe in Recipe.objects.filter(users=user_profile):
+            return True
+        else:
+            return False
+    except:
+        return False
     
 @register.filter
 def get_recipes_by_author(user):
     return Recipe.objects.filter(author=user)
     
 @register.filter
-def get_item(dictionary, key):
+def get_item(iterable, key):
     try:
-        return dictionary[key]
+        return iterable[key]
     except:
         return ""
     
-# Recipe thumbnail, include new paras, dropdown display(?)
+@register.filter
+def get_number(ingredient, plural):
+    if plural:
+        return ingredient.get_plural()
+    else:
+        return ingredient.name
+
+@register.filter
+def format_time(mins, short=False):
+    time = ""
+    min_marker = "'" if short else " min"
+    hour_marker = "h " if short else " h "
+ 
+    hours = int(mins / 60)
+    mins = mins % 60
+    if hours:
+        time += str(hours) + hour_marker
+    if mins:
+        time += str(mins) + min_marker
+            
+    if time:
+        return time
+    else:
+        return "0" + min_marker
+        
+@register.filter
+def get_correct_username(userpk):
+    user = User.objects.get(pk=userpk)
+    return user.username

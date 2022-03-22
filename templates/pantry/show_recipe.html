@@ -1,26 +1,33 @@
 {% extends 'pantry/base.html' %}
 {% load staticfiles %}
 {% load pantry_template_tags %}
+{% load social_share_template_tags %}
 
 {% block title_block %}
-	{{ recipe.title }}
+	{% if recipe %}
+		{{ recipe.title }}
+	{% else %}
+		Recipe
+	{% endif %}
 {% endblock %}
 
 {% block body_block %}
+	<div id="fb-root"></div>
+
 	{% if recipe %}
 	<div class="header-featured">
-		<img class="banner" src="/media/{{ recipe.picture }}" alt="{{ recipe.title }}">
+		<img class="banner" src="/media/{{ recipe.picture }}" alt="{{ recipe.title }}" />
 		<div class="banner-text">
 			<h1 class="cat-heading" id="recipe-title">{{ recipe.title }}</h1>
 			<div class="gap-small"></div>
 			<div class="info-tags">
 				<div class="tag">
 					<strong class="recipe-tag-head">Preparation</strong>
-					<p class="recipe-tag-info">{{ recipe.prep_time }} min</p>
+					<p class="recipe-tag-info">{{ recipe.prep_time|format_time }}</p>
 				</div>
 				<div class="tag">
 					<strong class="recipe-tag-head">Cooking</strong>
-					<p class="recipe-tag-info">{{ recipe.cook_time }} min</p>
+					<p class="recipe-tag-info">{{ recipe.cook_time|format_time }}</p>
 				</div>
 				<div class="tag">
 					<strong class="recipe-tag-head">Difficulty</strong>
@@ -31,38 +38,67 @@
 					<p class="recipe-tag-info">{{ recipe.servings }}</p>
 				</div>
 				<div class="tag">
-					<img class="icon-big recipe-tag-head" src="{% static 'img/star-orange.png' %}" alt="Stars">
-					<p class="recipe-tag-info">{{ recipe.stars }}</p>
+					<i class="fa-solid fa-star"></i>
+					<p class="recipe-tag-info" id="starinfo">{{ recipe.stars }}</p>
 				</div>
 			</div>
 		</div>
 		
 		
-		{% if user.is_authenticated %}
-		<button class="btn-inverted" id="star-btn" type="button">
-			<img class="icon-big" src="{% static 'img/star-dark.png' %}" alt="Star">
-			Star
-		</button>
+		{% if user.is_authenticated and not user.is_staff %}
+			{% if not user|check_if_starred:recipe %}
+			<button class="btn-inverted" id="star-btn" type="button" onclick="star()">
+				<span id="star-icon"><i class="fa-regular fa-star fa-xs"></i></span><span id="star-text">&nbsp; Star</span>
+			</button>
+			{% else %}
+			<button class="btn-inverted" id="star-btn" type="button" onclick="unstar()">
+				<span id="star-icon"><i class="fa-solid fa-star fa-xs"></i></span><span id="star-text">Unstar</span>
+			</button>
+			{% endif %}
 		{% endif %}
+		{% if user == recipe.author or user.is_staff %}
+			<button class="btn-inverted" id="del-btn" type="button" onclick="confirmRecipeDelete()">
+				<span id="del-icon"><i class="fa-solid fa-trash-can"></i></span><span id="del-text"> Delete</span>
+			</button>
+		{% endif %}
+		
+		<div class="pub-data">
+			{% if recipe.author|get_profile_picture %}
+			<a class="profile-thumbnail" href="{% url 'pantry:user_recipes' recipe.author.username %}">
+				<img src="/media/{{ recipe.author|get_profile_picture }}" alt="Profile" />
+			</a>
+			{% endif %}
+			<i id="author">By&nbsp;<a href="{% url 'pantry:user_recipes' recipe.author.username %}">{{ recipe.author.username }}</a>
+				<br />{{ recipe.pub_date|date:'M Y' }}
+			</i>
+		</div>
 	</div>
 	
 	{% if categories %}
 	<div class="category-tags">
-		
 		{% for cat in categories %}
 		<a class="cat-tag" href="{% url 'pantry:show_category' cat.slug %}">{{ cat.name }}</a>
 		{% endfor %}
 	</div>
 	{% endif %}
-	
+
 	<div class="verticals-left-narrow">
-		<div>
-			<div class="vertical-featured" id="ingredients">
+		<div class="vertical-plus">
+			<div class="share-buttons">
+				<div class="info-message">Share:</div>
+				{% post_to_facebook object_or_url "Share on Facebook" "share-button" %}
+				{% post_to_twitter "Check out this recipe on Pantry!" object_or_url "Share on Twitter" "share-button" %}
+				{% post_to_whatsapp object_or_url "Share on WhatsApp" %}
+				{% send_email "Check out this recipe on Pantry!" object_or_url "share-button"%}
+				{% save_to_pinterest object_or_url  "share-button" %}
+			</div>
+			
+			<div class="vertical-featured">
 				<h2 class="vertical-title">INGREDIENTS</h2></br>
 				{% if ingredients %}
 					<ul class="ingredient-list">
 						{% for ing in ingredients %}
-							<li class="ingredient">{{ ing.quantity }} {{ ing.ingredient.name }}</li>
+							<li class="ingredient">{{ ing.quantity }} {{ ing.ingredient|get_number:ing.plural }}</li>
 						{% endfor %}
 					</ul><br />
 				{% else %}
@@ -75,14 +111,17 @@
 			<h2 class="vertical-title">METHOD</h2></br>
 			<ol>
 			{% for step in method %}
+				{% if step %}
 				<li class="long-text">{{ step }}</li><br />
+				{% endif %}
 			{% endfor %}
 			</ol>
 		</div>
 	</div>
 		
 	{% else %}
-	<h1 class="cat-heading">We couldn't find this recipe...</h1>
+	<h1 class="central-heading">We couldn't find this recipe...</h1>
 	<p class="info-message">Maybe the author deleted it, or something went wrong - make sure you have the right link!</p>
 	{% endif %}
+	
 {% endblock %}

@@ -1,0 +1,18 @@
+{% extends 'pantry/base.html' %}
+{% load staticfiles %}
+{% load pantry_template_tags %}
+
+{% block title_block %}
+	Account deleted
+{% endblock %}
+
+{% block body_block %}
+	<h1 class="central-heading">Account deleted successfully</h1>
+	<p class="info-message">We're sorry to see you go! <br /> Your Pantry account, as well as your data and recipes have been deleted.</p>
+
+	<br /><br />
+	<form action="{% url 'pantry:home' %}" method="POST">
+		{% csrf_token %}
+		<button class="btn-continue" id="btn-redir" type="submit">Go to homepage</button>
+	</form>
+{% endblock %}

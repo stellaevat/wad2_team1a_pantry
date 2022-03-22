@@ -1,0 +1,45 @@
+{% extends 'pantry/base.html' %}
+{% load staticfiles %}
+{% load pantry_template_tags %}
+
+{% block title_block %}
+	{% if user_accessed %}
+		Recipes By {{ user_accessed }}
+	{% else %}
+		Recipes
+	{% endif %}
+{% endblock %}
+
+{% block body_block %}
+{% if user_accessed %}
+	<div class="cat-header">
+		{% if profile_picture %}
+		<h1 class="cat-heading" id="with-picture">
+			<img class="profile-picture-big" id="user-recipe-pic" src="/media/{{ profile_picture }}" alt="Profile" />
+			Recipes by<span>{{ user_accessed }}</span>
+			<p class="info-message">Joined in {{ user_joined|date:'F Y' }}</p>
+		</h1>
+		{% else %}
+		<h1 class="cat-heading">Recipes by<span>{{ user_accessed }}</span>
+			<p class="info-message">Joined in {{ user_joined|date:'F Y' }}</p>
+		</h1>
+		{% endif %}
+		{% get_recipe_sorter sort_type %}
+	</div>
+	
+	{% if recipes %}
+	<div class="gap-small"></div>
+	<div class="recipes-big-three">
+		{% for recipe in recipes %}
+			{% recipe_grid_display recipe %}
+		{% endfor %}
+	</div>
+	{% else%}
+	<p class="info-message" id="explain">Something went wrong! Please try again later.</p>
+	{% endif %}
+	
+{% else %}
+	<h1 class="central-heading">No recipes to display</h1>
+	<p class="info-message">Make sure you have the right link!</p>
+{% endif %}
+{% endblock %}

@@ -2,19 +2,21 @@
 {% load pantry_template_tags %}
 
 <a class="recipe-grid-{{ size }}" href="{% url 'pantry:show_recipe' recipe.slug %}">
-	<img class="recipe-thumbnail-{{ size }}" src="/media/recipe_pictures/{{ recipe.slug }}.jpg" alt="{{ recipe.name }}"><br />
+	{% if recipe.picture %}
+	<img class="recipe-thumbnail-{{ size }}" src="/media/{{ recipe.picture }}" alt="{{ recipe.name }}" /><br />
+	{% endif %}
 	<div class="thumbnail-info">
 		<div class="main-info-{{ size }}">
 			{{ recipe.title }}<br />
 		</div>
 		<div class="secondary-info-{{ size }}">
 			<div class="star-info-{{ size }}">
-				<img class="icon-small" src="{% static 'img/star-light.png' %}" alt="Stars">
+				<i class="fa-solid fa-star"></i>
 				{{ recipe.stars }}
 			</div>
 			<div class="time-info-{{ size }}">
-				<img class="icon-small" src="{% static 'img/timer-light.png' %}" alt="Cooking time">
-				{{ time }}'
+				<i class="fa-solid fa-clock-rotate-left"></i>
+				{{ time|format_time:True }}
 			</div>
 			{% if percent %}
 			<div class="ing-info-{{ size }}">

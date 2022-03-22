@@ -2,17 +2,30 @@
 {% load staticfiles %}
 {% load pantry_template_tags %}
 
-<html>
+<html lang="en">
 	<head>
+		<meta charset="utf-8" />
+		<meta content="width=device-width, initial-scale=1.0" name="viewport" />
+		
 		<title>
 			{% block title_block %}
 				Welcome to
 			{% endblock %}
 			 - Pantry
 		</title>
-		<link rel="icon" type="image/x-icon" href="{% static 'img/favicon.ico' %}">
-		<link rel="stylesheet" href="{% static 'styles/pantry.css' %}" type="text/css">	
-		<meta content="width=device-width, initial-scale=1.0" name="viewport" />
+		
+		<meta name="description" content="Welcome to the Pantry, where you can find recipes with ingredients already in your pantry!" />
+		
+		<!--External stylesheet & icons-->
+		<link rel="icon" type="image/x-icon" href="{% static 'img/pantry-favicon.ico' %}" />
+		<link rel="stylesheet" href="{% static 'styles/pantry.css' %}" type="text/css" />
+		<script src="https://kit.fontawesome.com/61773ea177.js" crossorigin="anonymous"></script>
+		
+		<!--External script & global vars required for it-->
+		<script>var username = "{{ user.username }}"; var recipe_name_slug = "{{ recipe.slug }}"; var searched = "{{ searched }}";
+				var pfp = "{{ user|get_profile_picture_source }}"; var pfp_default = "{% static 'img/profile-picture-default.png' %}";</script>
+		<script type="text/javascript" src="{% static 'scripts/jquery-3.6.0.js' %}"></script> 
+		<script type="text/javascript" src="{% static 'scripts/pantry.js' %}"></script> 
 	</head>
 	
 	<body>
@@ -24,18 +37,21 @@
 				{% endif %}
 			</div>
 
-			<form class="search-bar" method="post" action="{% url 'pantry:search_results' %}" >
+			<form class="search-bar-area" method="post" action="{% url 'pantry:search_results' %}">
 				{% csrf_token %}
-				<input type="search" placeholder="Search recipes" aria-label="Search" name="searched" required>
+				<input class="search-bar" id="search-bar-id" type="search" placeholder="Search recipes" aria-label="Search" name="searched" required />
+				<button class="search-btn" type="submit" name="search-submit">
+					<i class="fa-solid fa-magnifying-glass fa-sm"></i>
+				</button>
 			</form>
 			
 			<div class="navbar-right-align">
 				{% if user.is_authenticated %}
-					<a class="profile-thumbnail" id="navbarh-right-2" href="{% url 'pantry:user_profile' user.username %}" id="nohovernavbar">
+					<a class="profile-thumbnail" id="navbarh-right-2" href="{% url 'pantry:user_profile' user.pk|get_correct_username %}" id="nohovernavbar">
 						{% if user|get_profile_picture %}
-							<img src="/media/{{ user|get_profile_picture }}" alt="Profile">
+							<img src="/media/{{ user|get_profile_picture }}" alt="Profile"/>
 						{% else %}
-							<img src="{% static 'img/profile-picture-default.png' %}" alt="Profile">
+							<img src="{% static 'img/profile-picture-default.png' %}" alt="Profile"/>
 						{% endif %}
 					</a>
 					<a href="{% url 'pantry:sign_out' %}" id="navbarh-right">Sign out</a>

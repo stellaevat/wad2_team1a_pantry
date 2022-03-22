@@ -7,19 +7,92 @@
 {% endblock %}
 
 {% block body_block %}
-	<h1>Add a Recipe</h1>
-		<div>
-		<form id="RecipeForm" method="post" action="/pantry/add_recipe/method">
-		{% csrf_token %}
-		{% for hidden in form.hidden_fields %}
-			{{ hidden }}
-		{% endfor %}
-		{% for field in form.visible_fields %}
-			{{ field.errors }}
-			{{ field.help_text }}
-			{{ field }}
-			<br>
-		{% endfor %}
-		<input type="submit" name="submit" value="Submit" />
-		</div>
+	{% if recipe %}
+		<h1 class="central-heading">Recipe added successfully!</h1>
+		<br />
+		<p class="info-message">Thank you for contributing to the Pantry!</p>
+		<br /><br /><br />
+		<a class="btn-continue" id="btn-redir" href="{% url 'pantry:show_recipe' recipe.slug %}">View recipe</a>
+	{% else %}
+		<h1 class="central-heading">Add Recipe</h1>
+		<br />
+		{% if error %}
+			<p class="info-message">Something went wrong! <br /> Please go back and have another go, or try again later!</p>
+			<br />
+			<button class="btn-back" type="button" onclick="history.back()">Back</button>
+		{% else %}
+			<form id="RecipeForm" method="post" action="{% url 'pantry:add_recipe_method' %}" enctype="multipart/form-data" onsubmit="return validateRecipePicture()">
+				{% csrf_token %}
+				
+				<div class="general-info-area">
+					<span class="error-message" id="picture-error"></span>
+					{% for field in recipe_form.visible_fields %}
+						{% if field != recipe_form.steps %}
+							{% if field != recipe_form.category %}
+								{{ field.help_text }}
+								{{ field }}
+								<span class="error-message"><br />{{ field.errors|get_item:0 }}</span>
+							{% elif categories %}
+								{{ field.help_text }}
+								{{ field }}
+								<span class="error-message">{{ field.errors|get_item:0 }}</span>
+								<div class="tooltip"><img class="icon-big" src="{% static 'img/help-orange.png' %}" alt="Hint">
+									<i class="hint">Hint: Which of these best describe your recipe? For best results, aim for 3 to 6!</i>
+								</div>
+							{% endif %}
+						{% endif %}
+						<br/>
+					{% endfor %}
+					
+					{% if ing_count >= 10 %}
+						<p class="instruction">Enter the method for your recipe:</p>
+						{{ recipe_form.steps }}
+						<span class="error-message">{{ recipe_form.steps.errors|get_item:0 }}</span>
+						<div class="tooltip"><img class="icon-big" src="{% static 'img/help-orange.png' %}" alt="Hint">
+							<i class="hint">Hint: Press Enter whenever you move to a new step, but please don't number them - we'll do the rest!</i>
+						</div>
+						<br />
+					{% endif %}
+				</div>
+				
+				<div class="main-info-area">
+					{% if ingredients %}
+					<p class="instruction">Enter the quantity for each ingredient, and tick if it should be displayed in plural:</p>
+					<div class="ingredient-info">
+						{% for ingredient in ingredients %}
+						<div id="column1">
+							<label for="{{ ingredient }}">{{ ingredient }}:</label>
+						</div>
+						<div id="column2">
+							<input class="short-info" type="text" id="{{ ingredient.name }}-quantity" name="{{ ingredient.name }}-quantity"/>
+						</div>
+						<div id="column3">
+							<label for="{{ ingredient }}">&nbsp; Plural?</label>
+							<input type="hidden" name="plural" value="False"/>
+							<input class="checkbox" type="checkbox" id="{{ ingredient.name }}-plural" name="{{ ingredient.name }}-plural" />
+						</div>
+						{% endfor %}
+					</div>
+					<div class="tooltip"><img class="icon-big" src="{% static 'img/help-orange.png' %}" alt="Hint">
+						<i class="hint">Hint: You can enter numbers, measuring units, or other words! Just make sure to keep it short.</i>
+					</div>
+					</br>
+					{% endif %}
+					
+					{% if ing_count < 10 %}
+						<p class="instruction">Enter the method for your recipe. Press <i>Enter</i> to move to a new step but please <strong>don't</strong> number them</i>:</p>
+						{{ recipe_form.steps }}
+						<span class="error-message">{{ recipe_form.steps.errors|get_item:0 }}<span />
+						<div class="tooltip"><img class="icon-big" src="{% static 'img/help-orange.png' %}" alt="Hint">
+							<i class="hint">Hint: Breaking your method up into steps makes it easier to follow! Remember NOT to number them though - we'll do the rest!</i>
+						</div>
+						<br />
+					{% endif %}
+				</div>
+				
+				<button class="btn-back" id="back-left-btn" type="button" onclick="history.back()">Back</button>
+				<input class="btn-continue" id="add-btn" type="submit" value="Submit">
+			</form>
+		{% endif %}
+	{% endif %}
 {% endblock %}

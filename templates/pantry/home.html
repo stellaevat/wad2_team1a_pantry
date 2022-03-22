@@ -8,8 +8,12 @@
 
 {% block body_block %}
 	<div class="logo">
-		<img class="logo-welcome" src="{% static 'img/welcome.png' %}" alt="Welcome to the Pantry">
-		<p class="welcome-message">where you can find recipes with ingredients already in your pantry!</p>
+		<img class="logo-welcome" src="{% static 'img/pantry-welcome.png' %}" alt="Welcome to the Pantry" />
+		<p class="welcome-message">
+			where you can find recipes with ingredients already in your pantry! <br /> Click the 
+			<a  href="{% url 'pantry:search_by_ingredient' %}">Search By Ingredient</a> 
+			button to begin!
+		</p>
 	</div>
 	
 	<div class="verticals-two">
@@ -22,6 +26,7 @@
 				{% endfor %}
 			</div>
 			{% else %}
+			<br />
 			<p class="info-message">No popular recipes to display.</p>
 			<p class="info-message">Try browsing categories, or search by ingredient!</p>
 			<div class="gap-small"></div>
@@ -37,6 +42,7 @@
 				{% endfor %}
 			</div>
 			{% else %}
+			<br />
 			<p class="info-message">No recent recipes to display.</p>
 			<p class="info-message">Try browsing categories, or search by ingredient!</p>
 			<div class="gap-small"></div>
