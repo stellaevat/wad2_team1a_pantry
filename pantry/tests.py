@@ -366,4 +366,67 @@ class PantryPopulationScriptTests(TestCase):
         self.assertTrue('Vegan' in categories_strs, f"{FAILURE_HEADER}The category 'Vegan' was expected but not created by population_script.{FAILURE_FOOTER}")
         self.assertTrue('Breakfast' in categories_strs, f"{FAILURE_HEADER}The category 'Breakfast' was expected but not created by population_script.{FAILURE_FOOTER}")
 
-    
+class PantryHomeViewTests(TestCase):
+
+    def setUp(self):
+        populate()
+        self.response = self.client.get(reverse('pantry:home'))
+        self.content = self.response.content.decode()
+
+    def test_template_filename(self):
+        """
+        Checks that home.html is used in home view in views.py
+        """
+        self.assertTemplateUsed(self.response, 'pantry/home.html', f"{FAILURE_HEADER}You should be using home.html for your home() view.{FAILURE_FOOTER}")
+
+class PantryNoItemsHomeViewTests(TestCase):
+
+    def setUp(self):
+        self.response = self.client.get(reverse('pantry:home'))
+        self.content = self.response.content.decode()
+
+    def test_empty_index_response(self):
+        """
+        Checks to see whether the correct messages appear for no categories and pages.
+        """
+        self.assertIn('<strong>There are no categories present.</strong>', self.content, f"{FAILURE_HEADER}When no categories are present, we can't find the required '<strong>There are no categories present.</strong>' markup in your home() view's output.{FAILURE_FOOTER}")
+        self.assertIn('<strong>There are no pages present.</strong>', self.content, f"{FAILURE_HEADER}When no categories are present, we can't find the required '<strong>There are no pages present.</strong>' markup in your home() view's output.{FAILURE_FOOTER}")
+
+
+class PantryFormsTests(TestCase):
+    """
+    Checks whether the PageForm class has been implemented correctly.
+    """
+    def test_page_form_class(self):
+        """
+        Does the PageForm implementation exist, and does it contain the correct instance variables?
+        """
+        # Check that we can import RecipeForm.
+        import pantry.forms
+        self.assertTrue('RecipeForm' in dir(pantry.forms), f"{FAILURE_HEADER}The class RecipeForm could not be found in the forms.py module. Check you have created this class in the correct location, and try again.{FAILURE_FOOTER}")
+
+        from pantry.forms import RecipeForm
+        recipe_form = RecipeForm()
+
+        # Do you correctly link Recipe to RecipeForm?
+        self.assertEqual(type(recipe_form.__dict__['instance']), Recipe, f"{FAILURE_HEADER}The RecipeForm does not link to the Recipe model.{FAILURE_FOOTER}")
+
+        # Now check that all the required fields are present, and of the correct form field type.
+        fields = recipe_form.fields
+
+        expected_fields = {
+            'title': django_fields.CharField,
+            'picture': django_fields.ImageField,
+            'prep_time': django_fields.IntegerField,
+            'cook_time': django_fields.IntegerField,
+            'difficulty': django_fields.ChoiceField,
+            'servings': django_fields.IntegerField,
+            'steps': django_fields.CharField,
+            'category': django_fields.ModelMutipleChoiceField,
+        }
+
+        for expected_field_name in expected_fields:
+            expected_field = expected_fields[expected_field_name]
+
+            self.assertTrue(expected_field_name in fields.keys(), f"{FAILURE_HEADER}The field '{expected_field_name}' was not found in your RecipeForm implementation. Check you have all required fields, and try again.{FAILURE_FOOTER}")
+            self.assertEqual(expected_field, type(fields[expected_field_name]), f"{FAILURE_HEADER}The field '{expected_field_name}' in RecipeForm was not of the expected type '{type(fields[expected_field_name])}'.{FAILURE_FOOTER}")
