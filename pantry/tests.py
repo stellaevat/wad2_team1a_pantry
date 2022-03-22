@@ -13,6 +13,21 @@ FAILURE_HEADER = f"{os.linesep}{os.linesep}{os.linesep}================{os.lines
 FAILURE_FOOTER = f"{os.linesep}"
 
 """
+Tests to check that each  page renders correctly.
+"""
+class PantryTestPageRendering(TestCase):
+
+   def setUp(self):
+       pass
+
+   def test_home_page(self):
+       url = reverse('home')
+       response = self.client.get(url)
+       self.assertEqual(response.status_code, 200)
+       self.assertTemplateUsed(response, 'pantry/home.html')
+
+
+"""
 Tests to check the initial project structure
 """
 class PantryProjectStructureTests(TestCase):
