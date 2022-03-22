@@ -4,8 +4,10 @@ import os
 import importlib
 from django.urls import reverse
 from django.conf import settings
+from population_script import populate
 from pantry.models import Category, Ingredient, Recipe, IngredientList
 from django.contrib.auth.models import User
+from django.forms import fields as django_fields
 
 FAILURE_HEADER = f"{os.linesep}{os.linesep}{os.linesep}================{os.linesep}TwD TEST FAILURE =({os.linesep}================{os.linesep}"
 FAILURE_FOOTER = f"{os.linesep}"
@@ -133,7 +135,7 @@ class PantryTemplateStructureTests(TestCase):
         user_profile_path = os.path.join(self.pantry_templates_dir, 'user_profile.html')
         edit_profile_path = os.path.join(self.pantry_templates_dir, 'edit_profile.html')
 
-        add_recipe_path = os.path.join(self.pantry_templates_dir, 'add_recipe.html')
+        add_recipe_method_path = os.path.join(self.pantry_templates_dir, 'add_recipe_method.html')
         add_recipe_ingredients_path = os.path.join(self.pantry_templates_dir, 'add_recipe_ingredients.html')
         ingredient_selection_path = os.path.join(self.pantry_templates_dir, 'ingredient_selection.html')
         recipe_display_grid_path = os.path.join(self.pantry_templates_dir, 'recipe_grid_display.html')
@@ -161,7 +163,7 @@ class PantryTemplateStructureTests(TestCase):
         self.assertTrue(os.path.isfile(user_profile_path), f"{FAILURE_HEADER}Your user_profile.html template does not exist, or is in the wrong location.{FAILURE_FOOTER}")
         self.assertTrue(os.path.isfile(edit_profile_path), f"{FAILURE_HEADER}Your edit_profile.html template does not exist, or is in the wrong location.{FAILURE_FOOTER}")
 
-        self.assertTrue(os.path.isfile(add_recipe_path), f"{FAILURE_HEADER}Your add_recipe.html template does not exist, or is in the wrong location.{FAILURE_FOOTER}")
+        self.assertTrue(os.path.isfile(add_recipe_method_path), f"{FAILURE_HEADER}Your add_recipe_method.html template does not exist, or is in the wrong location.{FAILURE_FOOTER}")
         self.assertTrue(os.path.isfile(add_recipe_ingredients_path), f"{FAILURE_HEADER}Your add_recipe_ingredients.html template does not exist, or is in the wrong location.{FAILURE_FOOTER}")
         self.assertTrue(os.path.isfile(ingredient_selection_path), f"{FAILURE_HEADER}Your ingredient_selection.html template does not exist, or is in the wrong location.{FAILURE_FOOTER}")
         self.assertTrue(os.path.isfile(recipe_display_grid_path), f"{FAILURE_HEADER}Your recipe_grid_display.html template does not exist, or is in the wrong location.{FAILURE_FOOTER}")
@@ -381,27 +383,13 @@ class PantryHomeViewTests(TestCase):
         """
         self.assertTemplateUsed(self.response, 'pantry/home.html', f"{FAILURE_HEADER}You should be using home.html for your home() view.{FAILURE_FOOTER}")
 
-class PantryNoItemsHomeViewTests(TestCase):
-
-    def setUp(self):
-        self.response = self.client.get(reverse('pantry:home'))
-        self.content = self.response.content.decode()
-
-    def test_empty_index_response(self):
-        """
-        Checks to see whether the correct messages appear for no categories and pages.
-        """
-        self.assertIn('<strong>There are no categories present.</strong>', self.content, f"{FAILURE_HEADER}When no categories are present, we can't find the required '<strong>There are no categories present.</strong>' markup in your home() view's output.{FAILURE_FOOTER}")
-        self.assertIn('<strong>There are no pages present.</strong>', self.content, f"{FAILURE_HEADER}When no categories are present, we can't find the required '<strong>There are no pages present.</strong>' markup in your home() view's output.{FAILURE_FOOTER}")
-
-
 class PantryFormsTests(TestCase):
     """
-    Checks whether the PageForm class has been implemented correctly.
+    Checks whether the RecipeForm class has been implemented correctly.
     """
     def test_page_form_class(self):
         """
-        Does the PageForm implementation exist, and does it contain the correct instance variables?
+        Does the RecipeForm implementation exist, and does it contain the correct instance variables?
         """
         # Check that we can import RecipeForm.
         import pantry.forms
@@ -424,7 +412,6 @@ class PantryFormsTests(TestCase):
             'difficulty': django_fields.ChoiceField,
             'servings': django_fields.IntegerField,
             'steps': django_fields.CharField,
-            'category': django_fields.ModelMutipleChoiceField,
         }
 
         for expected_field_name in expected_fields:
