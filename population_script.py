@@ -28,10 +28,12 @@ def populate():
         {"name" : "Desserts", "tab" : True, "selectable" : True},
         {"name" : "Easy Meals", "tab" : True, "selectable" : False},
         {"name" : "Under 30'", "tab" : True, "selectable" : False},
-        {"name" : "Vegan", "tab" : False, "selectable" : True},
         {"name" : "Healthy", "tab" : False, "selectable" : True},
-        {"name" : "GlutenFree", "tab" : False, "selectable" : True},
+        {"name" : "Vegan", "tab" : False, "selectable" : True},
         {"name" : "Vegetarian", "tab" : False, "selectable" : True},
+        {"name" : "Gluten-free", "tab" : False, "selectable" : True},
+        {"name" : "Nut-free", "tab" : False, "selectable" : True},
+        {"name" : "Kid-friendly", "tab" : False, "selectable" : True},
         {"name" : "Breakfast", "tab" : False, "selectable" : True},
         {"name" : "Lunch", "tab" : False, "selectable" : True},
         {"name" : "Dinner", "tab" : False, "selectable" : True},
@@ -101,9 +103,69 @@ Using a spatula, fold the omelet in half. Cook for another 30 seconds, then slid
          "difficulty" : "easy", "pub_date" : datetime(2022,2,1,20,9,26,423063,tzinfo=pytz.UTC), "stars" : 77, "filename" : "garlic-bread-toasts.jpg"},
 
          {"name":"Grilled & Roasted Potatoes", "author" : "sallywalker", "steps" : 
-        """Preheat the oven to 200°C/400°F/gas 6. Roast the potatoes, uncovered, for 45 minutes on the top shelf, or until cooked through and lightly golden. Squeeze the soft garlic cloves out of their skins, to serve.""", "ingredients" : {"Sage":["1 Bunch",False], "Lemon":["1.5",True], "Garlic" : ["1 Bulb", False], "Olive oil":["1 tbsp",False]}, "category" : ["Appetizers", "Easy Meals", "GlutenFree", "Vegetarian", "Lunch", "Dinner","Snacks"], "prep_time" : 10, "cook_time" : 45, "servings" : 6,
+        """Preheat the oven to 200°C/400°F/gas 6. Roast the potatoes, uncovered, for 45 minutes on the top shelf, or until cooked through and lightly golden. Squeeze the soft garlic cloves out of their skins, to serve.""", "ingredients" : {"Sage":["1 Bunch",False], "Lemon":["1.5",True], "Garlic" : ["1 Bulb", False], "Olive oil":["1 tbsp",False]}, "category" : ["Appetizers", "Easy Meals", "Gluten-free", "Vegetarian", "Lunch", "Dinner","Snacks"], "prep_time" : 10, "cook_time" : 45, "servings" : 6,
          "difficulty" : "easy", "pub_date" : datetime(2022,1,1,20,9,26,423063,tzinfo=pytz.UTC), "stars" : 10, "filename" : "grilled-and-roasted-potatoes.jpg"},
-
+        {"name":"Spanish Lentils", "author":"johndoe",
+        "steps":"""Dice one of the onions. Boil it and the lentils at medium heat, for one hour.
+While the lentils cook, dice the rest of the onions, the garlic, the tomatoes and the green pepper.
+Fry the diced onion, garlic and pepper on a pan. After 10 minutes, add the sausage in slices. 5 minutes later, add the tomato and cook for a further 10 minutes at medium heat.
+In the meantime, peel the potatoes and carrots, and cut them into medium chunks.
+Once the lentils have been cooking for around 30 minutes, add the carrots and potatoes, as well as everything in the frying pan. Cook everything in the pot until the lentils, potatoes and carrots are soft.
+Serve or refrigerate for another day. If you liked this recipe, please star it and share it!""",
+        "ingredients" : {"Brown lentil":["400g",False], "Onion":["2",True], "Tomato":["4",True], "Garlic":["4",True], "Green pepper":["1",False], "Pork sausage":["200g",False], "Carrot":["2",True], "Potato":["2",True]},
+        "category" : ["Mains", "Lunch", "Dinner", "Nut-free"],
+        "prep_time" : 15, "cook_time" : 60, "servings" : 4, "difficulty" : "medium", "pub_date" : datetime(2022,2,15,10,34,45,0,tzinfo=pytz.UTC), "stars" : 357, "filename" : "spanish-lentils.png"},
+         
+        {"name":"Russian Dressing", "author":"joebloggs",
+        "steps":"""A true classic, popularized by Tim R. Heidecker at the start of the 2010s. Goes great with salads and Reuben sandwiches among many others.
+Combine the mayonnaise with the ketchup and mix.
+Keep mixing.
+Mix until the mix is spilling out of the bowl.
+Add the mustard. I personally recommend Pissman's Mustard but I have to admit they paid me to write this recipe. Add a whole bottle if you want -- you can't go wrong!
+Some of the mixture should have spilled all over the counter: this is intended. Scoop the spillage back into the bowl -- use your hands for maximum flavour!
+Serve with salad, or use in a sandwich for added flavour!""",
+        "ingredients" : {"Mayonnaise":["50g",False], "Ketchup":["45g",False], "Mustard":["50g",False]},
+        "category" : ["Under 30'", "Vegan", "Nut-free", "Vegetarian", "Snacks", "Appetizers"],
+        "prep_time" : 5, "cook_time" : 5, "servings" : 10, "difficulty" : "easy", "pub_date" : datetime(2021,1,28,12,23,47,0,tzinfo=pytz.UTC), "stars" : 3, "filename" : "russian-dressing.jpg"},
+		 
+		{"name":"Mexican omelette", "author":"sallywalker",
+        "steps":"""Whisk eggs, milk, 1/4 cup cheese and salt and pepper in a jug. Combine onion, parsley and remaining 1/2 cup cheese in a bowl.
+Heat half the butter and half the oil in a 19cm (base) non-stick frying pan over high heat until sizzling. Reduce heat to medium-low. Pour in half the egg mixture. Cook for 2 to 3 minutes or until egg starts to set.
+Cook for 3 to 4 minutes or until egg is golden and set. Roll up omelette. Slide onto a plate. Repeat with remaining butter, oil, egg mixture and capsicum mixture. Serve.""",
+        "ingredients" : {"Egg":["4",True], "Milk":["1/3 cups",False], "Cheese":["3/4 cup",False], "Onion":["4",True], "Parsley":["1/4 cup leaves",False], "Butter":["20g",False], "Olive oil":["3/4 cup",False]},
+        "category" : ["Under 30'", "Vegetarian", "Snacks", "Breakfast", "Lunch", "Dinner"],
+        "prep_time" :10, "cook_time" : 15, "servings" : 2, "difficulty" : "easy", "pub_date" : datetime(2019,4,16,17,23,47,0,tzinfo=pytz.UTC), "stars" : 94, "filename" : "mexican-omelette.jpeg"},
+		 
+		{"name":"Two-tone chocolate tart", "author":"benking",
+        "steps":"""FOR PASTRY: Process flour, sugar and butter until mixture resembles fine breadcrumbs.
+Add egg yolk. Process until mixture just comes together.
+Turn onto a lightly floured surface. Knead until just smooth. Shape into a disc.
+Cover in plastic wrap. Refrigerate for 20 minutes.
+Preheat oven to 180°C/160°C fan-forced.
+Grease two 3cm-deep, 10.5cm (base) round fluted, loose-based tart pans. Roll pastry out between 2 sheets of baking paper until 3mm thick.
+Using a 12cm round cutter, cut 2 rounds from pastry.
+Line prepared pans with pastry. Trim excess. Refrigerate for 10 minutes or until firm.
+Place pans on a baking tray. Line pastry cases with baking paper. Fill with ceramic pie weights or uncooked rice.
+Bake for 10 minutes or until edges are golden. Remove paper and weights or rice. Bake for 5 minutes or until golden.
+FOR FILLING: Reduce oven to 160°C/140°C fan-forced. Combine dark chocolate and butter in a saucepan over low heat. Cook, stirring, for 2 minutes or until smooth.
+Using an electric mixer, beat egg, egg yolk and sugar until light and fluffy.
+Fold chocolate mixture into egg mixture. Pour into pastry cases.
+Bake for 10 minutes or until just set.
+Cool for 10 minutes. Refrigerate for 30 minutes or until firm.
+Meanwhile, combine white chocolate and cream in a saucepan over low heat.Cook, stirring, for 3 minutes or until smooth.
+Cool for 20 minutes. Spread white chocolate mixture over dark chocolate mixture.
+Refrigerate for 1 hour or until set. Serve topped with raspberries.""",
+        "ingredients" : {"Dark chocolate":["65g",False],"Butter":["115g",False],"Egg":["2",True],"Sugar":["3 tbsp",False],"White chocolate":["65g",False],"Cream":["2 tbsp",False],"Raspberry":["2",True],"Flour":["2/3 cup",False]},
+        "category" : ["Desserts", "Kid-friendly"], "prep_time" :160, "cook_time" : 25,"servings" : 2, "difficulty" : "advanced", "pub_date" : datetime(2021,5,7,9,15,47,0,tzinfo=pytz.UTC),"stars" : 15,"filename" : "two-tone-chocolate-tart.jpg"},
+		 
+		{"name":"Tomato bisque", "author":"benking",
+        "steps":"""In a small bowl mix flour with salt, pepper and garlic. Add eggs to a second small bowl and finally add panko to a third small bowl.
+Start by prepping the fried cheese. Working with one square at a time dip the cheese into the egg mixture followed by the flour mixture, then back into the egg mixture and finally into the panko. Set cheese on a lined baking sheet and repeat with remaining cheese. Place in freezer and freeze for 30 minutes.
+In a 5qt pot melt butter over medium heat. Add in carrots and onions and stir until onions are translucent. Add in tomatoes, olive oil, bay leaves, salt and pepper.
+Bring soup to a boil and reduce to a simmer. Allow to cook for 30 minutes. Add in fresh basil and remove from heat.""",
+        "ingredients" : {"Butter":["4tbsp",False],"Carrot":["2",True],"Tomato":["28oz, diced",True],"Onion":["1",False],"Bay leaf":["2",True],"Olive oil":["1/3 cup",False],"Salt":["2 tsp",False],"Black pepper":["1/2 tsp",False],"Cream":["1 cup",False],},
+        "category" : ["Under 30'", "Vegetarian", "Snacks", "Breakfast", "Lunch", "Dinner"],
+        "prep_time" :45, "cook_time" : 45, "servings" : 6, "difficulty" : "medium", "pub_date" : datetime(2019,4,16,17,23,47,0,tzinfo=pytz.UTC), "stars" : 105,"filename" : "tomato-bisque.jpg"},
     ]
 
 
