@@ -9,7 +9,7 @@
 {% block body_block %}
 	<div class="logo">
 		<img class="logo-welcome" src="{% static 'img/pantry-welcome.png' %}" alt="Welcome to the Pantry">
-		<p class="error-message">There's been a server error!</p>
+		<p class="error-message">We couldn't find the page you were looking for!</p>
 		
 		<br />
 		<form action="{% url 'pantry:home' %}" method="POST">
