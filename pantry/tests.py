@@ -120,6 +120,7 @@ class PantryTemplateStructureTests(TestCase):
         """
 
         error404_path = os.path.join(self.errors_templates_dir, '404.html')
+        error500_path = os.path.join(self.errors_templates_dir, '500.html')
 
         base_path = os.path.join(self.pantry_templates_dir, 'base.html')
         home_path = os.path.join(self.pantry_templates_dir, 'home.html')
@@ -147,6 +148,7 @@ class PantryTemplateStructureTests(TestCase):
 
 
         self.assertTrue(os.path.isfile(error404_path), f"{FAILURE_HEADER}Your 404.html template does not exist, or is in the wrong location.{FAILURE_FOOTER}")
+        self.assertTrue(os.path.isfile(error500_path), f"{FAILURE_HEADER}Your 500.html template does not exist, or is in the wrong location.{FAILURE_FOOTER}")
 
         self.assertTrue(os.path.isfile(base_path), f"{FAILURE_HEADER}Your base.html template does not exist, or is in the wrong location.{FAILURE_FOOTER}")
         self.assertTrue(os.path.isfile(home_path), f"{FAILURE_HEADER}Your home.html template does not exist, or is in the wrong location.{FAILURE_FOOTER}")
