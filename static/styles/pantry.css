@@ -613,7 +613,7 @@ button {
 	padding: 15px;
 	position: relative;
 	display:inline-block;
-	width: 170px;
+	width: 180px;
 	font-size: 14px;
 	text-align: left;
 	border-radius: 20px;
@@ -642,7 +642,7 @@ button {
 	padding: 12px 35px 12px 10px;
 	text-align: left;
 	display: block;
-	width: 78px;
+	width: 88px;
 	font-size: 14px;
 	white-space: nowrap;
 }
