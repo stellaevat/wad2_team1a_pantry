@@ -1,4 +1,4 @@
-# Taken directly from django_social_share library, included here for customization purposes
+# Taken directly from django-social-share library, incorporated here for customization purposes
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
