@@ -23,9 +23,9 @@
 				<div id="change-or-clear">
 					Profile picture:&nbsp;
 					<div class="central-field">
-						<input class="picture-upload" type="file" name="profile_picture" accept="image/*" id="id_profile_picture" onchange="changePicture()"/>
+						<input class="picture-upload" type="file" name="profile_picture" accept="image/*" id="id_profile_picture" onchange="changePreview()"/>
 						|&nbsp;&nbsp;&nbsp;&nbsp;
-						<input class="checkbox" id="clear-profile" type="checkbox" name="profile_picture-clear" id="profile_picture-clear_id" onchange="clearPicture()" />
+						<input class="checkbox" id="clear-profile" type="checkbox" name="profile_picture-clear" id="profile_picture-clear_id" onchange="clearPreview()" />
 						<label for="profile_picture-clear_id" id="clear-profile-label">Clear&nbsp;&nbsp;</label>
 					</div>
 					<input class="btn-continue medium-btn" type="submit" name="img-submit" value="Update" />
@@ -34,7 +34,7 @@
 				{% if img_error %}
 					<span class="error-message"><br />{{ img_error }}</span>
 				{% elif img_success %}
-					<span class="success-message"><br />{{ img_success }}</span>
+					<span class="success-message" id="picture-success"><br />{{ img_success }}</span>
 				{% endif %}
 				<span class="error-message" id="picture-error"></span>
 				
@@ -123,21 +123,6 @@
 	<p class="info-message">Make sure you have the right spelling, and that you're signed in to the correct account!</p>
 {% endif %}
 <script>
-var pfp;
-function changePicture(){
-	document.getElementById('pfp-edit-profile').setAttribute("src",URL.createObjectURL(event.target.files[0]));
-	pfp = document.getElementById('pfp-edit-profile').src;
-}
 
-function clearPicture(){
-	var check = document.getElementById("clear-profile");
-	if (check.checked){
-		pfp = document.getElementById("pfp-edit-profile").src;
-		document.getElementById('pfp-edit-profile').setAttribute("src","{% static 'img/profile-picture-default.png' %}");
-	}else{
-		document.getElementById('pfp-edit-profile').setAttribute("src",pfp);
-	}
-	
-}
 </script>
 {% endblock %}

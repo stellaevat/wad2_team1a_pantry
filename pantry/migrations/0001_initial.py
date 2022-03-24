@@ -19,7 +19,7 @@ class Migration(migrations.Migration):
             name='Category',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=10, unique=True)),
+                ('name', models.CharField(max_length=16, unique=True)),
                 ('slug', models.SlugField(unique=True)),
                 ('tab', models.BooleanField(default=False)),
                 ('selectable', models.BooleanField(default=True)),

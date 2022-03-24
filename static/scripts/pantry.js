@@ -1,6 +1,34 @@
 const accepted_exts = ['bmp', 'cur', 'gif', 'png', 'apng', 'ico', 'jfif', 'jpe', 'jpg', 'jpeg', 'webp'];
 
 // EDIT PROFILE PAGE
+function changePreview(){
+	var picture = document.getElementById('pfp-edit-profile');
+	var upload = document.getElementById("id_profile_picture");
+	var clear = document.getElementById("clear-profile");
+	
+	if (upload.value == "") {
+		picture.setAttribute("src", pfp);
+	} else {
+		picture.setAttribute("src", URL.createObjectURL(event.target.files[0]));
+	}
+	clear.checked = false;
+	document.getElementById('picture-success').innerHTML = "";
+}
+
+function clearPreview(){
+	var picture = document.getElementById('pfp-edit-profile');
+	var upload = document.getElementById("id_profile_picture");
+	var clear = document.getElementById("clear-profile");
+	
+	if (clear.checked) {
+		picture.setAttribute("src", pfp_default);
+		upload.value = "";
+	} else {
+		picture.setAttribute("src", pfp);
+	}
+	document.getElementById('picture-success').innerHTML = "";
+}
+
 function validateProfilePicture() {
 	var picture = document.getElementById("id_profile_picture").value;
 	var clear = document.getElementById("clear-profile");
@@ -212,7 +240,7 @@ function unstar() {
 	});
 };
 
-function confirmDelete() {
+function confirmRecipeDelete() {
 	var button = document.getElementById("del-btn");
 	var text = document.getElementById("del-text");
 	var icon = document.getElementById("del-icon");
@@ -222,15 +250,15 @@ function confirmDelete() {
 	icon.id = "del-icon-ext";
 	icon.innerHTML = '<i class="fa-solid fa-trash-can fa-inverse"></i>'
 	text.id = "del-text-ext";
-	button.setAttribute("onclick", "del()");
-	button.setAttribute("focusout", "returnNormal()");
+	button.setAttribute("onclick", "delRecipe()");
+	button.setAttribute("focusout", "returnRecipeNormal()");
 
 	button.addEventListener("focusout", (event) => {
-		returnNormal();
+		returnRecipeNormal();
 	});
 };
 
-function returnNormal() {
+function returnRecipeNormal() {
 	var button = document.getElementById("del-btn-ext");
 	var text = document.getElementById("del-text-ext");
 	var icon = document.getElementById("del-icon-ext");
@@ -240,10 +268,10 @@ function returnNormal() {
 	icon.id = "del-icon";
 	icon.innerHTML = '<i class="fa-solid fa-trash-can"></i>'
 	text.id = "del-text";
-	button.setAttribute("onclick", "confirmDelete()");
+	button.setAttribute("onclick", "confirmRecipeDelete()");
 };
 
-function del(){
+function delRecipe(){
 	$.ajax({
 		url: 'delete_recipe/' + username + '/',
 		data: {
@@ -260,10 +288,8 @@ function del(){
 
 // SEARCH RESULTS PAGE
 function searchPersist(){
-	document.getElementById("search-bar-id").setAttribute("value", searched)
+	document.getElementById("search-bar-id").setAttribute("value", searched);
 }
-
-window.onload = searchPersist;
 
 
 // SEARCH BY INGREDIENT & ADD RECIPE INGREDIENTS PAGES
@@ -305,4 +331,8 @@ function renderCollapsible() {
 	}
 }
 
-window.onload = renderCollapsible;
+
+window.onload = function () {
+	renderCollapsible();
+	searchPersist();
+}
