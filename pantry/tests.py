@@ -8,6 +8,9 @@ from population_script import populate
 from pantry.models import Category, Ingredient, Recipe, IngredientList
 from django.contrib.auth.models import User
 from django.forms import fields as django_fields
+from django.test import Client
+from datetime import datetime
+import pytz
 
 FAILURE_HEADER = f"{os.linesep}{os.linesep}{os.linesep}================{os.linesep}TwD TEST FAILURE =({os.linesep}================{os.linesep}"
 FAILURE_FOOTER = f"{os.linesep}"
@@ -17,15 +20,55 @@ Tests to check that each  page renders correctly.
 """
 class PantryTestPageRendering(TestCase):
 
-   def setUp(self):
-       pass
+    def setUp(self):
+        self.client = Client()
+        self.client.show_recipe_slug = "show_recipe_slug"
+        self.client.category_title_slug = "category_title_slug"
+        settings.DEBUG = True
 
-   def test_home_page(self):
-       url = reverse('home')
-       response = self.client.get(url)
-       self.assertEqual(response.status_code, 200)
-       self.assertTemplateUsed(response, 'pantry/home.html')
 
+    def test_home_page(self):
+        url = reverse('home')
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'pantry/home.html')
+
+    def test_show_recipe_page(self):
+        url = reverse('pantry:show_recipe', args=(self.client.show_recipe_slug,))
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'pantry/show_recipe.html')
+
+    def test_search_by_ingredient_page(self):
+        url = reverse('pantry:search_by_ingredient')
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'pantry/search_by_ingredient.html')
+
+    def test_search_by_ingredient_results_page(self):
+        # Uses same template as search_by_ingredient
+        url = reverse('pantry:search_by_ingredient')
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'pantry/search_by_ingredient.html')
+
+    def test_search_results_page(self):
+        url = reverse('pantry:search_results')
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'pantry/search_results.html')
+
+    def test_show_category_page(self):
+        url = reverse('pantry:show_category', args=(self.client.category_title_slug,))
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'pantry/show_category.html')
+
+    def test_check_email_page(self):
+        url = reverse('pantry:check_email')
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'pantry/check_email.html')
 
 """
 Tests to check the initial project structure
